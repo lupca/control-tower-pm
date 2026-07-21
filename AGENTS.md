@@ -347,3 +347,40 @@ When an item in `inbox.md` is **not actionable** (no deadline, no code needed, i
 ### 11.6. No auto-generating knowledge
 
 Knowledge content is created/approved by humans; the agent only routes a note to the right place (§11.5) and updates the index (`/report`) — it never invents domain/ADR content the User hasn't confirmed.
+
+---
+
+## 12. AGENT REPUTATION & PROFILE STANDARD
+
+System tracks execution and review performance history for all agents (`ai` and `human`) under `knowledge/agents/@<agent_id>.md`.
+
+### 12.1. Agent Profile Schema
+
+```yaml
+---
+agent_id: "@antigravity"
+type: ai                    # ai | human
+total_tasks_executed: 4
+total_tasks_reviewed: 0
+success_rate: 1.0           # (pass on first review) / total_tasks_executed
+avg_review_rounds: 1.0      # average review iterations required
+strengths: [backend, frontend, testing, infra, database]
+weaknesses: []
+recent_trend: improving      # improving | stable | declining
+last_active: 2026-07-22
+---
+```
+
+### 12.2. Domain Strength Auto-Detection Rules
+
+Task `files:` match against rules:
+- `*.py`, `/backend/` → `backend`
+- `*.tsx`, `*.vue`, `/web/` → `frontend`
+- `*models.py`, `migrations/` → `database`
+- `*test*.py`, `/tests/` → `testing`
+- `docker*`, `.github/` → `infra`
+
+### 12.3. Reputation Lifecycle
+- **Update on `/verdict`**: Updates `total_tasks_executed` / `total_tasks_reviewed`, `success_rate`, `avg_review_rounds`, `strengths`, `recent_trend`, and `last_active`.
+- **Recommendation on `/pm`**: Matches task domain requirements with agent `strengths` during dispatch, suggesting optimal executors and surfacing warnings for low success rates (< 0.6) or matching weaknesses.
+

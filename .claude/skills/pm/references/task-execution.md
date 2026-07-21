@@ -15,11 +15,17 @@ Applies after the User has approved the Spec Gate (the task's scope + AC have be
 **This is where control-tower stops — do NOT write code yourself, do NOT run tests yourself, do NOT spawn an executing subagent.** Writing code is an action that happens outside the system (`AGENTS.md` §1, §4).
 
 1. Update `status: ready` in the task's frontmatter.
-2. Ask the User: who will be the `executor:` for this task (a human or another AI, in the target code repo)?
-3. Record `executor: "@name"`, `status: dispatched`, `dispatched: <today's date>`, `updated: <today's date>` in the frontmatter.
-4. Write 1 entry to `log.md` (`operation: dispatch`) — summarizing: which task, handed to whom, noting the task file is already a self-contained work order with AC/`files:`/`tests:`/`## Plan`/DoD, no extra tooling needed.
-5. Tell the User: the task is ready to hand to the executor — they only need the path to `projects/<name>/tasks/<ID>-<slug>.md` (no need for control-tower access or any other tooling).
-6. **Stop completely.** Once the executor reports done (with `result_ref:`), the User (or the executor themselves) will run `/review-order` — that's the next step, not part of `/pm`.
+2. **Suggest Best-Fit Executor(s)** (Reputation System `AGENTS.md` §12):
+   - Scan task `files:` to identify required domain strengths (`backend`, `frontend`, `database`, `testing`, `infra`).
+   - Read profiles in `knowledge/agents/*.md`.
+   - Rank candidate executors by matching `strengths` + highest `success_rate`.
+   - Show recommendations to the User (e.g., "Recommended executor: @antigravity (strengths: backend, testing; success rate: 100%)").
+   - **Warning**: If User selects an agent with low success rate (< 0.6) in that domain or matching `weaknesses: [...]`, display a warning flag.
+3. Ask the User: who will be the `executor:` for this task (a human or another AI, in the target code repo)?
+4. Record `executor: "@name"`, `status: dispatched`, `dispatched: <today's date>`, `updated: <today's date>` in the frontmatter.
+5. Write 1 entry to `log.md` (`operation: dispatch`) — summarizing: which task, handed to whom, noting the task file is already a self-contained work order with AC/`files:`/`tests:`/`## Plan`/DoD, no extra tooling needed.
+6. Tell the User: the task is ready to hand to the executor — they only need the path to `projects/<name>/tasks/<ID>-<slug>.md` (no need for control-tower access or any other tooling).
+7. **Stop completely.** Once the executor reports done (with `result_ref:`), the User (or the executor themselves) will run `/review-order` — that's the next step, not part of `/pm`.
 
 ## If the task is flagged `⚠️high-risk` or touches `schemas/`/`models.py`/migrations
 

@@ -10,6 +10,11 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 | decision | [[ADR-002-paradigm-shifts-roadmap]] | architecture, control-tower, paradigm-shift, research | 2026-07-22 |
 | research | [[discount-promotion-architecture]] | pricing, discount, promotion, e-commerce | 2026-07-22 |
 | metric | [[prediction-accuracy]] | metrics, prediction, control-tower, accuracy | 2026-07-22 |
+| agent | [[@antigravity]] | agent, profile, execution, ai | 2026-07-22 |
+| agent | [[@claude]] | agent, profile, review, ai | 2026-07-22 |
+| agent | [[@antigravity-3.6]] | agent, profile, execution, ai | 2026-07-22 |
+| agent | [[@claude-opus]] | agent, profile, review, ai | 2026-07-22 |
+| agent | [[@dev-tung]] | agent, profile, execution, human | 2026-07-21 |
 
 ## Per-project (`projects/<name>/docs/`)
 

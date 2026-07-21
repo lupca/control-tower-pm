@@ -20,7 +20,7 @@ The user invokes: `/pm $ARGUMENTS`. You're running inside the `control-tower` re
 ### Step 1 — Determine which stage you're at
 
 - **New request / no matching task file yet in `projects/<name>/tasks/*.md`** (Glob to check) → follow `.claude/skills/pm/references/task-creation.md` (Spec Gate, `status: todo`). Computes `predicted_success` and `prediction_factors` before creating task. Stop and wait for approval after writing the task.
-- **Task already exists, Spec Gate was just approved by the User** (User says "ok", "approved", "I agree with this AC"...) → follow `references/task-execution.md` (Plan Gate → `ready` → `dispatched`). Stop after recording `executor:` + `dispatched`.
+- **Task already exists, Spec Gate was just approved by the User** (User says "ok", "approved", "I agree with this AC"...) → follow `references/task-execution.md` (Plan Gate → `ready` → `dispatched`). Matches task domain strengths with `knowledge/agents/*.md` profiles to suggest best-fit executor. Stop after recording `executor:` + `dispatched`.
 
 **`/pm` has NO third step.** Once a task is `status: dispatched`, `/pm`'s job on that task is done. When the executor reports completion, the next step is `/review-order` (a separate skill, run independently — not an automatic continuation of `/pm`).
 

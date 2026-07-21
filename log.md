@@ -300,3 +300,36 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Trạng thái: Thành công.
 - Commit: `df5b3f7`
 
+
+## [2026-07-22 15:30:00] review-order | CT-001 Pre-Execution Prediction
+- Dự án: `control-tower`
+- Mô tả: Phát phiếu review cho CT-001 "Pre-Execution Prediction". Executor @antigravity đã hoàn thành và báo result-ref `control-tower@main (commit 7477570)`. Phiếu review tại `projects/control-tower/reviews/CT-001-review.md`.
+- Giải trình: Task implement prediction system trong `/pm` skill. Thay đổi: AGENTS.md (schema), pm/SKILL.md (prediction logic), verdict/SKILL.md (accuracy tracking), knowledge/metrics/prediction-accuracy.md (new). Cần reviewer độc lập (≠ @antigravity) verify AC + DoD.
+- Files touched: projects/control-tower/tasks/CT-001-pre-execution-prediction.md (status: in-review), projects/control-tower/reviews/CT-001-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập.
+- Commit: n/a
+
+## [2026-07-22 15:45:00] verdict | CT-001 Pre-Execution Prediction — PASS
+- Dự án: `control-tower`
+- Mô tả: Ghi verdict PASS cho CT-001 "Pre-Execution Prediction". Reviewer: @claude. Executor: @antigravity.
+- Giải trình: Four-eyes check passed (@claude ≠ @antigravity). Reviewer verified: AC1 (schema in AGENTS.md), AC2 (prediction logic in pm/SKILL.md), AC3 (suggestion generator in task-creation.md), AC4 (accuracy tracking in verdict/SKILL.md + metrics file). Prediction outcome logged: predicted=high, actual=pass → match.
+- Files touched: projects/control-tower/tasks/CT-001-pre-execution-prediction.md (status: done), projects/control-tower/reviews/CT-001-review.md, knowledge/metrics/prediction-accuracy.md
+- Trạng thái: Thành công — task closed.
+- Commit: 7477570
+
+## [2026-07-22 16:00:00] dispatch | CT-002 Reputation System
+- Dự án: `control-tower`
+- Mô tả: Dispatch CT-002 "Reputation System" cho executor @antigravity. Task implement hệ thống tracking performance của executors/reviewers với profiles, strengths auto-detection, và executor suggestions.
+- Giải trình: Spec Gate + Plan Gate approved. Plan gồm 5 phases: (1) Schema + directory, (2) Strength detection logic, (3) Verdict integration, (4) PM integration, (5) Bootstrap từ log.md. Estimated ~1.5 hours. Low risk — additive changes.
+- Files touched: projects/control-tower/tasks/CT-002-reputation-system.md (status: dispatched, executor: @antigravity)
+- Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref.
+- Commit: n/a
+
+## [2026-07-22 16:30:00] execute | CT-002 Reputation System Implementation
+- Dự án: `control-tower`
+- Mô tả: Hoàn thành implementation hệ thống Agent Reputation System theo Work Order CT-002.
+- Giải trình: Đã cập nhật các thành phần: (1) `AGENTS.md` §12 định nghĩa Agent Profile schema & Strength Auto-Detection Rules (`backend`, `frontend`, `database`, `testing`, `infra`); (2) Tạo thư mục `knowledge/agents/` với 5 profile khởi tạo (@antigravity, @claude, @antigravity-3.6, @claude-opus, @dev-tung) bootstrap từ lịch sử `log.md`; (3) `.claude/skills/verdict/SKILL.md` tự động cập nhật profile executor/reviewer sau mỗi verdict; (4) `.claude/skills/pm/SKILL.md` & `references/task-execution.md` gợi ý best-fit executor và cảnh báo rủi ro khi dispatch; (5) Đăng ký `knowledge/agents/` vào `knowledge/_index.md`.
+- Files touched: AGENTS.md, knowledge/agents/@*.md (5 files), .claude/skills/verdict/SKILL.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-execution.md, knowledge/_index.md, projects/control-tower/tasks/CT-002-reputation-system.md, log.md
+- Trạng thái: Thành công.
+- Commit: `565f69f`
+

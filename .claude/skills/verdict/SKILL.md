@@ -31,7 +31,10 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 5. If the task declares `depends_on:` (see `AGENTS.md` §2.2): tell the User which tasks might now be unblocked, since there's no automatic parsing/unblocking mechanism yet — don't infer it yourself.
 6. Write 1 entry to `log.md` (`operation: verdict`, format in `AGENTS.md` §7), with the `Commit:` field = the real hash just received.
 7. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `pass` (Success), update accuracy metrics.
-8. Give the User a summary: which task closed, who reviewed it, which commit, and updated prediction accuracy.
+8. Update Agent Reputation Profiles (`knowledge/agents/@<id>.md` per `AGENTS.md` §12):
+   - **Executor**: Read `knowledge/agents/@<executor>.md` (create if missing). Increment `total_tasks_executed`. Recalculate `success_rate` = (pass_on_first_review / total_executed). Auto-detect strengths from task's `files:` (`*.py` → `backend`, `*.tsx/*.vue` → `frontend`, `*models.py/migrations` → `database`, `*test*.py` → `testing`, `docker*/.github/` → `infra`) and add to `strengths`. Update `last_active: <today>`.
+   - **Reviewer**: Read `knowledge/agents/@<reviewer>.md` (create if missing). Increment `total_tasks_reviewed`. Add `code-review` and domain strengths to `strengths`. Update `last_active: <today>`.
+9. Give the User a summary: which task closed, who reviewed it, which commit, updated prediction accuracy, and updated agent profile stats.
 
 ### Step 3b — Verdict `changes`
 
@@ -40,7 +43,10 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 3. Update the frontmatter: `status: changes-requested`, `updated: <today>`. Keep `executor:` unchanged (by default the same executor will fix it) unless the User says to reassign.
 4. Write 1 entry to `log.md` (`operation: verdict`, `Trạng thái: Chờ duyệt` or a description of the rework, `Commit: n/a`).
 5. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `changes` (Rework/Fail), update accuracy metrics.
-6. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
+6. Update Agent Reputation Profiles (`knowledge/agents/@<id>.md` per `AGENTS.md` §12):
+   - **Executor**: Read `knowledge/agents/@<executor>.md`. Increment `total_tasks_executed`, recalculate `success_rate` (decreases on rework), increment `avg_review_rounds`, set `recent_trend: declining` if recent reviews failed. Update `last_active: <today>`.
+   - **Reviewer**: Read `knowledge/agents/@<reviewer>.md`. Increment `total_tasks_reviewed`. Update `last_active: <today>`.
+7. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
 
 ### Common mistakes to avoid
 - Recording a `pass` verdict when `reviewer:` == `executor:` — always refuse, no exceptions.
