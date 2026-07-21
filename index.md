@@ -18,9 +18,9 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 | Project (tên dùng trong `--project`) | repo_root (tuyệt đối) | Task dir | Graph build? | Graph embedded? | Daemon watch? |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi/tasks/` (`_project.md`) | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) | ✅ yes (alias `topvnsport`, `crg-daemon` poll 2s) |
-| `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms/tasks/` (`_project.md`) | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch với PMI) |
-| `topvnsport-wms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-wms/tasks/` (`_project.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) |
+| `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi/tasks/` (`topvnsport-pmi.md`) | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) | ✅ yes (alias `topvnsport`, `crg-daemon` poll 2s) |
+| `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms/tasks/` (`topvnsport-oms.md`) | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch với PMI) |
+| `topvnsport-wms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-wms/tasks/` (`topvnsport-wms.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) |
 
 Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng.
 
@@ -30,9 +30,9 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 
 | Dự án | Thư mục quản lý | Trạng thái | Tiến độ (Done/Total) | Executor/Reviewer hiện tại | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TopVNSport - PMI** | `projects/topvnsport-pmi/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
-| **TopVNSport - OMS** | `projects/topvnsport-oms/` (`_project.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
-| **TopVNSport - WMS** | `projects/topvnsport-wms/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
+| **TopVNSport - PMI** | `projects/topvnsport-pmi/` (`topvnsport-pmi.md`, `tasks/`) | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
+| **TopVNSport - OMS** | `projects/topvnsport-oms/` (`topvnsport-oms.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
+| **TopVNSport - WMS** | `projects/topvnsport-wms/` (`topvnsport-wms.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
 
 ---
 
@@ -42,7 +42,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 *   **`projects/<tên>/reviews/`:** Phiếu review do `/review-order` sinh cho reviewer độc lập, nằm ngay trong từng project (không còn thư mục `reviews/` chung ở root).
 *   **[`knowledge/`](knowledge/):** Domain knowledge, ADR, quy ước dùng chung nhiều dự án — xem `knowledge/_index.md` và mục 6 dưới đây.
 *   **[`log.md`](log.md):** Nhật ký kiểm toán (Audit Trail) ghi lại mọi hành động tự trị hoặc được duyệt của Agent. Đảm bảo tính minh bạch và an toàn hệ thống.
-*   **[`control-tower-map.canvas`](control-tower-map.canvas):** Sơ đồ Obsidian Canvas trực quan hoá luồng Mô hình B (PLAN/COORDINATE ↔ EXECUTE ↔ REVIEW), có link nhấn được tới `AGENTS.md`, `projects/<tên>/_project.md`, `log.md` (phiếu review nay nằm trong `projects/<tên>/reviews/`, không còn 1 node file chung). Mở repo này bằng Obsidian để xem — Graph view cũng đã được tô màu theo nhóm (Core/PMI/OMS/WMS/knowledge/skills).
+*   **[`control-tower-map.canvas`](control-tower-map.canvas):** Sơ đồ Obsidian Canvas trực quan hoá luồng Mô hình B (PLAN/COORDINATE ↔ EXECUTE ↔ REVIEW), có link nhấn được tới `AGENTS.md`, `projects/<tên>/<tên>.md`, `log.md` (phiếu review nay nằm trong `projects/<tên>/reviews/`, không còn 1 node file chung). Mở repo này bằng Obsidian để xem — Graph view cũng đã được tô màu theo nhóm (Core/PMI/OMS/WMS/knowledge/skills).
 
 ---
 

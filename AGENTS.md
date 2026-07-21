@@ -34,7 +34,7 @@ Mỗi task là **1 file Markdown riêng** trong `projects/<tên-dự-án>/tasks/
 
 ```
 projects/<tên-dự-án>/
-├── _project.md           # overview + Project Gates + References + next_task_id counter
+├── <tên-dự-án>.md         # overview + Project Gates + References + next_task_id counter (trùng tên folder — Obsidian folder note, giúp Graph view hiện đúng tên thay vì nhãn trùng nhau)
 ├── docs/                 # knowledge riêng dự án (mục 11)
 └── tasks/
     ├── <PREFIX>-001-<slug>.md
@@ -47,7 +47,7 @@ Mỗi file trong `tasks/` bắt đầu bằng frontmatter:
 
 ```yaml
 ---
-id: PMI-001                          # <PREFIX>-<NNN>, NNN zero-pad 3 chữ số, PREFIX lấy từ _project.md
+id: PMI-001                          # <PREFIX>-<NNN>, NNN zero-pad 3 chữ số, PREFIX lấy từ <tên-dự-án>.md
 title: "Thêm validation cost/tax cho variant"
 status: done                         # todo | ready | dispatched | in-review | done | changes-requested
 priority: high                       # urgent | high | medium | low
@@ -74,7 +74,7 @@ Theo sau là body chuẩn:
 ```markdown
 # <ID>: <title>
 
-> Dự án: [[projects/<tên>/_project|<tên>]]
+> Dự án: [[projects/<tên>/<tên>]]
 
 ## Tiêu chí nghiệm thu (AC)
 - [ ] <điều kiện kiểm chứng được>
@@ -86,9 +86,9 @@ Theo sau là body chuẩn:
 - [ ] <bước nhỏ, mỗi bước 1 file/1 mối quan tâm>
 ```
 
-Dòng `> Dự án: [[...]]` là wikilink thật (không phải path text) — mục đích để Obsidian Graph view vẽ được cạnh nối giữa task và `_project.md` (Graph chỉ nhận diện `[[wikilink]]`, không nhận path trong bảng/YAML). Dùng path đầy đủ + alias (`[[projects/<tên>/_project|<tên>]]`) vì tên file `_project.md` trùng nhau giữa các dự án. Đây thuần là nội dung Markdown hỗ trợ điều hướng/trực quan hoá trong Obsidian — không có skill nào parse dòng này, không ảnh hưởng vòng đời/gate.
+Dòng `> Dự án: [[...]]` là wikilink thật (không phải path text) — mục đích để Obsidian Graph view vẽ được cạnh nối giữa task và file dự án (Graph chỉ nhận diện `[[wikilink]]`, không nhận path trong bảng/YAML). Dùng path đầy đủ `[[projects/<tên>/<tên>]]` — không cần alias vì file dự án đặt tên trùng luôn với `<tên>` (folder note convention), nên Obsidian tự hiển thị đúng tên, không còn hiện nhãn "_project" trùng nhau giữa các dự án trên Graph. Đây thuần là nội dung Markdown hỗ trợ điều hướng/trực quan hoá trong Obsidian — không có skill nào parse dòng này, không ảnh hưởng vòng đời/gate.
 
-`_project.md` của mỗi dự án có thêm mục `## Tasks` liệt kê wikilink tới từng file trong `tasks/` — mục này do `/report` tự regenerate mỗi lần chạy (mục 6.1 bảng skill).
+File dự án (`projects/<tên>/<tên>.md`) có thêm mục `## Tasks` liệt kê wikilink tới từng file trong `tasks/` — mục này do `/report` tự regenerate mỗi lần chạy (mục 6.1 bảng skill).
 
 Task `done` sau khi `/verdict changes` có thêm `## Findings từ reviewer` do `/verdict` ghi.
 
@@ -98,9 +98,9 @@ Task `done` sau khi `/verdict changes` có thêm `## Findings từ reviewer` do 
 
 ### 2.1a. Quy tắc đánh ID
 
-- `/pm` và `/ingest` đọc frontmatter của `_project.md` → `task_prefix` + `next_task_id`.
+- `/pm` và `/ingest` đọc frontmatter của `<tên-dự-án>.md` → `task_prefix` + `next_task_id`.
 - Tạo file: `tasks/<PREFIX>-<NNN>-<slug>.md` (slug = kebab-case từ title, tối đa 40 ký tự ASCII).
-- Sau khi tạo xong, tăng `next_task_id` trong `_project.md` lên 1.
+- Sau khi tạo xong, tăng `next_task_id` trong `<tên-dự-án>.md` lên 1.
 
 ### 2.2. Quy tắc phân rã task
 
@@ -137,7 +137,7 @@ Một task chỉ được đóng (`status: done`) khi **tất cả** đúng, và
 - [ ] `reviewer:` khác `executor:` (separation of duties, mục 1).
 - [ ] Commit hash thật (`result_ref:`) đã được ghi vào `log.md` (mục 7, field `Commit:`).
 
-Dự án có thể khai báo thêm DoD riêng trong "Project Gates" của file `projects/<dự án>/_project.md`; DoD riêng CỘNG THÊM vào DoD mặc định này, không thay thế. Reviewer là người áp dụng DoD, control-tower chỉ ghi lại kết quả.
+Dự án có thể khai báo thêm DoD riêng trong "Project Gates" của file `projects/<dự án>/<dự án>.md`; DoD riêng CỘNG THÊM vào DoD mặc định này, không thay thế. Reviewer là người áp dụng DoD, control-tower chỉ ghi lại kết quả.
 
 ---
 
@@ -244,7 +244,7 @@ Format append-only, prefix nhất quán để `grep`/`awk` phân tích được:
 
 *   `/pm <mô tả_task> [--project <tên>]`: Spec Gate → Plan Gate → `ready` → `dispatched`. Tạo file task riêng trong `projects/<tên>/tasks/` đầy đủ `files:`/AC/`tests:`/`flows:` bằng graph. **Không tự viết code, không tự verify.**
 *   `/ingest`: Đọc `inbox.md`, **reconcile vào task tương tự đã có** thay vì tạo trùng (mục 9), hoặc route thành knowledge file (`knowledge/`/`docs/`, mục 11) nếu không actionable, làm giàu bằng graph, xóa mục đã xử lý khỏi inbox.
-*   `/report`: Quét `projects/*/tasks/*.md`, tổng hợp Done/Total theo `status:`, cập nhật `_project.md` + `index.md`; quét `knowledge/**/*.md` + `projects/*/docs/*.md`, cập nhật `knowledge/_index.md`.
+*   `/report`: Quét `projects/*/tasks/*.md`, tổng hợp Done/Total theo `status:`, cập nhật `<tên-dự-án>.md` + `index.md`; quét `knowledge/**/*.md` + `projects/*/docs/*.md`, cập nhật `knowledge/_index.md`.
 *   `/lint [--project <tên>]`: Health-check backlog — task trễ hạn, thiếu AC, link file chết, task mồ côi, mâu thuẫn, kẹt ở `dispatched`/`in-review` quá lâu, knowledge mồ côi/cũ (mục 6, 11, `.claude/skills/lint/SKILL.md`).
 *   `/review-order <task ID/path> --ref <branch|commit|PR>`: Phát phiếu review cho reviewer độc lập, chuyển `status: in-review`. Không tự review, không chạy test.
 *   `/verdict <task ID/path> <pass|changes> --reviewer @id [--commit <hash>] [--notes ...]`: Ghi kết quả review vào hệ thống. Kiểm four-eyes (`reviewer` ≠ `executor`). `pass` → đóng task (cần xác nhận người); `changes` → mở lại kèm findings.
@@ -262,7 +262,7 @@ Khi phân loại 1 ghi chú từ `inbox.md`: nếu **task tương tự đã tồ
 Khi cần thêm một dự án mới vào Control Tower:
 
 1. Thêm 1 hàng vào bảng **PROJECT REGISTRY** trong `index.md` (mục 2): tên dự án, `repo_root` tuyệt đối, thư mục task.
-2. Tạo thư mục `projects/<tên-dự-án>/` với `_project.md` (copy khung từ `projects/topvnsport-pmi/_project.md`, đặt `task_prefix` + `next_task_id: 1`), `tasks/`, `docs/`, `reviews/`.
+2. Tạo thư mục `projects/<tên-dự-án>/` với file `<tên-dự-án>.md` (tên file TRÙNG tên folder — copy khung từ `projects/topvnsport-pmi/topvnsport-pmi.md`, đặt `task_prefix` + `next_task_id: 1`), `tasks/`, `docs/`, `reviews/`.
 3. Build graph cho repo đó (nếu chưa có):
    ```bash
    /home/lupca/.local/share/code-review-graph-venv/bin/python3 -m code_review_graph build --repo <repo_root>
@@ -281,7 +281,7 @@ Control-tower quản lý 2 loại nội dung: **task** (có `status`, cần hàn
 
 | Loại tài liệu | Ví dụ | Ở đâu |
 |---|---|---|
-| Tài liệu HỆ THỐNG (đổi cùng code) | architecture.md, API docs, test guides | **Ở repo code.** Control-tower chỉ trỏ qua `_project.md` mục References — KHÔNG copy nội dung sang. |
+| Tài liệu HỆ THỐNG (đổi cùng code) | architecture.md, API docs, test guides | **Ở repo code.** Control-tower chỉ trỏ qua `<tên-dự-án>.md` mục References — KHÔNG copy nội dung sang. |
 | Domain / business knowledge (đổi theo luật kinh doanh) | Quy tắc VAT, phân loại sản phẩm, luồng thanh toán | **Control-tower** — `knowledge/domains/` (cross-project) hoặc `projects/<tên>/docs/` (per-project) |
 | Quyết định kiến trúc (ADR) | Tại sao dùng File-Over-API? Tại sao chọn MinIO? | **Control-tower** — `knowledge/decisions/` (cross-project) hoặc `projects/<tên>/docs/` (per-project) |
 | TODO / nợ kỹ thuật | Bug, technical debt | **Migrate thành task** trong `tasks/` — không phải knowledge |

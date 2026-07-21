@@ -15,7 +15,7 @@ Người dùng gọi: `/pm $ARGUMENTS`. Bạn đang chạy trong repo `control-t
 2. Xác định dự án đích:
    - Nếu `$ARGUMENTS` có `--project <tên>`, dùng đúng tên đó để tra bảng registry.
    - Nếu không, suy luận từ nội dung mô tả (vd "variant"/"PMI" → `topvnsport-pmi`; "đơn hàng"/"OMS" → `topvnsport-oms`). Nếu không chắc, hỏi lại User.
-   - Lấy `repo_root` tuyệt đối + `Task dir` (`projects/<tên>/tasks/`) từ registry. Đọc `projects/<tên>/_project.md` để lấy `task_prefix` + `next_task_id`. Nếu dự án chưa có trong registry, dừng lại, báo User cần onboard trước (`AGENTS.md` mục 10).
+   - Lấy `repo_root` tuyệt đối + `Task dir` (`projects/<tên>/tasks/`) từ registry. Đọc `projects/<tên>/<tên>.md` (file trùng tên folder) để lấy `task_prefix` + `next_task_id`. Nếu dự án chưa có trong registry, dừng lại, báo User cần onboard trước (`AGENTS.md` mục 10).
 
 ### Bước 1 — Xác định giai đoạn đang ở đâu
 

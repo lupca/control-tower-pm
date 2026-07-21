@@ -23,7 +23,7 @@ updated: 2026-07-21
 
 # PMI-004: Migrate PMI sang Identity Service authentication
 
-> Dự án: [[projects/topvnsport-pmi/_project|topvnsport-pmi]]
+> Dự án: [[projects/topvnsport-pmi/topvnsport-pmi]]
 
 > Task này được reconcile từ git history — đã implement trước khi control-tower tracking.
 

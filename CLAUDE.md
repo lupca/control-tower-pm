@@ -15,7 +15,7 @@ Không tự ý bỏ qua hai file trên dù task có vẻ đơn giản — chúng
 
 - `/pm <mô tả task> [--project <tên>]` — Spec Gate → Plan Gate → `ready` → `dispatched`. Tạo file task riêng trong `projects/<tên>/tasks/`, KHÔNG tự viết code (skill `pm`).
 - `/ingest` — phân loại `inbox.md` thành task (reconcile vào task có sẵn thay vì tạo trùng), hoặc route thành knowledge file vào `knowledge/`/`projects/<tên>/docs/` nếu không actionable (skill `ingest`).
-- `/report` — cập nhật tiến độ trong `_project.md` + `index.md`, cập nhật `knowledge/_index.md` (skill `report`).
+- `/report` — cập nhật tiến độ trong `<tên-dự-án>.md` + `index.md`, cập nhật `knowledge/_index.md` (skill `report`).
 - `/lint [--project <tên>]` — health-check backlog: task trễ hạn, thiếu AC, link file chết, mồ côi, kẹt ở `dispatched`/`in-review` (skill `lint`).
 - `/review-order <task> --ref <branch|commit|PR>` — phát phiếu review cho reviewer độc lập (ngoài hệ), không tự review (skill `review-order`).
 - `/verdict <task> <pass|changes> --reviewer @id ...` — ghi kết quả review, kiểm four-eyes, `pass` mới đóng task (skill `verdict`).

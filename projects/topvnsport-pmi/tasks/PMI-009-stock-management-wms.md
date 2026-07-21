@@ -24,7 +24,7 @@ updated: 2026-07-21
 
 # PMI-009: Di chuyển Stock Management từ PMI sang WMS
 
-> Dự án: [[projects/topvnsport-pmi/_project|topvnsport-pmi]]
+> Dự án: [[projects/topvnsport-pmi/topvnsport-pmi]]
 
 > Task này được reconcile từ git history — đã implement trước khi control-tower tracking. `⚠️ high-risk` — chạm `models.py` + migration.
 

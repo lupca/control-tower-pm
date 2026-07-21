@@ -29,7 +29,7 @@ plan_approved: 2026-07-21
 
 # WMS-001: Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS
 
-> Dự án: [[projects/topvnsport-wms/_project|topvnsport-wms]]
+> Dự án: [[projects/topvnsport-wms/topvnsport-wms]]
 
 ## Bối cảnh
 Hệ thống WMS đang dùng component `DataTable` chung nhưng:
