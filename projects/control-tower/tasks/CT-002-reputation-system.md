@@ -1,13 +1,13 @@
 ---
 id: CT-002
 title: "Reputation System — Track executor/reviewer performance"
-status: dispatched
+status: done
 priority: high
 risk: normal
 deadline: null
 executor: "@antigravity"
-reviewer: null
-result_ref: null
+reviewer: "@claude"
+result_ref: "control-tower@main (commit 9183f6a)"
 depends_on: []
 files:
   - .claude/skills/verdict/SKILL.md
@@ -17,7 +17,7 @@ files:
 flows: [verdict, dispatch]
 tests: []
 dispatched: 2026-07-22
-in_review: null
+in_review: 2026-07-22
 created: 2026-07-22
 updated: 2026-07-22
 tier: 1
@@ -36,8 +36,8 @@ Research: "Without accountability mechanisms, multi-agent cooperation falls belo
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] AC1: Tạo `knowledge/agents/` directory với profile file cho mỗi executor/reviewer
-- [ ] AC2: Profile format:
+- [x] AC1: Tạo `knowledge/agents/` directory với profile file cho mỗi executor/reviewer
+- [x] AC2: Profile format:
   ```yaml
   agent_id: "@antigravity"
   type: ai  # ai | human
@@ -49,11 +49,11 @@ Research: "Without accountability mechanisms, multi-agent cooperation falls belo
   recent_trend: improving | stable | declining
   last_active: 2026-07-22
   ```
-- [ ] AC3: `/verdict` auto-updates profile sau mỗi verdict:
+- [x] AC3: `/verdict` auto-updates profile sau mỗi verdict:
   - `pass` first time → success_rate up
   - `changes` → success_rate down, increment review_rounds
-- [ ] AC4: `/pm` suggests executor based on task's `files:` matching agent strengths
-- [ ] AC5: Warning nếu assign task to agent với low success_rate trong domain đó
+- [x] AC4: `/pm` suggests executor based on task's `files:` matching agent strengths
+- [x] AC5: Warning nếu assign task to agent với low success_rate trong domain đó
 
 ## Plan
 
@@ -99,12 +99,12 @@ Research: "Without accountability mechanisms, multi-agent cooperation falls belo
 
 ## Sub-tasks
 
-- [ ] Tạo `knowledge/agents/` directory structure
-- [ ] Define agent profile YAML schema trong AGENTS.md (new §12)
-- [ ] Update `/verdict` skill to update profiles
-- [ ] Parse log.md để bootstrap profiles từ historical data
-- [ ] Add strength auto-detection (backend if touches .py, frontend if .tsx, etc.)
-- [ ] Update `/pm` dispatch suggestions
+- [x] Tạo `knowledge/agents/` directory structure
+- [x] Define agent profile YAML schema trong AGENTS.md (new §12)
+- [x] Update `/verdict` skill to update profiles
+- [x] Parse log.md để bootstrap profiles từ historical data
+- [x] Add strength auto-detection (backend if touches .py, frontend if .tsx, etc.)
+- [x] Update `/pm` dispatch suggestions
 
 ## Research References
 

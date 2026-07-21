@@ -1,13 +1,13 @@
 ---
 id: CT-001
 title: "Pre-Execution Prediction — Dự đoán task fail trước khi execute"
-status: dispatched
+status: done
 priority: high
 risk: normal
 deadline: null
 executor: "@antigravity"
-reviewer: null
-result_ref: null
+reviewer: "@claude"
+result_ref: "control-tower@main (commit 7477570)"
 depends_on: []
 files:
   - .claude/skills/pm/SKILL.md
@@ -16,7 +16,7 @@ files:
 flows: [pm-create, dispatch]
 tests: []
 dispatched: 2026-07-22
-in_review: null
+in_review: 2026-07-22
 predicted_success: high
 prediction_factors:
   score: 0.9
@@ -42,16 +42,16 @@ Research cho thấy có thể **predict success/failure BEFORE execution** bằn
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] AC1: Thêm field `predicted_success: high|medium|low` vào task frontmatter template (AGENTS.md §2.1)
-- [ ] AC2: `/pm` tự động tính prediction dựa trên:
+- [x] AC1: Thêm field `predicted_success: high|medium|low` vào task frontmatter template (AGENTS.md §2.1)
+- [x] AC2: `/pm` tự động tính prediction dựa trên:
   - Complexity từ `get_impact_radius_tool` (blast radius)
   - Hub/bridge node involvement từ `get_hub_nodes_tool`
   - Historical similarity: query log.md cho tasks tương tự (same files/flows) và outcome
-- [ ] AC3: Nếu `predicted_success: low`, `/pm` auto-suggest enrichments:
+- [x] AC3: Nếu `predicted_success: low`, `/pm` auto-suggest enrichments:
   - "Consider adding more context about X"
   - "Similar task PMI-003 failed due to Y — address this"
   - "Split into smaller tasks (blast radius > 8 files)"
-- [ ] AC4: Track actual outcomes để improve prediction over time:
+- [x] AC4: Track actual outcomes để improve prediction over time:
   - Sau `/verdict`, so sánh prediction vs actual
   - Log accuracy metrics trong `knowledge/metrics/prediction-accuracy.md`
 
@@ -109,12 +109,12 @@ Research cho thấy có thể **predict success/failure BEFORE execution** bằn
 
 ## Sub-tasks
 
-- [ ] Thêm `predicted_success:` field vào AGENTS.md §2.1 Standard Task Syntax
-- [ ] Update `pm/SKILL.md` để compute prediction score
-- [ ] Tạo function parse log.md cho historical task outcomes
-- [ ] Implement suggestion generator khi prediction thấp
-- [ ] Tạo `knowledge/metrics/prediction-accuracy.md` template
-- [ ] Update `/verdict` để log prediction vs actual
+- [x] Thêm `predicted_success:` field vào AGENTS.md §2.1 Standard Task Syntax
+- [x] Update `pm/SKILL.md` để compute prediction score
+- [x] Tạo function parse log.md cho historical task outcomes
+- [x] Implement suggestion generator khi prediction thấp
+- [x] Tạo `knowledge/metrics/prediction-accuracy.md` template
+- [x] Update `/verdict` để log prediction vs actual
 
 ## Research References
 

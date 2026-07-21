@@ -36,6 +36,13 @@
       }
     },
     {
+      "query": "path:projects/control-tower",
+      "color": {
+        "a": 1,
+        "rgb": 16711935
+      }
+    },
+    {
       "query": "path:knowledge",
       "color": {
         "a": 1,
@@ -60,6 +67,6 @@
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 250,
-  "scale": 1,
+  "scale": 0.6666666666666666,
   "close": true
 }

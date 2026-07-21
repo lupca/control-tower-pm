@@ -6,9 +6,9 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 ## 1. THỐNG KÊ TỔNG QUAN (System Status)
 
-*   **Thời gian cập nhật cuối:** 2026-07-21
+*   **Thời gian cập nhật cuối:** 2026-07-22
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
-*   **Tổng số dự án:** 3 dự án đang hoạt động
+*   **Tổng số dự án:** 5 dự án đang hoạt động
 
 ---
 
@@ -21,6 +21,8 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 | `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi/tasks/` (`topvnsport-pmi.md`) | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) | ✅ yes (alias `topvnsport`, `crg-daemon` poll 2s) |
 | `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms/tasks/` (`topvnsport-oms.md`) | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch với PMI) |
 | `topvnsport-wms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-wms/tasks/` (`topvnsport-wms.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) |
+| `topvnsport-web` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-web/tasks/` (`topvnsport-web.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) |
+| `control-tower` | `/home/lupca/projects/control-tower` | `projects/control-tower/tasks/` (`control-tower.md`) | n/a (meta-project, no code graph) | n/a | n/a |
 
 Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng.
 
@@ -33,6 +35,8 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | **TopVNSport - PMI** | `projects/topvnsport-pmi/` (`topvnsport-pmi.md`, `tasks/`) | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
 | **TopVNSport - OMS** | `projects/topvnsport-oms/` (`topvnsport-oms.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
 | **TopVNSport - WMS** | `projects/topvnsport-wms/` (`topvnsport-wms.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
+| **TopVNSport - Web** | `projects/topvnsport-web/` (`topvnsport-web.md`, `tasks/`) | 🔄 Đang chạy | 0/0 | — | Frontend application (Vue/React) |
+| **Control Tower** | `projects/control-tower/` (`control-tower.md`, `tasks/`) | 🔄 Đang chạy | 2/10 | — | Meta-project: paradigm shifts, self-improvement |
 
 ---
 
