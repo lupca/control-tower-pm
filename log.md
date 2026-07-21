@@ -168,4 +168,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Số thứ tự mục 1-11 trong `AGENTS.md` giữ nguyên thứ tự (chỉ dịch tiêu đề) nên mọi tham chiếu chéo "AGENTS.md mục X" ở 9 file còn lại vẫn đúng — đã kiểm bằng grep để xác nhận không lệch. Verify YAML frontmatter của 6 SKILL.md vẫn parse hợp lệ sau khi dịch description.
 - Files touched: AGENTS.md, CLAUDE.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/pm/references/task-execution.md, .claude/skills/ingest/SKILL.md, .claude/skills/report/SKILL.md, .claude/skills/lint/SKILL.md, .claude/skills/review-order/SKILL.md, .claude/skills/verdict/SKILL.md
 - Trạng thái: Thành công.
-- Commit: (điền sau khi commit)
+- Commit: `016f282`
