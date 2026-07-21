@@ -1,35 +1,35 @@
 ---
 name: lint
-description: Health-check toàn bộ backlog control-tower — phát hiện task hỏng, trễ, mồ côi, thiếu AC, link file chết, mâu thuẫn. Chạy định kỳ hoặc khi backlog có vẻ lệch. Kích hoạt khi user gõ /lint.
-argument-hint: "[--project <tên>] (mặc định: tất cả)"
+description: Health-check the entire control-tower backlog — detect broken, overdue, orphaned tasks, missing AC, dead file links, contradictions. Run periodically or when the backlog seems off. Activate when the user types /lint.
+argument-hint: "[--project <name>] (default: all)"
 allowed-tools: Read, Glob, Grep, mcp__code-review-graph__query_graph_tool, mcp__code-review-graph__semantic_search_nodes_tool
 ---
 
-## Lint — health-check backlog (vòng lặp thứ 3, giữ backlog không mục nát)
+## Lint — backlog health-check (the 3rd loop, keeps the backlog from rotting)
 
-Chỉ đọc và báo cáo — **không tự sửa/xóa task** (thuộc RESTRICTED, xem `AGENTS.md` mục 1).
+Read and report only — **never edit/delete a task yourself** (this is RESTRICTED, see `AGENTS.md` §1).
 
-### Quy trình
+### Process
 
-1. Đọc `AGENTS.md` và `index.md` mục 2 (PROJECT REGISTRY) nếu chưa đọc trong phiên.
-2. Xác định phạm vi: nếu có `--project <tên>` trong `$ARGUMENTS`, chỉ quét `projects/<tên>/tasks/*.md` (+ `projects/<tên>/docs/*.md`); nếu không, quét toàn bộ `projects/*/tasks/*.md` + `knowledge/**/*.md` + `projects/*/docs/*.md`.
-3. Với mỗi task file trong phạm vi, đọc frontmatter, chạy checklist sau và gom **Findings**:
+1. Read `AGENTS.md` and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
+2. Determine scope: if `$ARGUMENTS` has `--project <name>`, only scan `projects/<name>/tasks/*.md` (+ `projects/<name>/docs/*.md`); otherwise scan all of `projects/*/tasks/*.md` + `knowledge/**/*.md` + `projects/*/docs/*.md`.
+3. For each task file in scope, read the frontmatter, run the following checklist, and collect **Findings**:
 
-   1. **Task trễ hạn**: `deadline:` < ngày hôm nay và `status:` != `done` → liệt kê kèm số ngày trễ.
-   2. **Thiếu AC**: task đang mở (`status:` != `done`) mà mục `## Tiêu chí nghiệm thu (AC)` rỗng hoặc không tồn tại → cờ "task mơ hồ, cần regenerate qua `/pm`".
-   3. **Link file chết**: với mỗi path trong `files:`, gọi `query_graph_tool(pattern="file_summary", target=<path repo-relative>, repo_root=<repo_root của dự án>, detail_level="minimal")` (hoặc `semantic_search_nodes_tool` nếu cần đối chiếu theo tên) để kiểm tra file/symbol còn tồn tại trong graph; nếu không thấy → cờ "link chết, task có thể lỗi thời — path đã bị đổi tên/xóa".
-   4. **Task mồ côi**: file task nằm trong thư mục dự án không xuất hiện trong PROJECT REGISTRY, hoặc dự án tương ứng không có `repo_root` hợp lệ (không phải path tuyệt đối, hoặc thư mục không tồn tại).
-   5. **Mâu thuẫn**: 2 task (cùng file hoặc khác file) có `files:` trùng nhau nhưng mô tả có vẻ xung khắc (heuristic: đọc mô tả, không cần tool) → cờ để User xử lý thủ công.
-   6. **Lệch trạng thái**: task có `status: done` nhưng không tìm thấy entry `Commit:` tương ứng (khác `n/a`) trong `log.md` → cờ "đóng task nhưng thiếu bằng chứng commit".
-   7. **Đề xuất dọn**: task có `deadline:` cách đây > 90 ngày và vẫn chưa `done`, không có hoạt động log gần đây → gợi ý archive (không tự làm).
-   8. **Kẹt ở `dispatched`** (executor mất hút): `status: dispatched` và `dispatched:` cách hôm nay > 7 ngày, `result_ref:` vẫn null → cờ "executor chưa báo kết quả, cân nhắc nhắc `executor:` hoặc đổi người".
-   9. **Kẹt ở `in-review`** (reviewer chưa duyệt): `status: in-review` và `in_review:` cách hôm nay > 3 ngày, chưa có verdict trong `log.md` → cờ "reviewer chưa trả kết quả, cân nhắc nhắc `reviewer:`".
-   10. **Knowledge mồ côi**: file trong `knowledge/` hoặc `projects/*/docs/` không có link nào trỏ tới (không xuất hiện trong `related:` của file khác, không có `[[wiki-link]]` từ task nào) → cờ "knowledge mồ côi, cân nhắc liên kết hoặc archive".
-   11. **Knowledge cũ**: `updated:` > 180 ngày và 0 inbound link (như mục 10) → cờ "knowledge cũ, cân nhắc review lại nội dung".
+   1. **Overdue task**: `deadline:` < today and `status:` != `done` → list it with days overdue.
+   2. **Missing AC**: an open task (`status:` != `done`) whose `## Tiêu chí nghiệm thu (AC)` section is empty or missing → flag "ambiguous task, needs regenerating via `/pm`".
+   3. **Dead file link**: for each path in `files:`, call `query_graph_tool(pattern="file_summary", target=<repo-relative path>, repo_root=<the project's repo_root>, detail_level="minimal")` (or `semantic_search_nodes_tool` if you need to cross-check by name) to verify the file/symbol still exists in the graph; if not found → flag "dead link, task may be stale — the path was likely renamed/deleted".
+   4. **Orphan task**: a task file sitting in a project directory that doesn't appear in the PROJECT REGISTRY, or whose project has no valid `repo_root` (not an absolute path, or the directory doesn't exist).
+   5. **Contradiction**: 2 tasks (same file or different files) share overlapping `files:` but their descriptions seem to conflict (heuristic: read the descriptions, no tool needed) → flag for the User to resolve manually.
+   6. **State mismatch**: a task with `status: done` but no corresponding `Commit:` entry (other than `n/a`) found in `log.md` → flag "task closed but missing commit evidence".
+   7. **Cleanup suggestion**: a task with `deadline:` more than 90 days in the past, still not `done`, with no recent log activity → suggest archiving (don't do it yourself).
+   8. **Stuck in `dispatched`** (executor went silent): `status: dispatched` and `dispatched:` is more than 7 days ago, `result_ref:` still null → flag "executor hasn't reported back, consider pinging `executor:` or reassigning".
+   9. **Stuck in `in-review`** (reviewer hasn't reviewed): `status: in-review` and `in_review:` is more than 3 days ago, no verdict yet in `log.md` → flag "reviewer hasn't returned a result, consider pinging `reviewer:`".
+   10. **Orphan knowledge**: a file under `knowledge/` or `projects/*/docs/` with no inbound link (doesn't appear in another file's `related:`, no `[[wikilink]]` from any task) → flag "orphan knowledge, consider linking it or archiving".
+   11. **Stale knowledge**: `updated:` more than 180 days ago and 0 inbound links (per item 10) → flag "stale knowledge, consider reviewing the content".
 
-4. Xuất báo cáo dạng bảng "Findings" trong chat: cột Severity (🔴/🟡/🟢), Task/Knowledge (mô tả ngắn + file), Vấn đề, Đề xuất hành động.
-5. Ghi 1 entry `lint` vào `log.md` theo format `AGENTS.md` mục 7 — tóm tắt số finding theo severity, không cần liệt kê hết trong log (chi tiết đã có trong chat).
+4. Output the findings as a table in chat: columns Severity (🔴/🟡/🟢), Task/Knowledge (short description + file), Issue, Suggested action.
+5. Write 1 `lint` entry to `log.md` following the format in `AGENTS.md` §7 — summarizing the finding count by severity, no need to list everything in the log (the detail is already in chat).
 
-### Lưu ý
-- Nếu backlog sạch (không có finding nào), báo ngắn gọn "Backlog sạch, không phát hiện vấn đề" — vẫn ghi log để có dấu vết đã chạy `/lint`.
-- Không đoán mò khi kiểm tra link chết — nếu graph tool trả lỗi hoặc không chắc, ghi rõ "chưa xác minh được" thay vì tự kết luận file còn tồn tại hay không.
+### Notes
+- If the backlog is clean (no findings), report briefly "Backlog is clean, no issues found" — still log it so there's a trace that `/lint` ran.
+- Don't guess when checking for dead links — if the graph tool errors out or you're unsure, write "could not verify" rather than concluding on your own whether the file still exists.

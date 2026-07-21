@@ -1,26 +1,26 @@
 # Task Execution — Plan Gate → Dispatch
 
-Áp dụng sau khi User đã duyệt Spec Gate (phạm vi + AC của task đã được xác nhận, `status: todo`).
+Applies after the User has approved the Spec Gate (the task's scope + AC have been confirmed, `status: todo`).
 
 ## Plan Gate
 
-1. Nghiên cứu sâu hơn codebase đích nếu cần (đọc source thật ở các file trong `files:`, không chỉ dựa vào graph) để viết kế hoạch code cụ thể — không chung chung.
-2. Viết kế hoạch THẲNG vào mục `## Plan` của file task trong `projects/<tên>/tasks/<ID>-<slug>.md`: liệt kê thứ tự sửa file nào, hàm nào, migration nào (nếu có), theo đúng sub-task đã liệt kê ở Spec Gate.
-3. Nếu trong lúc lập kế hoạch phát hiện cần chạm file **ngoài** `files:` đã duyệt → quay lại Spec Gate, không tự ý mở rộng phạm vi.
-4. Ghi 1 entry vào `log.md` (`operation: plan`), cập nhật `updated:` trong frontmatter.
-5. Dừng lại, hiển thị `## Plan` cho User, chờ duyệt.
+1. Dig deeper into the target codebase if needed (read the actual source of the files in `files:`, not just relying on the graph) to write a concrete implementation plan — not a vague one.
+2. Write the plan DIRECTLY into the `## Plan` section of the task file at `projects/<name>/tasks/<ID>-<slug>.md`: list the order of files/functions/migrations to change (if any), matching the sub-tasks already listed at the Spec Gate.
+3. If, while planning, you find you need to touch a file **outside** the already-approved `files:` → go back to the Spec Gate, don't expand the scope unilaterally.
+4. Write 1 entry to `log.md` (`operation: plan`), update `updated:` in the frontmatter.
+5. Stop, show `## Plan` to the User, wait for approval.
 
-## Sau khi Plan Gate được duyệt: chuyển `ready` rồi `dispatched`
+## After the Plan Gate is approved: move to `ready` then `dispatched`
 
-**Đây là điểm control-tower dừng lại — KHÔNG tự viết code, KHÔNG tự chạy test, KHÔNG spawn subagent thực thi.** Việc code là hành động ngoài hệ (`AGENTS.md` mục 1, 4).
+**This is where control-tower stops — do NOT write code yourself, do NOT run tests yourself, do NOT spawn an executing subagent.** Writing code is an action that happens outside the system (`AGENTS.md` §1, §4).
 
-1. Cập nhật `status: ready` trong frontmatter của task.
-2. Hỏi User: ai sẽ là `executor:` cho task này (người hoặc AI khác, trong repo code đích)?
-3. Ghi `executor: "@tên"`, `status: dispatched`, `dispatched: <ngày hôm nay>`, `updated: <ngày hôm nay>` vào frontmatter.
-4. Ghi 1 entry vào `log.md` (`operation: dispatch`) — tóm tắt: task nào, giao cho ai, phiếu giao việc (file task) đã tự chứa AC/`files:`/`tests:`/`## Plan`/DoD chưa cần công cụ gì thêm.
-5. Báo cho User: task đã sẵn sàng giao cho executor — họ chỉ cần đường dẫn tới `projects/<tên>/tasks/<ID>-<slug>.md` (không cần quyền truy cập control-tower hay công cụ gì khác).
-6. **Dừng lại hoàn toàn.** Khi executor báo xong (có `result_ref:`), User (hoặc chính executor) sẽ chạy `/review-order` — đó là bước tiếp theo, không phải một phần của `/pm`.
+1. Update `status: ready` in the task's frontmatter.
+2. Ask the User: who will be the `executor:` for this task (a human or another AI, in the target code repo)?
+3. Record `executor: "@name"`, `status: dispatched`, `dispatched: <today's date>`, `updated: <today's date>` in the frontmatter.
+4. Write 1 entry to `log.md` (`operation: dispatch`) — summarizing: which task, handed to whom, noting the task file is already a self-contained work order with AC/`files:`/`tests:`/`## Plan`/DoD, no extra tooling needed.
+5. Tell the User: the task is ready to hand to the executor — they only need the path to `projects/<name>/tasks/<ID>-<slug>.md` (no need for control-tower access or any other tooling).
+6. **Stop completely.** Once the executor reports done (with `result_ref:`), the User (or the executor themselves) will run `/review-order` — that's the next step, not part of `/pm`.
 
-## Nếu task gắn `⚠️high-risk` hoặc chạm `schemas/`/`models.py`/migration
+## If the task is flagged `⚠️high-risk` or touches `schemas/`/`models.py`/migrations
 
-RESTRICTED (`AGENTS.md` mục 1 & 4): Plan Gate bắt buộc xác nhận rõ ràng bằng văn bản/chat của User trước khi chuyển `dispatched`, không được suy diễn im lặng.
+RESTRICTED (`AGENTS.md` §1 & §4): the Plan Gate requires explicit written/chat confirmation from the User before moving to `dispatched` — never assume approval silently.

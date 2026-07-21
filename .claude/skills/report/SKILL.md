@@ -1,23 +1,23 @@
 ---
 name: report
-description: Quét toàn bộ projects/*/tasks/*.md, đếm task theo status frontmatter, cập nhật <tên-dự-án>.md (file trùng tên folder project) + index.md, và cập nhật knowledge/_index.md. Kích hoạt khi user gõ /report hoặc hỏi về tiến độ tổng thể các dự án.
+description: Scan all of projects/*/tasks/*.md, count tasks by status frontmatter, update <project-name>.md (the file matching the project's folder name) + index.md, and update knowledge/_index.md. Activate when the user types /report or asks about overall project progress.
 allowed-tools: Read, Edit, Glob, Grep
 ---
 
-## Report — cập nhật tiến độ vào index.md + knowledge index
+## Report — update progress into index.md + the knowledge index
 
-### Quy trình
+### Process
 
-1. Liệt kê tất cả file trong `projects/*/tasks/*.md` (Glob).
-2. Với mỗi file, đọc `status:` từ frontmatter. Đếm theo từng dự án: `done`, `todo`, `ready`, `dispatched`, `in-review`, `changes-requested`. Total = tổng tất cả status.
-3. Cập nhật bảng "Tiến độ" trong `projects/<tên>/<tên>.md` của từng dự án (số task theo từng status).
-3b. **Regenerate mục `## Tasks`** trong mỗi `<tên>.md`: liệt kê lại toàn bộ `- [[<ID>-<slug>]] — <title> (<status>)` cho mọi file trong `tasks/*.md` (đọc `id`/`title`/`status` từ frontmatter). Đây là bước tự-heal — ghi đè toàn bộ mục này mỗi lần chạy, không phải append, để tự động phản ánh task mới do `/pm`/`/ingest` tạo hoặc task bị xoá. Wikilink `[[...]]` giữa `<tên>.md` và task là để Obsidian Graph view vẽ cạnh nối (xem `AGENTS.md` mục 2.1) — nếu thư mục `tasks/` rỗng, ghi `*(chưa có task nào)*`.
-4. Cập nhật bảng "BẢN ĐỒ TIẾN ĐỘ DỰ ÁN" trong `index.md` (mục 3): cột Tiến độ (Done/Total), và Trạng thái (🔄 Đang chạy nếu còn task chưa xong, ✅ Hoàn tất nếu Done == Total > 0, ⏳ Tạm dừng nếu Total == 0).
-5. Cập nhật "Thời gian cập nhật cuối" (mục 1) theo thời điểm hiện tại.
-6. Glob `knowledge/**/*.md` + `projects/*/docs/*.md`, đọc `type:` từ frontmatter, group theo type. Cập nhật `knowledge/_index.md` (bảng cross-project theo `decisions/domains/conventions/research`, bảng per-project theo dự án) và bảng "KNOWLEDGE MAP" trong `index.md` (mục 6).
-7. Ghi một entry vào `log.md` (COLLABORATIVE): tóm tắt số liệu đã cập nhật cho từng dự án + knowledge.
-8. Hiển thị bảng tiến độ mới cho user ngay trong chat, không chỉ ghi vào file.
+1. List every file under `projects/*/tasks/*.md` (Glob).
+2. For each file, read `status:` from the frontmatter. Count per project: `done`, `todo`, `ready`, `dispatched`, `in-review`, `changes-requested`. Total = sum of all statuses.
+3. Update the "Tiến độ" table in each project's `projects/<name>/<name>.md` (task count per status).
+3b. **Regenerate the `## Tasks` section** in each `<name>.md`: re-list every `- [[<ID>-<slug>]] — <title> (<status>)` for every file under `tasks/*.md` (reading `id`/`title`/`status` from the frontmatter). This is a self-healing step — overwrite this entire section on every run, don't append, so it automatically reflects new tasks created by `/pm`/`/ingest` or tasks that were deleted. The `[[...]]` wikilink between `<name>.md` and a task exists so Obsidian's Graph view can draw an edge (see `AGENTS.md` §2.1) — if `tasks/` is empty, write `*(chưa có task nào)*`.
+4. Update the "BẢN ĐỒ TIẾN ĐỘ DỰ ÁN" table in `index.md` (§3): the Progress column (Done/Total), and Status (🔄 Đang chạy if tasks remain unfinished, ✅ Hoàn tất if Done == Total > 0, ⏳ Tạm dừng if Total == 0).
+5. Update "Thời gian cập nhật cuối" (§1) to the current time.
+6. Glob `knowledge/**/*.md` + `projects/*/docs/*.md`, read `type:` from the frontmatter, group by type. Update `knowledge/_index.md` (the cross-project table by `decisions/domains/conventions/research`, the per-project table by project) and the "KNOWLEDGE MAP" table in `index.md` (§6).
+7. Write 1 entry to `log.md` (COLLABORATIVE): summarizing what was updated for each project + knowledge.
+8. Show the updated progress table to the user right in the chat, not just written to a file.
 
-### Lưu ý
-- `/report` chỉ đọc và tổng hợp số liệu — không được tự ý sửa nội dung task (không đổi `status:` thay user, không xóa task).
-- Nếu phát hiện task đã tồn tại từ lâu (`deadline:` quá hạn) và vẫn chưa `done`, có thể nêu ra như một ghi chú cảnh báo trong phần báo cáo cho user, nhưng không tự sửa.
+### Notes
+- `/report` only reads and aggregates numbers — it must never edit task content on its own (never change `status:` on the user's behalf, never delete a task).
+- If a task has clearly been open for a long time (`deadline:` overdue) and is still not `done`, it's fine to call that out as a warning note in the report to the user, but don't fix it yourself.

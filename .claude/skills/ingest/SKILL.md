@@ -1,26 +1,26 @@
 ---
 name: ingest
-description: Đọc toàn bộ ghi chú thô trong inbox.md, phân loại từng ghi chú về đúng dự án và làm giàu bằng code-review-graph trước khi tạo task hoặc route thành knowledge — reconcile vào task tương tự đã có thay vì tạo trùng. Kích hoạt khi user gõ /ingest.
+description: Read every raw note in inbox.md, classify each one into the right project and enrich it via code-review-graph before creating a task or routing it as knowledge — reconcile into an existing similar task rather than creating a duplicate. Activate when the user types /ingest.
 allowed-tools: Read, Edit, Write, Grep, Glob, mcp__code-review-graph__get_minimal_context_tool, mcp__code-review-graph__get_impact_radius_tool, mcp__code-review-graph__query_graph_tool, mcp__code-review-graph__semantic_search_nodes_tool
 ---
 
-## Ingest — phân loại inbox.md thành task hoặc knowledge (reconcile, đừng append)
+## Ingest — classify inbox.md into tasks or knowledge (reconcile, don't append)
 
-### Quy trình
+### Process
 
-1. Đọc `AGENTS.md` (đặc biệt mục 9 "Reconcile, đừng append" và mục 11 "Quản lý knowledge") và `index.md` mục 2 (PROJECT REGISTRY) nếu chưa đọc trong phiên.
-2. Đọc toàn bộ `inbox.md`. Với mỗi ghi chú thô:
-   a. **Phân loại task vs knowledge trước** (`AGENTS.md` mục 11.1): ghi chú actionable, có việc cần làm/deadline → task (bước b-d dưới đây). Ghi chú là domain knowledge/quyết định/quy ước, không cần hành động ngay → knowledge (bước e).
-   b. Xác định dự án đích (từ khóa: OMS/đơn hàng/hóa đơn → `topvnsport-oms`; PMI/variant/sản phẩm → `topvnsport-pmi`; không rõ → hỏi User thay vì đoán).
-   c. Tra `repo_root` của dự án đó trong PROJECT REGISTRY. **Glob `projects/<tên>/tasks/*.md`** — nếu đã có task tương tự (cùng file/symbol liên quan, hoặc cùng chủ đề nghiệp vụ), đọc frontmatter + body, **bổ sung/viết lại mạch lạc vào task đó** (thêm sub-task, cập nhật `files:`/AC/`tests:` nếu ghi chú mới có thông tin bổ sung, cập nhật `updated:`) — KHÔNG tạo task mới trùng lặp.
-   d. Nếu chưa có task tương tự, áp dụng đúng quy trình graph như `.claude/skills/pm/references/task-creation.md`: `get_minimal_context_tool` → `semantic_search_nodes_tool`/`get_impact_radius_tool` → `query_graph_tool(pattern="tests_for", target=...)`, luôn kèm `repo_root` và `detail_level="minimal"`, để xác nhận path thật thay cho path đoán mò ghi trong ghi chú thô. Đọc `<tên>.md` (file trùng tên folder project) lấy `task_prefix`/`next_task_id`, tạo file `projects/<tên>/tasks/<ID>-<slug>.md` đúng cú pháp `AGENTS.md` mục 2.1 (có `files:`/AC/`tests:`, `status: todo`), tăng `next_task_id`.
-   e. **Route knowledge** (`AGENTS.md` mục 11.5): tạo file trong `knowledge/<type>/` (scope=general, áp dụng nhiều dự án) hoặc `projects/<tên>/docs/` (scope=project cụ thể) với frontmatter chuẩn mục 11.3. KHÔNG tạo task giả cho nội dung không actionable này.
-3. Sau khi một ghi chú đã được reconcile/tạo task/route knowledge xong → xóa mục đó khỏi `inbox.md`. Giữ lại mục nào chưa xử lý được (vd thiếu thông tin để xác định dự án, hoặc mơ hồ giữa task/knowledge) — không xóa, hỏi User.
-4. Ghi một entry vào `log.md` (`operation: ingest`, format `AGENTS.md` mục 7) — liệt kê: bao nhiêu ghi chú đã ingest, ghi chú nào reconcile vào task có sẵn vs tạo task mới vs route thành knowledge.
-5. Báo cáo ngắn gọn cho User: đã xử lý bao nhiêu ghi chú, task/knowledge nào được bổ sung vs tạo mới, path graph xác nhận khác gì so với ghi chú gốc (nếu có sai lệch đáng chú ý).
+1. Read `AGENTS.md` (especially §9 "Reconcile, don't append" and §11 "Knowledge management") and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
+2. Read the entirety of `inbox.md`. For each raw note:
+   a. **Classify task vs. knowledge first** (`AGENTS.md` §11.1): an actionable note, with work/a deadline attached → task (steps b-d below). A note that's domain knowledge/a decision/a convention, needing no immediate action → knowledge (step e).
+   b. Determine the target project (keywords: OMS/order/invoice → `topvnsport-oms`; PMI/variant/product → `topvnsport-pmi`; unclear → ask the User instead of guessing).
+   c. Look up that project's `repo_root` in the PROJECT REGISTRY. **Glob `projects/<name>/tasks/*.md`** — if a similar task already exists (same related file/symbol, or same business topic), read its frontmatter + body, **augment/rewrite it coherently** (add a sub-task, update `files:`/AC/`tests:` if the new note adds information, update `updated:`) — do NOT create a new duplicate task.
+   d. If no similar task exists, follow the same graph process as `.claude/skills/pm/references/task-creation.md`: `get_minimal_context_tool` → `semantic_search_nodes_tool`/`get_impact_radius_tool` → `query_graph_tool(pattern="tests_for", target=...)`, always with `repo_root` and `detail_level="minimal"`, to confirm real paths instead of the guessed ones in the raw note. Read `<name>.md` (the file matching the project's folder name) to get `task_prefix`/`next_task_id`, create `projects/<name>/tasks/<ID>-<slug>.md` following `AGENTS.md` §2.1 syntax (with `files:`/AC/`tests:`, `status: todo`), increment `next_task_id`.
+   e. **Route knowledge** (`AGENTS.md` §11.5): create a file under `knowledge/<type>/` (scope=general, applies to multiple projects) or `projects/<name>/docs/` (scope=specific project) with the standard §11.3 frontmatter. Do NOT create a fake task for this non-actionable content.
+3. Once a note has been reconciled/turned into a task/routed as knowledge → remove that item from `inbox.md`. Leave anything unresolved (e.g. missing info to determine the project, or ambiguous between task/knowledge) — don't delete it, ask the User.
+4. Write 1 entry to `log.md` (`operation: ingest`, format in `AGENTS.md` §7) — listing: how many notes were ingested, which were reconciled into an existing task vs. a new task vs. routed as knowledge.
+5. Give the User a short report: how many notes were processed, which task/knowledge got augmented vs. newly created, how the graph-confirmed paths differ from the original note (if there's a notable discrepancy).
 
-### Lưu ý
-- `/ingest` không tự đánh dấu task `status: done` và không tự sửa code — chỉ chuyển ghi chú thô thành task có cấu trúc hoặc knowledge file, tuân theo Spec Gate như `/pm` cho task (dừng chờ duyệt, không tự chuyển sang Plan Gate).
-- Ưu tiên reconcile hơn tạo mới: một backlog có nhiều task trùng lặp cùng một vấn đề khó review hơn một task được cập nhật liên tục.
-- Không tự bịa nội dung domain/ADR — knowledge do User cung cấp/duyệt, `/ingest` chỉ route đúng chỗ và đúng frontmatter.
-- Nếu một ghi chú không đủ thông tin để xác định dự án, không rõ task hay knowledge, hoặc mô tả quá mơ hồ, giữ nguyên trong `inbox.md` và hỏi User thay vì đoán.
+### Notes
+- `/ingest` never marks a task `status: done` and never edits code itself — it only turns raw notes into structured tasks or knowledge files, following the same Spec Gate as `/pm` for tasks (stop and wait for approval, don't automatically move to the Plan Gate).
+- Prefer reconciling over creating new: a backlog with many duplicate tasks on the same issue is harder to review than one task that keeps getting updated.
+- Never invent domain/ADR content — knowledge is supplied/approved by the User, `/ingest` only routes it to the right place with the right frontmatter.
+- If a note doesn't have enough information to determine the project, isn't clearly task or knowledge, or is too vague, leave it in `inbox.md` and ask the User instead of guessing.

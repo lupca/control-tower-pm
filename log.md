@@ -161,3 +161,11 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: AGENTS.md
 - Trạng thái: Thành công.
 - Commit: `c486043`
+
+## [2026-07-21 22:45:00] plan | Dịch toàn bộ file "khung" (AGENTS.md, CLAUDE.md, 6 SKILL.md, 2 reference) sang English
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: User đề xuất hybrid — "khung" (instruction cho agent: AGENTS.md, CLAUDE.md, SKILL.md, reference file) chuyển sang English để agent follow chính xác hơn + ít token hơn; "thịt" (nội dung task/AC/Plan/knowledge, và log.md mô tả/giải trình) giữ nguyên tiếng Việt cho người đọc nghiệp vụ. Đã dịch 10 file trong scope: `AGENTS.md`, `CLAUDE.md`, `.claude/skills/{pm,ingest,report,lint,review-order,verdict}/SKILL.md`, `.claude/skills/pm/references/{task-creation,task-execution}.md`. Giữ nguyên không dịch: mọi heading/template xuất hiện literal trong file task/knowledge/review thật (`## Tiêu chí nghiệm thu (AC)`, `> Dự án:`, `## Quy tắc phê duyệt riêng`, `## Findings từ reviewer`, toàn bộ template phiếu review trong `review-order/SKILL.md` bước 4) vì đây là nội dung người Việt đọc, không phải khung chỉ dẫn agent; cũng giữ nguyên field label trong format `log.md` (mục 7: Dự án/Mô tả/Giải trình/Trạng thái) vì đi liền với nội dung log tiếng Việt.
+- Giải trình: Số thứ tự mục 1-11 trong `AGENTS.md` giữ nguyên thứ tự (chỉ dịch tiêu đề) nên mọi tham chiếu chéo "AGENTS.md mục X" ở 9 file còn lại vẫn đúng — đã kiểm bằng grep để xác nhận không lệch. Verify YAML frontmatter của 6 SKILL.md vẫn parse hợp lệ sau khi dịch description.
+- Files touched: AGENTS.md, CLAUDE.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/pm/references/task-execution.md, .claude/skills/ingest/SKILL.md, .claude/skills/report/SKILL.md, .claude/skills/lint/SKILL.md, .claude/skills/review-order/SKILL.md, .claude/skills/verdict/SKILL.md
+- Trạng thái: Thành công.
+- Commit: (điền sau khi commit)

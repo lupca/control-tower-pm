@@ -1,32 +1,32 @@
 # CLAUDE.md
 
-Đây là repo **control-tower** — nơi giao và theo dõi task cho các dự án khác bằng ngôn ngữ tự nhiên (File-Over-API). Repo này KHÔNG chứa code sản phẩm; nó chỉ quản lý task dưới dạng Markdown.
+This is the **control-tower** repo — where work is handed off to and tracked for other projects using natural language (File-Over-API). This repo does NOT contain product code; it only manages tasks as Markdown.
 
-**Mô hình B (hiện hành):** control-tower chỉ **PLAN + COORDINATE**. Nó KHÔNG bao giờ ghi code, KHÔNG đọc diff, KHÔNG tự chạy test. EXECUTE (viết code) và REVIEW (đọc diff, chạy test) đều nằm **ngoài hệ** — người hoặc AI khác, trong repo code đích, độc lập với nhau (reviewer ≠ executor).
+**Model B (current):** control-tower only **PLANs + COORDINATEs**. It NEVER writes code, NEVER reads diffs, NEVER runs tests itself. EXECUTE (write code) and REVIEW (read diffs, run tests) both live **outside the system** — a human or another AI, in the target code repo, independent of each other (reviewer ≠ executor).
 
-## Trước khi làm bất kỳ việc gì trong phiên này
+## Before doing anything in this session
 
-1. Đọc **`AGENTS.md`** — luật chơi: vai trò PLAN/EXECUTE/REVIEW/COORDINATE, vòng đời task, cú pháp task, quy tắc gọi `code-review-graph`, chuẩn audit log.
-2. Đọc **`index.md`** — bản đồ dự án + PROJECT REGISTRY (tra `repo_root` tuyệt đối của dự án đích tại đây).
+1. Read **`AGENTS.md`** — the rules of the game: PLAN/EXECUTE/REVIEW/COORDINATE roles, task lifecycle, task syntax, rules for calling `code-review-graph`, audit log standard.
+2. Read **`index.md`** — the project map + PROJECT REGISTRY (look up the target project's absolute `repo_root` here).
 
-Không tự ý bỏ qua hai file trên dù task có vẻ đơn giản — chúng là single source of truth cho quyền hạn và quy trình.
+Never skip these two files just because a task looks simple — they are the single source of truth for authority and process.
 
-## Macro
+## Macros
 
-- `/pm <mô tả task> [--project <tên>]` — Spec Gate → Plan Gate → `ready` → `dispatched`. Tạo file task riêng trong `projects/<tên>/tasks/`, KHÔNG tự viết code (skill `pm`).
-- `/ingest` — phân loại `inbox.md` thành task (reconcile vào task có sẵn thay vì tạo trùng), hoặc route thành knowledge file vào `knowledge/`/`projects/<tên>/docs/` nếu không actionable (skill `ingest`).
-- `/report` — cập nhật tiến độ trong `<tên-dự-án>.md` + `index.md`, cập nhật `knowledge/_index.md` (skill `report`).
-- `/lint [--project <tên>]` — health-check backlog: task trễ hạn, thiếu AC, link file chết, mồ côi, kẹt ở `dispatched`/`in-review` (skill `lint`).
-- `/review-order <task> --ref <branch|commit|PR>` — phát phiếu review cho reviewer độc lập (ngoài hệ), không tự review (skill `review-order`).
-- `/verdict <task> <pass|changes> --reviewer @id ...` — ghi kết quả review, kiểm four-eyes, `pass` mới đóng task (skill `verdict`).
+- `/pm <task description> [--project <name>]` — Spec Gate → Plan Gate → `ready` → `dispatched`. Creates a dedicated task file under `projects/<name>/tasks/`, NEVER writes code itself (skill `pm`).
+- `/ingest` — classifies `inbox.md` into tasks (reconciling into an existing task rather than creating a duplicate), or routes it into a knowledge file under `knowledge/`/`projects/<name>/docs/` if not actionable (skill `ingest`).
+- `/report` — updates progress in `<project-name>.md` + `index.md`, updates `knowledge/_index.md` (skill `report`).
+- `/lint [--project <name>]` — backlog health-check: overdue tasks, missing AC, dead file links, orphans, stuck in `dispatched`/`in-review` (skill `lint`).
+- `/review-order <task> --ref <branch|commit|PR>` — issues a review sheet for an independent reviewer (outside the system), doesn't review itself (skill `review-order`).
+- `/verdict <task> <pass|changes> --reviewer @id ...` — records the review outcome, checks four-eyes, only `pass` closes the task (skill `verdict`).
 
-## Ghi nhớ
+## Remember
 
-- `.mcp.json` trong repo này đăng ký sẵn server `code-review-graph` (dùng chung binary với các repo khác) nên các tool graph khả dụng ngay cả khi cwd là `control-tower`. Tool này CHỈ dùng để phân tích tĩnh (read-only) khi PLAN/COORDINATE — không dùng để đọc diff thực tế hay chạy test.
-- Mọi tool `code-review-graph` phải được gọi với `repo_root=<đường dẫn tuyệt đối>` tra từ PROJECT REGISTRY trong `index.md` — cwd của phiên này là `control-tower`, không phải repo đích, nên auto-detect sẽ sai.
-- Task phải có Acceptance Criteria, test (`tests:`), và file liên quan (`files:`) lấy từ graph thật — xem `AGENTS.md` mục 2, 6 trước khi dùng `/pm`/`/ingest`.
-- `/pm` chỉ đi qua Spec Gate → Plan Gate rồi dừng ở `dispatched` (`AGENTS.md` mục 4) — không nhảy cóc, không tự suy diễn im lặng là đã duyệt, và **không có Code Gate nội bộ**.
-- Việc viết code luôn ở ngoài hệ (executor); việc review/verify luôn ở ngoài hệ (reviewer, dùng `/code-review` của repo code đích) — control-tower chỉ phát phiếu (`/review-order`) và ghi lại kết quả (`/verdict`).
-- Không bao giờ đóng task (`status: done`) ngoài luồng `/verdict pass`, và `/verdict pass` luôn từ chối nếu `reviewer:` == `executor:` (separation of duties).
-- Mỗi task là 1 file riêng trong `projects/<tên>/tasks/<ID>-<slug>.md` với YAML frontmatter — không còn gộp task vào 1 file dùng chung (`AGENTS.md` mục 2).
-- Knowledge files (`knowledge/`, `projects/<tên>/docs/`) không có `status`/`executor`/`deadline` — xem `AGENTS.md` mục 11 trước khi tạo/route knowledge.
+- This repo's `.mcp.json` already registers the `code-review-graph` server (sharing the same binary as other repos), so the graph tools are available even when the cwd is `control-tower`. This tool is ONLY for static analysis (read-only) during PLAN/COORDINATE — never to read an actual diff or run tests.
+- Every `code-review-graph` tool call must be made with `repo_root=<absolute path>` looked up from the PROJECT REGISTRY in `index.md` — this session's cwd is `control-tower`, not the target repo, so auto-detect will be wrong.
+- A task must have Acceptance Criteria, tests (`tests:`), and related files (`files:`) sourced from the real graph — see `AGENTS.md` §2, §6 before using `/pm`/`/ingest`.
+- `/pm` only goes through Spec Gate → Plan Gate then stops at `dispatched` (`AGENTS.md` §4) — never skip a gate, never silently assume approval, and **there is no internal Code Gate**.
+- Writing code always happens outside the system (executor); reviewing/verifying always happens outside the system (reviewer, using the target repo's `/code-review`) — control-tower only issues the review sheet (`/review-order`) and records the outcome (`/verdict`).
+- Never close a task (`status: done`) outside the `/verdict pass` flow, and `/verdict pass` always refuses if `reviewer:` == `executor:` (separation of duties).
+- Each task is its own file under `projects/<name>/tasks/<ID>-<slug>.md` with YAML frontmatter — tasks are no longer bundled into one shared file (`AGENTS.md` §2).
+- Knowledge files (`knowledge/`, `projects/<name>/docs/`) have no `status`/`executor`/`deadline` — see `AGENTS.md` §11 before creating/routing knowledge.

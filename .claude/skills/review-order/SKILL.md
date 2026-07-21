@@ -1,40 +1,40 @@
 ---
 name: review-order
-description: Sinh phiếu review cho một task mà executor đã báo xong — gom AC, DoD, 🧪, result-ref, và câu hỏi rủi ro (từ graph, read-only) để giao reviewer độc lập (người/AI khác, khác executor). KHÔNG tự review, KHÔNG chạy test, KHÔNG đọc diff thực tế. Kích hoạt khi user gõ /review-order.
+description: Generate a review sheet for a task the executor has reported done — gathering AC, DoD, tests, result-ref, and risk questions (from the graph, read-only) to hand to an independent reviewer (a different human/AI than the executor). Does NOT review itself, does NOT run tests, does NOT read the actual diff. Activate when the user types /review-order.
 argument-hint: "<task path/ID> --ref <branch|commit|PR>"
 allowed-tools: Read, Edit, Write, Grep, Glob, mcp__code-review-graph__get_suggested_questions_tool, mcp__code-review-graph__get_affected_flows_tool
 ---
 
-## Review Order — phát phiếu review, không tự review
+## Review Order — issue the review sheet, don't review it yourself
 
-Bạn đang ở control-tower, KHÔNG phải repo code đích. Skill này **không đọc diff thực tế** của executor và **không chạy test** — nó chỉ tổng hợp thông tin đã có (task + graph tĩnh) thành một phiếu review tự chứa.
+You're in control-tower, NOT the target code repo. This skill **never reads the executor's actual diff** and **never runs tests** — it only aggregates existing information (the task + static graph data) into a self-contained review sheet.
 
-### Bước 1 — Định vị task
+### Step 1 — Locate the task
 
-1. Đọc `AGENTS.md` (đặc biệt mục 1, 4, 5) và `index.md` mục 2 (PROJECT REGISTRY) nếu chưa đọc trong phiên.
-2. Tìm task theo ID/path trong `$ARGUMENTS`: Glob `projects/*/tasks/<ID>-*.md` nếu User cho ID (vd `PMI-001`), hoặc theo path đầy đủ nếu User chỉ rõ.
-3. Đọc frontmatter, kiểm tra `status:` hiện tại của task:
-   - Nếu `status: dispatched` → hợp lệ, tiếp tục.
-   - Nếu `status` khác (`todo`, `ready`, `in-review`, `done`, `changes-requested`) → dừng lại, báo User: task chưa sẵn sàng để phát phiếu review (vd chưa dispatch, hoặc đã đang review rồi), không tự ý đổi trạng thái.
-4. Lấy `--ref <branch|commit|PR>` từ `$ARGUMENTS`. Nếu thiếu, hỏi User (không tự bịa result-ref).
+1. Read `AGENTS.md` (especially §1, §4, §5) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
+2. Find the task by ID/path in `$ARGUMENTS`: Glob `projects/*/tasks/<ID>-*.md` if the User gave an ID (e.g. `PMI-001`), or by the full path if the User specified it directly.
+3. Read the frontmatter, check the task's current `status:`:
+   - If `status: dispatched` → valid, continue.
+   - If `status` is anything else (`todo`, `ready`, `in-review`, `done`, `changes-requested`) → stop, tell the User: the task isn't ready for a review sheet (e.g. not dispatched yet, or already in review) — don't change the state yourself.
+4. Get `--ref <branch|commit|PR>` from `$ARGUMENTS`. If missing, ask the User (never invent a result-ref).
 
-### Bước 2 — Ghi result-ref, chuyển trạng thái
+### Step 2 — Record the result-ref, change state
 
-1. Ghi `result_ref: "<giá trị --ref>"` vào frontmatter.
-2. Cập nhật `status: in-review`, `in_review: <ngày hôm nay>`, `updated: <ngày hôm nay>`.
+1. Write `result_ref: "<the --ref value>"` into the frontmatter.
+2. Update `status: in-review`, `in_review: <today's date>`, `updated: <today's date>`.
 
-### Bước 3 — Làm giàu câu hỏi rủi ro (read-only, tùy chọn)
+### Step 3 — Enrich with risk questions (read-only, optional)
 
-Tra `repo_root` của dự án trong PROJECT REGISTRY, rồi (nếu graph khả dụng):
+Look up the project's `repo_root` in the PROJECT REGISTRY, then (if the graph is available):
 
-1. `get_suggested_questions_tool(repo_root=...)` — câu hỏi ưu tiên: bridge node thiếu test, hub node chưa cover, coupling bất ngờ.
-2. `get_affected_flows_tool(changed_files=<danh sách files: ĐÃ GHI trong task từ Spec Gate>, repo_root=...)` — dùng lại danh sách file đã chốt lúc lập task, **không** tự đọc git diff mới của executor (ranh giới: đây là tĩnh, không phải review thật).
+1. `get_suggested_questions_tool(repo_root=...)` — priority questions: bridge node missing tests, uncovered hub node, unexpected coupling.
+2. `get_affected_flows_tool(changed_files=<the files: list ALREADY RECORDED in the task from the Spec Gate>, repo_root=...)` — reuse the file list locked in when the task was written, **never** read the executor's new git diff (this boundary keeps it static, not a real review).
 
-Nếu graph không trả về gì hữu ích hoặc lỗi, bỏ qua bước này — phiếu review vẫn hợp lệ chỉ với AC/DoD/test từ task.
+If the graph returns nothing useful or errors out, skip this step — the review sheet is still valid with just the task's AC/DoD/tests.
 
-### Bước 4 — Sinh phiếu review
+### Step 4 — Generate the review sheet
 
-Viết file `projects/<tên>/reviews/<ID>-review.md` (vd `projects/topvnsport-pmi/reviews/PMI-001-review.md`) — `<tên>` lấy từ path task đã tìm ở Bước 1. Tạo thư mục `reviews/` nếu project đó chưa có.
+Write the file `projects/<name>/reviews/<ID>-review.md` (e.g. `projects/topvnsport-pmi/reviews/PMI-001-review.md`) — `<name>` comes from the task path found in Step 1. Create the `reviews/` directory if that project doesn't have one yet.
 
 ```markdown
 # Phiếu Review: <ID> — <title>
@@ -68,12 +68,12 @@ Sau khi review xong, báo lại cho control-tower bằng lệnh:
 `/verdict <ID> <pass|changes> --reviewer @<tên bạn> [--commit <hash>] [--notes "..."]`
 ```
 
-### Bước 5 — Đóng bước
+### Step 5 — Close out
 
-1. Ghi 1 entry vào `log.md` (`operation: review-order`, format `AGENTS.md` mục 7) — nêu rõ path phiếu review vừa sinh.
-2. Báo User: phiếu đã sẵn tại `projects/<tên>/reviews/<ID>-review.md`, giao cho reviewer độc lập (**phải khác** `executor:` của task — nhắc lại rule four-eyes).
+1. Write 1 entry to `log.md` (`operation: review-order`, format in `AGENTS.md` §7) — stating the path of the review sheet just generated.
+2. Tell the User: the sheet is ready at `projects/<name>/reviews/<ID>-review.md`, hand it to an independent reviewer (**must differ from** the task's `executor:` — restate the four-eyes rule).
 
-### Lỗi thường gặp cần tránh
-- Tự ý review/chấm điểm AC ngay trong bước này — đó là việc của reviewer ngoài hệ, không phải `/review-order`.
-- Tự đọc git diff/log của executor để "giúp" điền câu hỏi — chỉ dùng dữ liệu tĩnh đã ghi trong task hoặc graph không cần diff.
-- Phát phiếu cho task chưa `dispatched` hoặc đã `in-review`/`done`.
+### Common mistakes to avoid
+- Reviewing/scoring the AC yourself right in this step — that's the outside reviewer's job, not `/review-order`'s.
+- Reading the executor's git diff/log yourself to "help" fill in questions — only use static data already recorded in the task, or graph data that doesn't require a diff.
+- Issuing a sheet for a task that isn't `dispatched` yet, or is already `in-review`/`done`.
