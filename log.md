@@ -24,6 +24,12 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - **Giải trình (Rationale):** Hoàn tất bước setup còn thiếu trong kế hoạch ban đầu — graph cần embeddings để `semantic_search_nodes_tool` hoạt động chính xác thay vì fallback FTS. Kết quả: 2154 node được embed bằng model `all-MiniLM-L6-v2`.
 - **Trạng thái:** Thành công.
 
+### [2026-07-21 17:45:00] PHÁT HIỆN TASK ĐÃ HOÀN THÀNH TỪ TRƯỚC (topvnsport-pmi #1.1)
+- **Dự án:** `topvnsport-pmi`
+- **Mô tả hành động:** Chạy CLI `search "variant cost tax validation" --repo /home/lupca/projects/topvnsport` (tương đương `semantic_search_nodes_tool`) để xác minh path thật cho task "Thêm validation cost/tax cho variant".
+- **Giải trình (Rationale):** Kết quả cho thấy `PMI/backend/schemas/tier_variation.py` đã có `Field(ge=0)`/`Field(ge=0, le=100)`, kèm migration `5a451ed7aa00_add_cost_tax_to_variants` và test đầy đủ (`test_variant_cost_tax.py`, `test_product_api_cost_tax.py`). Task này thực chất đã xong, không phải việc tồn đọng. Đã sửa `projects/topvnsport-pmi.md` từ `- [ ]` sang `- [x]` kèm bằng chứng, thay vì để một task đã xong bị báo cáo nhầm là "đang chờ làm".
+- **Trạng thái:** Thành công.
+
 ### [2026-07-21 02:56:45] PHÂN TÍCH VÙNG ẢNH HƯỞNG (MẪU)
 - **Dự án:** `topvnsport-pmi`
 - **Mô tả hành động:** Sử dụng `code-review-graph` để phân tích tầm ảnh hưởng của yêu cầu: *"thêm validation cost/tax cho variant"*.

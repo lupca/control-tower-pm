@@ -29,7 +29,7 @@ Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_roo
 
 | Dự án | File Quản Lý | Trạng thái | Tiến độ (Done/Total) | Người Phụ Trách | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TopVNSport - PMI** | `projects/topvnsport-pmi.md` | 🔄 Đang chạy | 0/3 | `/pm` Skill + Subagent | Quản lý quy trình, nghiệp vụ PMI |
+| **TopVNSport - PMI** | `projects/topvnsport-pmi.md` | 🔄 Đang chạy | 1/3 | `/pm` Skill + Subagent | Quản lý quy trình, nghiệp vụ PMI |
 | **TopVNSport - OMS** | `projects/topvnsport-oms.md` | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
 
 ---
