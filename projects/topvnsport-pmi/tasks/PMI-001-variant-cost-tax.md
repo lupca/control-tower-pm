@@ -24,6 +24,8 @@ updated: 2026-07-21
 
 # PMI-001: Thêm validation cost/tax cho variant
 
+> Dự án: [[projects/topvnsport-pmi/_project|topvnsport-pmi]]
+
 ## Tiêu chí nghiệm thu (AC)
 - [x] Schema validation trong `PMI/backend/schemas/tier_variation.py` — `default_cost_price: Field(ge=0)`, `default_tax_rate: Field(ge=0, le=100)` đã có sẵn (dòng 26-27).
 - [x] Migration DB tương ứng: `PMI/backend/alembic/versions/5a451ed7aa00_add_cost_tax_to_variants.py`.

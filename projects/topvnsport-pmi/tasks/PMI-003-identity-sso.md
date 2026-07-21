@@ -27,6 +27,8 @@ updated: 2026-07-21
 
 # PMI-003: Triển khai Identity Service SSO tập trung
 
+> Dự án: [[projects/topvnsport-pmi/_project|topvnsport-pmi]]
+
 > Task này được reconcile từ git history — đã implement trước khi control-tower tracking.
 
 ## Tiêu chí nghiệm thu (AC)

@@ -22,6 +22,8 @@ updated: 2026-07-21
 
 # PMI-006: Deploy Identity Service lên CD pipeline
 
+> Dự án: [[projects/topvnsport-pmi/_project|topvnsport-pmi]]
+
 > Task này được reconcile từ git history — đã implement trước khi control-tower tracking.
 
 ## Tiêu chí nghiệm thu (AC)

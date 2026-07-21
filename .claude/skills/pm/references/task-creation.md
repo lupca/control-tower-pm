@@ -21,8 +21,9 @@ Tất cả tool dưới đây bắt buộc kèm `repo_root=<tuyệt đối, tra 
 
 - Chuyển mọi path tuyệt đối graph trả về thành path **repo-relative** (cắt tiền tố `repo_root`). Không bao giờ ghi path đoán mò — nếu graph không xác nhận được, ghi `*(path chưa xác nhận qua graph)*` thay vì bịa.
 - Đọc `_project.md` của dự án → lấy `task_prefix` + `next_task_id`. ID = `<task_prefix>-<NNN>` (NNN = `next_task_id`, zero-pad 3 chữ số). Slug = kebab-case từ title (tối đa 40 ký tự ASCII).
-- Tạo file `projects/<tên>/tasks/<ID>-<slug>.md` với frontmatter + body chuẩn (`AGENTS.md` mục 2.1), `status: todo`. KHÔNG điền `executor:`/`reviewer:`/`result_ref:` — các field này chỉ điền ở giai đoạn sau (Plan Gate/dispatch, review-order, verdict).
+- Tạo file `projects/<tên>/tasks/<ID>-<slug>.md` với frontmatter + body chuẩn (`AGENTS.md` mục 2.1), `status: todo`. Body PHẢI có dòng backlink `> Dự án: [[projects/<tên>/_project|<tên>]]` ngay dưới tiêu đề H1 (wikilink thật, không phải path text — để Obsidian Graph vẽ được cạnh nối). KHÔNG điền `executor:`/`reviewer:`/`result_ref:` — các field này chỉ điền ở giai đoạn sau (Plan Gate/dispatch, review-order, verdict).
 - Tăng `next_task_id` trong `_project.md` lên 1 sau khi tạo file xong.
+- Thêm 1 dòng vào mục `## Tasks` của `_project.md`: `- [[<ID>-<slug>]] — <title> (todo)`. Nếu `_project.md` chưa có mục `## Tasks`, tạo mới (đặt trước mục "Quy tắc phê duyệt riêng"). Không bắt buộc phải làm hoàn hảo ở bước này — `/report` sẽ tự regenerate lại toàn bộ mục này mỗi lần chạy nên sai sót nhỏ sẽ tự sửa.
 - Nếu task chạm `schemas/`, `models.py`, hoặc thư mục migration → RESTRICTED tự động (`AGENTS.md` mục 1 & 4), gắn `risk: high` và nêu rõ trong task.
 - Để trống mục `## Plan` trong body — sẽ điền ở Plan Gate (xem `task-execution.md`), không điền trước.
 

@@ -6,7 +6,7 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 
 | Type | File | Tags | Updated |
 |:---|:---|:---|:---|
-| decision | [ADR-001-file-over-api.md](decisions/ADR-001-file-over-api.md) | architecture, control-tower | 2026-07-21 |
+| decision | [[ADR-001-file-over-api]] | architecture, control-tower | 2026-07-21 |
 
 ## Per-project (`projects/<name>/docs/`)
 

@@ -20,6 +20,8 @@ updated: 2026-07-21
 
 # PMI-002: Thiết kế luồng xuất báo cáo doanh thu tuần sang PDF
 
+> Dự án: [[projects/topvnsport-pmi/_project|topvnsport-pmi]]
+
 ## Tiêu chí nghiệm thu (AC)
 - [ ] *(chưa xác nhận qua graph — chạy `/pm` để tra lại path thật trước khi bắt đầu)*
 

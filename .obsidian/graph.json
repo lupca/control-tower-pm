@@ -7,24 +7,15 @@
   "showOrphans": true,
   "collapse-color-groups": false,
   "colorGroups": [
-    {
-      "query": "path:AGENTS.md OR path:index.md OR path:log.md OR path:inbox.md OR path:CLAUDE.md",
-      "color": { "a": 1, "rgb": 16739179 }
-    },
-    {
-      "query": "path:projects",
-      "color": { "a": 1, "rgb": 5090295 }
-    },
-    {
-      "query": "path:.claude/skills",
-      "color": { "a": 1, "rgb": 5361510 }
-    },
-    {
-      "query": "path:reviews",
-      "color": { "a": 1, "rgb": 16755021 }
-    }
+    {"query": "path:AGENTS.md OR path:CLAUDE.md OR path:index.md OR path:log.md OR path:inbox.md", "color": {"a": 1, "rgb": 16739179}},
+    {"query": "path:projects/topvnsport-pmi", "color": {"a": 1, "rgb": 5090295}},
+    {"query": "path:projects/topvnsport-oms", "color": {"a": 1, "rgb": 3441519}},
+    {"query": "path:projects/topvnsport-wms", "color": {"a": 1, "rgb": 15773183}},
+    {"query": "path:knowledge", "color": {"a": 1, "rgb": 16755021}},
+    {"query": "path:.claude/skills", "color": {"a": 1, "rgb": 5361510}},
+    {"query": "path:reviews", "color": {"a": 1, "rgb": 10855845}}
   ],
-  "collapse-display": false,
+  "collapse-display": true,
   "showArrow": true,
   "textFadeMultiplier": 0,
   "nodeSizeMultiplier": 1,
@@ -34,6 +25,6 @@
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 250,
-  "scale": 1,
+  "scale": 0.6666666666666666,
   "close": false
 }

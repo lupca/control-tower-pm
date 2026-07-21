@@ -74,6 +74,8 @@ Theo sau là body chuẩn:
 ```markdown
 # <ID>: <title>
 
+> Dự án: [[projects/<tên>/_project|<tên>]]
+
 ## Tiêu chí nghiệm thu (AC)
 - [ ] <điều kiện kiểm chứng được>
 
@@ -83,6 +85,10 @@ Theo sau là body chuẩn:
 ## Sub-tasks
 - [ ] <bước nhỏ, mỗi bước 1 file/1 mối quan tâm>
 ```
+
+Dòng `> Dự án: [[...]]` là wikilink thật (không phải path text) — mục đích để Obsidian Graph view vẽ được cạnh nối giữa task và `_project.md` (Graph chỉ nhận diện `[[wikilink]]`, không nhận path trong bảng/YAML). Dùng path đầy đủ + alias (`[[projects/<tên>/_project|<tên>]]`) vì tên file `_project.md` trùng nhau giữa các dự án. Đây thuần là nội dung Markdown hỗ trợ điều hướng/trực quan hoá trong Obsidian — không có skill nào parse dòng này, không ảnh hưởng vòng đời/gate.
+
+`_project.md` của mỗi dự án có thêm mục `## Tasks` liệt kê wikilink tới từng file trong `tasks/` — mục này do `/report` tự regenerate mỗi lần chạy (mục 6.1 bảng skill).
 
 Task `done` sau khi `/verdict changes` có thêm `## Findings từ reviewer` do `/verdict` ghi.
 

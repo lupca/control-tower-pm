@@ -89,3 +89,35 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: AGENTS.md, CLAUDE.md, index.md, projects/topvnsport-pmi/_project.md (mới), projects/topvnsport-pmi/tasks/PMI-001..009 (mới, 9 file), projects/topvnsport-oms/_project.md (mới), projects/topvnsport-pmi.md (đã xoá), projects/topvnsport-oms.md (đã xoá), knowledge/_index.md (mới), knowledge/decisions/ADR-001-file-over-api.md (mới), .claude/skills/{pm,ingest,report,lint,review-order,verdict}/SKILL.md, .claude/skills/pm/references/{task-creation,task-execution}.md
 - Trạng thái: Thành công.
 - Commit: `d4e16c8`
+
+## [2026-07-21 21:16:00] pm-create | Onboard WMS + tạo task WMS-001
+- Dự án: `topvnsport-wms` (mới onboard)
+- Mô tả: Onboard dự án WMS vào control-tower (tạo `projects/topvnsport-wms/_project.md` + thư mục `tasks/`, cập nhật PROJECT REGISTRY trong `index.md`). Sau đó tạo task WMS-001 "Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS" theo yêu cầu của User.
+- Giải trình: User yêu cầu update UI table WMS (thêm STT, phân trang), nhưng WMS chưa có trong registry. Đã onboard trước rồi mới tạo task. Dùng `semantic_search_nodes_tool` và `get_hub_nodes_tool(top_n=50)` xác nhận: DataTable WMS không nằm trong hub nodes → risk `normal`; WMS chưa có test cho DataTable (PMI có) → AC7 yêu cầu tạo test mới.
+- Files touched: projects/topvnsport-wms/_project.md (mới), projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md (mới), index.md
+- Trạng thái: Thành công — task ở `status: todo`, chờ User duyệt Spec Gate (AC).
+- Commit: n/a
+
+## [2026-07-21 21:20:00] plan | Dispatch WMS-001 cho @antigravity
+- Dự án: `topvnsport-wms`
+- Mô tả: Plan Gate đã được User duyệt. Dispatch task WMS-001 "Nâng cấp DataTable: thêm cột STT và pagination" cho executor @antigravity.
+- Giải trình: Task đã qua đủ 2 gate nội bộ (Spec + Plan). Executor sẽ thực hiện code trong repo `/home/lupca/projects/topvnsport`, sau đó báo result-ref để phát phiếu review.
+- Files touched: projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md
+- Trạng thái: Thành công — `status: dispatched`, `executor: @antigravity`.
+- Commit: n/a
+
+## [2026-07-21 21:42:00] review-order | Phát phiếu review WMS-001
+- Dự án: `topvnsport-wms`
+- Mô tả: Phát phiếu review cho task WMS-001 "Nâng cấp DataTable: thêm cột STT và pagination". Result-ref: local (uncommitted). Executor: @antigravity.
+- Giải trình: Code đã xong ở local (chưa commit). Gọi `get_affected_flows_tool` xác nhận 7 flows bị ảnh hưởng (InventoryPage, TransactionsPage, các handlers). Phiếu review tại `reviews/WMS-001-review.md`.
+- Files touched: projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md, reviews/WMS-001-review.md (mới)
+- Trạng thái: Thành công — task ở `status: in-review`, chờ reviewer độc lập (≠ @antigravity).
+- Commit: n/a
+
+## [2026-07-21 21:50:00] plan | Sửa Obsidian Graph view — thêm wikilink thật + màu theo project
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: User chụp Graph view thấy node rời rạc, không tụ theo project. Điều tra xác nhận nguyên nhân: 29 file `.md` nhưng gần như 0 wikilink thật (`[[...]]`) — Obsidian Graph chỉ vẽ cạnh nối cho wikilink thật, không nhận diện path trong bảng/YAML/`[text](path)`. Đã sửa: (1) `.obsidian/graph.json` — khôi phục + mở rộng `colorGroups` theo path (Core/PMI/OMS/WMS/knowledge/skills/reviews, 7 nhóm màu), bật `showArrow`; (2) thêm mục `## Tasks` (wikilink tới từng task) vào cả 3 `_project.md`; (3) thêm dòng backlink `> Dự án: [[...]]` vào đầu body của 10 task file hiện có (PMI 001-009, WMS-001); (4) đổi link Markdown thường sang wikilink thật trong `knowledge/_index.md`; (5) sửa 2 node `control-tower-map.canvas` còn trỏ tới path cũ `projects/topvnsport-pmi.md`/`topvnsport-oms.md` (đã xoá từ lúc migrate task-per-file, giờ mở sẽ báo lỗi thiếu file) sang đúng path `_project.md` mới; (6) cập nhật `AGENTS.md` mục 2.1 (thêm dòng backlink vào template chuẩn) + `pm/references/task-creation.md` (task mới tự thêm backlink + dòng vào `## Tasks`) + `report/SKILL.md` (mỗi lần `/report` chạy sẽ regenerate lại toàn bộ mục `## Tasks` — tự-heal nếu thiếu/thừa).
+- Giải trình: Đây thuần là vấn đề cấu hình + nội dung Markdown, không đổi bất kỳ frontmatter field hay heading nào các skill đang parse (`status`, `files`, `tests`, `## Tiêu chí nghiệm thu (AC)`, `## Plan`, `## Sub-tasks`) — xác nhận trước khi sửa để không ảnh hưởng vòng đời/gate hiện có. Chọn mức đầy đủ (config + content + skill) theo yêu cầu của User để về sau task mới do `/pm` tạo tự động có link, không phải làm tay mỗi lần. Nhân tiện dọn luôn rác canvas còn sót từ lần migrate task-per-file trước (commit `d4e16c8`) — 2 node trỏ file đã xoá.
+- Files touched: .obsidian/graph.json, control-tower-map.canvas, AGENTS.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, knowledge/_index.md, projects/topvnsport-pmi/_project.md, projects/topvnsport-oms/_project.md, projects/topvnsport-wms/_project.md, projects/topvnsport-pmi/tasks/PMI-001..009.md, projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md
+- Trạng thái: Thành công.
+- Commit: n/a (sẽ điền sau khi commit)

@@ -8,7 +8,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 *   **Thời gian cập nhật cuối:** 2026-07-21
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
-*   **Tổng số dự án:** 2 dự án đang hoạt động
+*   **Tổng số dự án:** 3 dự án đang hoạt động
 
 ---
 
@@ -20,8 +20,9 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi/tasks/` (`_project.md`) | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) | ✅ yes (alias `topvnsport`, `crg-daemon` poll 2s) |
 | `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms/tasks/` (`_project.md`) | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch với PMI) |
+| `topvnsport-wms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-wms/tasks/` (`_project.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) |
 
-Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả hai dự án đều được hưởng.
+Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng.
 
 ---
 
@@ -31,6 +32,7 @@ Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_roo
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **TopVNSport - PMI** | `projects/topvnsport-pmi/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
 | **TopVNSport - OMS** | `projects/topvnsport-oms/` (`_project.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
+| **TopVNSport - WMS** | `projects/topvnsport-wms/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 0/1 | Chưa gán | Quản lý kho hàng, tồn kho, barcode |
 
 ---
 
