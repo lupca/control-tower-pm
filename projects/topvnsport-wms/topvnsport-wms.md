@@ -3,7 +3,7 @@ project: topvnsport-wms
 full_name: "TopVNSport - WMS (Warehouse Management System)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: WMS
-next_task_id: 2
+next_task_id: 4
 created: 2026-07-21
 updated: 2026-07-21
 ---
@@ -22,6 +22,7 @@ Dự án quản lý kho hàng (Warehouse Management System) cho hệ thống Top
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
 - [[WMS-001-table-stt-pagination]] — Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS (in-review)
+- [[WMS-003-fix-ci-docker-network-label-mismatch]] — Fix CI Docker Compose network label mismatch for oms_default (done)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc DB (schema Pydantic trong `WMS/backend/schemas.py`, model trong `WMS/backend/models.py`) bắt buộc phải có sự xác nhận của User trước khi executor chạy lệnh `alembic revision --autogenerate` / `alembic upgrade head`.

@@ -1,0 +1,35 @@
+---
+project: topvnsport-web
+full_name: "TopVNSport - Web (Frontend Application)"
+repo_root: /home/lupca/projects/topvnsport
+task_prefix: WEB
+next_task_id: 2
+created: 2026-07-22
+updated: 2026-07-22
+---
+
+# TopVNSport - Web
+
+Dự án quản lý frontend application (Vue/React) của hệ thống TopVNSport.
+
+## Tiến độ
+| Trạng thái | Số task |
+|:---|---:|
+| done | 0 |
+| todo | 0 |
+*(Cập nhật bởi `/report`)*
+
+## Tasks
+*(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
+- [[WEB-001-promotion-module]] — Implement Promotion Module cho Marketing Team (changes-requested)
+
+## Quy tắc phê duyệt riêng (Project Gates)
+- Mọi thay đổi liên quan đến routing, state management hoặc API integration cần có test coverage.
+- UI changes phải được test trên ít nhất 2 trình duyệt (Chrome, Firefox).
+- Các task hoàn thành phải pass qua 100% test case — reviewer độc lập xác nhận qua `/verdict pass` (`AGENTS.md` mục 3, 4) mới được đánh dấu `status: done`.
+
+## References (tài liệu trong repo code — chỉ tham chiếu, KHÔNG copy)
+| Tài liệu | Path | Mô tả |
+|:---|:---|:---|
+| CLAUDE.md | `CLAUDE.md` | Dev conventions, test commands |
+| package.json | `web/package.json` | Dependencies, scripts |
