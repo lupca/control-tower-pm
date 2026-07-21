@@ -18,6 +18,12 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - **Giải trình (Rationale):** Graph đã build (2602 nodes, 30237 edges, 448 files) và `built_at_commit` khớp `current_sha` — không cần rebuild. Tuy nhiên chưa có embeddings (`sentence_transformers` chưa cài) nên semantic search sẽ fallback về FTS cho tới khi chạy `pip install "code-review-graph[embeddings]"` + `code-review-graph embed --repo /home/lupca/projects/topvnsport`.
 - **Trạng thái:** Thành công (ghi nhận, chưa embed).
 
+### [2026-07-21 17:39:37] BẬT SEMANTIC SEARCH CHO TOPVNSPORT
+- **Dự án:** `topvnsport-pmi` / `topvnsport-oms`
+- **Mô tả hành động:** Chạy `pip install "code-review-graph[embeddings]"` trong venv của tool, sau đó `code-review-graph embed --repo /home/lupca/projects/topvnsport`.
+- **Giải trình (Rationale):** Hoàn tất bước setup còn thiếu trong kế hoạch ban đầu — graph cần embeddings để `semantic_search_nodes_tool` hoạt động chính xác thay vì fallback FTS. Kết quả: 2154 node được embed bằng model `all-MiniLM-L6-v2`.
+- **Trạng thái:** Thành công.
+
 ### [2026-07-21 02:56:45] PHÂN TÍCH VÙNG ẢNH HƯỞNG (MẪU)
 - **Dự án:** `topvnsport-pmi`
 - **Mô tả hành động:** Sử dụng `code-review-graph` để phân tích tầm ảnh hưởng của yêu cầu: *"thêm validation cost/tax cho variant"*.

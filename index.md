@@ -18,8 +18,8 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 | Project (tên dùng trong `--project`) | repo_root (tuyệt đối) | Task file | Graph build? | Graph embedded? |
 | :--- | :--- | :--- | :--- | :--- |
-| `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi.md` | ✅ yes | ⚠️ no (cần `pip install "code-review-graph[embeddings]"` rồi `code-review-graph embed`) |
-| `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms.md` | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ⚠️ no |
+| `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi.md` | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) |
+| `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms.md` | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) |
 
 Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả hai dự án đều được hưởng.
 
