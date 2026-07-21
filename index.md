@@ -16,10 +16,10 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 **Bắt buộc đọc trước khi gọi bất kỳ tool `code-review-graph` nào.** cwd của phiên control-tower không phải là repo đích — mọi tool phải được gọi kèm `repo_root` tuyệt đối lấy từ bảng dưới đây.
 
-| Project (tên dùng trong `--project`) | repo_root (tuyệt đối) | Task file | Graph build? | Graph embedded? |
-| :--- | :--- | :--- | :--- | :--- |
-| `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi.md` | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) |
-| `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms.md` | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) |
+| Project (tên dùng trong `--project`) | repo_root (tuyệt đối) | Task file | Graph build? | Graph embedded? | Daemon watch? |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `topvnsport-pmi` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-pmi.md` | ✅ yes | ✅ yes (2154 node, model `all-MiniLM-L6-v2`) | ✅ yes (alias `topvnsport`, `crg-daemon` poll 2s) |
+| `topvnsport-oms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-oms.md` | ✅ yes (dùng chung graph với PMI, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch với PMI) |
 
 Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả hai dự án đều được hưởng.
 
@@ -43,7 +43,8 @@ Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_roo
 
 ## 5. QUY TRÌNH VẬN HÀNH NHANH (Runbook)
 
-1.  **Giao task mới:** Thêm ý tưởng vào `inbox.md` hoặc gõ thẳng `/pm <yêu cầu_của_bạn>` trong chat.
-2.  **Duyệt kế hoạch:** Kiểm tra các task Agent đề xuất trong `projects/topvnsport-pmi.md`. Nếu đồng ý, hãy phản hồi để Agent bắt đầu code.
+1.  **Giao task mới:** Thêm ý tưởng vào `inbox.md` hoặc gõ thẳng `/pm <yêu cầu_của_bạn>` trong chat — task sinh ra sẽ có Acceptance Criteria + test + rủi ro (xem `AGENTS.md` mục 2, 5).
+2.  **Duyệt qua 3 cổng:** Spec Gate (duyệt AC) → Plan Gate (duyệt kế hoạch code trong `▸ Plan:`) → Code Gate (duyệt verify trước khi đóng task). Xem `AGENTS.md` mục 4.
 3.  **Xem báo cáo:** Gõ `/report` để Agent quét các file `.md` và cập nhật lại bảng tiến độ trên đây.
-4.  **Thêm dự án mới:** Xem mục 5 của `AGENTS.md` (Onboard dự án mới).
+4.  **Health-check backlog:** Gõ `/lint` định kỳ để phát hiện task trễ hạn, thiếu AC, link file chết, task mồ côi.
+5.  **Thêm dự án mới:** Xem mục 9 của `AGENTS.md` (Onboard dự án mới).

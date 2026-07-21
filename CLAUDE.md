@@ -11,12 +11,15 @@ Không tự ý bỏ qua hai file trên dù task có vẻ đơn giản — chúng
 
 ## Macro
 
-- `/pm <mô tả task> [--project <tên>]` — giao task mới (skill `pm`)
-- `/ingest` — phân loại `inbox.md` thành task (skill `ingest`)
+- `/pm <mô tả task> [--project <tên>]` — giao task mới, dẫn qua 3 cổng HITL Spec/Plan/Code (skill `pm`)
+- `/ingest` — phân loại `inbox.md` thành task, reconcile vào task có sẵn thay vì tạo trùng (skill `ingest`)
 - `/report` — cập nhật tiến độ trong `index.md` (skill `report`)
+- `/lint [--project <tên>]` — health-check backlog: task trễ hạn, thiếu AC, link file chết, mồ côi (skill `lint`)
 
 ## Ghi nhớ
 
 - `.mcp.json` trong repo này đăng ký sẵn server `code-review-graph` (dùng chung binary với các repo khác) nên các tool graph khả dụng ngay cả khi cwd là `control-tower`.
 - Mọi tool `code-review-graph` phải được gọi với `repo_root=<đường dẫn tuyệt đối>` tra từ PROJECT REGISTRY trong `index.md` — cwd của phiên này là `control-tower`, không phải repo đích, nên auto-detect sẽ sai.
-- Không tự sửa code ở repo đích khi đang ở cấp độ COLLABORATIVE — viết task, ghi log, dừng chờ duyệt.
+- Task phải có Acceptance Criteria (`✅`), test (`🧪`), và file liên quan (`🔗`) lấy từ graph thật — xem `AGENTS.md` mục 2-5 trước khi dùng `/pm`/`/ingest`.
+- Task COLLABORATIVE phải qua đủ 3 cổng tuần tự: Spec Gate → Plan Gate → Code Gate (`AGENTS.md` mục 4) — không nhảy cóc, không tự suy diễn im lặng là đã duyệt.
+- Không tự sửa code ở repo đích trước khi qua Plan Gate; không đóng task (`- [x]`) trước khi qua Code Gate + Definition of Done (`AGENTS.md` mục 3).
