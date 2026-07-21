@@ -99,6 +99,8 @@ The project file (`projects/<name>/<name>.md`) also has a `## Tasks` section lis
 
 A task that goes `done` after a `/verdict changes` gets a `## Findings từ reviewer` section added by `/verdict`.
 
+A task that closes via `/verdict pass` gets a `## Causal Analysis` section added — not just THAT the fix worked, but WHY (§2.1b).
+
 **Changing state = updating `status:` + `updated:` in the frontmatter + a commit** (audit trail comes naturally through git — see §2.3 below).
 
 **Rule:** `/pm` MUST NOT write a task missing `files:`, `## Tiêu chí nghiệm thu (AC)`, or `tests:` — all three must come from a real code-review-graph query (§6). If the graph hasn't been queried yet, the task must not be written.
@@ -108,6 +110,23 @@ A task that goes `done` after a `/verdict changes` gets a `## Findings từ revi
 - `/pm` and `/ingest` read the frontmatter of `<project-name>.md` → `task_prefix` + `next_task_id`.
 - Create the file: `tasks/<PREFIX>-<NNN>-<slug>.md` (slug = kebab-case of the title, max 40 ASCII characters).
 - After creating the file, increment `next_task_id` in `<project-name>.md` by 1.
+
+### 2.1b. Causal Analysis (added by `/verdict pass`)
+
+When a task closes via `/verdict pass`, the reviewer fills in a `## Causal Analysis` section on the task body — the point is to capture WHY the fix works, not just THAT it works, so the same root cause can be recognized and reused next time (§13):
+
+```yaml
+causal_analysis:
+  root_cause: "N+1 query in ProductService.get_all()"
+  mechanism: "Added .select_related('category') reduces DB calls from N+1 to 2"
+  counterfactual: "Without fix, latency would remain 450ms under 100 concurrent users"
+  pattern_id: "n-plus-one-query"  # reusable pattern identifier, see knowledge/patterns/
+```
+
+- **Required** when `risk: high` — `/verdict` must prompt the reviewer for all four fields and refuse to record `pass` until they're filled in.
+- **Optional but encouraged** when `risk: normal` — `/verdict` still prompts; if the reviewer declines, the task closes without a `## Causal Analysis` section.
+- `pattern_id` should match an existing file in `knowledge/patterns/<pattern_id>.md` (§13). If no existing pattern fits, `/verdict` proposes creating a new one (COLLABORATIVE, §1) rather than inventing pattern content unilaterally.
+- Whenever `pattern_id` is set and matches an existing pattern file, `/verdict` appends this task's ID + a 1-line summary to that pattern's **Past Instances** list.
 
 ### 2.2. Task Decomposition Rule
 
@@ -383,4 +402,45 @@ Task `files:` match against rules:
 ### 12.3. Reputation Lifecycle
 - **Update on `/verdict`**: Updates `total_tasks_executed` / `total_tasks_reviewed`, `success_rate`, `avg_review_rounds`, `strengths`, `recent_trend`, and `last_active`.
 - **Recommendation on `/pm`**: Matches task domain requirements with agent `strengths` during dispatch, suggesting optimal executors and surfacing warnings for low success rates (< 0.6) or matching weaknesses.
+
+---
+
+## 13. PATTERN LIBRARY (Causal Analysis)
+
+A task closing tells you THAT a fix worked; it doesn't tell you WHY, so the same root cause quietly resurfaces elsewhere. Recurring root causes are captured as reusable **patterns** under `knowledge/patterns/`, so `/pm` can suggest "this looks like pattern X, see how `<task>` fixed it" at Spec Gate, and `/lint` can flag the same signature recurring elsewhere before it's fixed everywhere.
+
+### 13.1. Pattern file schema (`knowledge/patterns/<pattern_id>.md`)
+
+```yaml
+---
+pattern_id: n-plus-one-query
+category: performance          # performance | correctness | security | reliability | maintainability
+severity: medium                # low | medium | high | critical
+created: 2026-07-22
+updated: 2026-07-22
+---
+
+# <pattern_id>
+
+## Problem Signature
+<How to recognize this pattern — code shape, symptoms, metrics/log signals>
+
+## Detection
+<How to spot it in this codebase: grep pattern, code-review-graph query, metric threshold...>
+
+## Solution Template
+<The general fix shape — not tied to any one task>
+
+## Past Instances
+- [[<TASK-ID>]] — <1-line summary of what happened>
+```
+
+### 13.2. Lifecycle
+- **Created**: manually, or proposed by `/verdict pass` when a reviewer's `causal_analysis.pattern_id` (§2.1b) doesn't match an existing file — `/verdict` stops and asks the User before writing a new pattern file (COLLABORATIVE, §1); it never invents pattern content unilaterally (mirrors the rule in §11.6 for knowledge in general).
+- **Past Instances updated**: whenever `/verdict pass` records a `causal_analysis.pattern_id` that matches an existing pattern file, it appends `- [[<task ID>]] — <1-line summary>` to that file's **Past Instances** section.
+- **Consulted by `/pm`** (Spec Gate): matches the new task's description against `knowledge/patterns/*.md` Problem Signatures and surfaces a suggestion — "this looks like pattern `<id>`, see how `<task from Past Instances>` was fixed" — as a hint only, never auto-applied, never blocks the gate.
+- **Consulted by `/lint`**: cross-references each pattern's `Detection` heuristic against the codebase (via `code-review-graph`, read-only) to flag places the pattern may recur without a task referencing it in `Past Instances` → surfaced as a suggested **preventive task**, never created automatically (read-only, same as the rest of `/lint`, §1).
+
+### 13.3. Index (`knowledge/patterns/_index.md`)
+A flat registry table (`pattern_id`, `category`, `severity`, instance count) — maintained alongside the pattern files; add a row whenever a new pattern file is created.
 

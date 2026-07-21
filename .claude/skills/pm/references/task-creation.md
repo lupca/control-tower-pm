@@ -8,15 +8,16 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
 
 1. `get_minimal_context_tool(task="<task description>", repo_root=...)` — get oriented first, avoid blind searching.
 2. `semantic_search_nodes_tool(query="<keywords from the task description>", repo_root=..., detail_level="minimal")` — find the real file/symbol. If the result shows the feature **already exists** (passing test, schema constraint already in place...), STOP, tell the User the request may already be implemented — don't create a fake task for something already done (real-world example: `PMI-001` — "add cost/tax validation for variant" was once discovered to already exist in topvnsport).
-3. `get_impact_radius_tool(changed_files=[...paths found in step 2...], repo_root=..., detail_level="minimal")` → fills in `files:`.
+3. **Pattern match** (`AGENTS.md` §13): Glob `knowledge/patterns/*.md` (skip `_index.md`), read each file's `## Problem Signature`. If the task description's symptoms match a pattern (e.g. "list page getting slower with more rows" ↔ `n-plus-one-query`'s signature), surface it to the User before writing the task: "This looks like pattern `<pattern_id>`, see how `<task from Past Instances>` was fixed" — a suggestion only, never auto-applied, never blocks the gate. If `Past Instances` is empty, still mention the matching pattern's `Solution Template` as a hint.
+4. `get_impact_radius_tool(changed_files=[...paths found in step 2...], repo_root=..., detail_level="minimal")` → fills in `files:`.
    - If the blast radius has more than **8** files, do NOT write one big task — propose splitting into smaller tasks (1 PR each), present the split plan to the User before writing any task.
-4. `query_graph_tool(pattern="tests_for", target=<file/symbol from step 3>, repo_root=..., detail_level="minimal")` → fills in `tests:` (existing tests).
+5. `query_graph_tool(pattern="tests_for", target=<file/symbol from step 3>, repo_root=..., detail_level="minimal")` → fills in `tests:` (existing tests).
    - **The correct params are `pattern`/`target`, there is NO `edge` param.** Calling it wrong fails immediately.
-5. `get_knowledge_gaps_tool(repo_root=...)` — if the impacted area touches an uncovered hotspot, add a sub-task:
+6. `get_knowledge_gaps_tool(repo_root=...)` — if the impacted area touches an uncovered hotspot, add a sub-task:
    `- [ ] Write a test for <symbol/file> (currently no coverage — knowledge gap) — suggested test file: <suggested test file>`
-6. `get_hub_nodes_tool(top_n=50, repo_root=...)` and `get_bridge_nodes_tool(top_n=50, repo_root=...)` — if any node in `files:` matches the returned list → flag `risk: high` in the frontmatter.
-7. `get_affected_flows_tool(changed_files=[...], repo_root=...)` → fills in `flows:`.
-8. **Compute Pre-Execution Prediction Score (`predicted_success`)**:
+7. `get_hub_nodes_tool(top_n=50, repo_root=...)` and `get_bridge_nodes_tool(top_n=50, repo_root=...)` — if any node in `files:` matches the returned list → flag `risk: high` in the frontmatter.
+8. `get_affected_flows_tool(changed_files=[...], repo_root=...)` → fills in `flows:`.
+9. **Compute Pre-Execution Prediction Score (`predicted_success`)**:
    - Start with `Score = 1.0`.
    - `blast_radius > 8`: Score -= 0.3
    - `blast_radius > 15`: Score -= 0.2 (cumulative -0.5)
