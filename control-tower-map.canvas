@@ -10,6 +10,7 @@
 		{"id":"n-dispatch","type":"text","text":"**dispatch**\nghi `👷 executor`\n`status: dispatched`\n📤 giao việc ra ngoài","x":340,"y":110,"width":300,"height":110,"color":"6"},
 		{"id":"n-proj-pmi","type":"file","file":"projects/topvnsport-pmi/topvnsport-pmi.md","x":0,"y":250,"width":300,"height":70},
 		{"id":"n-proj-oms","type":"file","file":"projects/topvnsport-oms/topvnsport-oms.md","x":340,"y":250,"width":300,"height":70},
+		{"id":"n-proj-wms","type":"file","file":"projects/topvnsport-wms/topvnsport-wms.md","x":680,"y":330,"width":300,"height":70},
 		{"id":"n-inbox","type":"file","file":"inbox.md","x":680,"y":250,"width":240,"height":70},
 		{"id":"n-lint","type":"text","text":"**/lint**\ntask trễ hạn · thiếu AC\nlink chết · kẹt dispatched/in-review","x":640,"y":500,"width":280,"height":110,"color":"6"},
 		{"id":"n-review-order","type":"text","text":"**/review-order**\nphát phiếu review\n`status: in-review`\n(read-only, không tự review)","x":0,"y":360,"width":300,"height":110,"color":"6"},
@@ -34,6 +35,11 @@
 		{"id":"e11","fromNode":"n-review-order","fromSide":"bottom","toNode":"n-verdict","toSide":"top"},
 		{"id":"e12","fromNode":"n-verdict","fromSide":"right","toNode":"n-log","toSide":"left","label":"ghi audit + commit hash"},
 		{"id":"e13","fromNode":"n-verdict","fromSide":"top","toNode":"n-proj-pmi","toSide":"bottom","label":"changes-requested (loop)"},
-		{"id":"e14","fromNode":"n-proj-oms","fromSide":"bottom","toNode":"n-lint","toSide":"top","label":"quét backlog"}
+		{"id":"e14","fromNode":"n-proj-oms","fromSide":"bottom","toNode":"n-lint","toSide":"top","label":"quét backlog"},
+		{"id":"e15","fromNode":"n-dispatch","fromSide":"right","toNode":"n-proj-wms","toSide":"top"},
+		{"id":"e16","fromNode":"n-proj-wms","fromSide":"right","toNode":"g-exe","toSide":"bottom","label":"📤 dispatched"},
+		{"id":"e17","fromNode":"n-proj-wms","fromSide":"left","toNode":"n-review-order","toSide":"right"},
+		{"id":"e18","fromNode":"n-verdict","fromSide":"right","toNode":"n-proj-wms","toSide":"bottom","label":"changes-requested (loop)"},
+		{"id":"e19","fromNode":"n-proj-wms","fromSide":"bottom","toNode":"n-lint","toSide":"left","label":"quét backlog"}
 	]
 }

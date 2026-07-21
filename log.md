@@ -145,3 +145,11 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: AGENTS.md, CLAUDE.md, index.md, control-tower-map.canvas, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, .claude/skills/ingest/SKILL.md, projects/topvnsport-pmi/topvnsport-pmi.md (đổi tên từ _project.md), projects/topvnsport-oms/topvnsport-oms.md (đổi tên), projects/topvnsport-wms/topvnsport-wms.md (đổi tên), projects/*/tasks/*.md (10 file, sửa dòng backlink)
 - Trạng thái: Thành công.
 - Commit: `bf3b238`
+
+## [2026-07-21 22:30:00] plan | Thêm node WMS còn thiếu vào `control-tower-map.canvas`
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: User hỏi tại sao project WMS (mới onboard) không thấy nối vào node `control-tower-map.canvas` trên Graph view như PMI/OMS. Kiểm tra `control-tower-map.canvas` xác nhận: file này chỉ có 2 node project (`n-proj-pmi`, `n-proj-oms`) từ lúc vẽ ban đầu — WMS được onboard sau đó nhưng chưa ai thêm node/cạnh tương ứng vào canvas, nên không có liên kết. Đã thêm node `n-proj-wms` (trỏ `projects/topvnsport-wms/topvnsport-wms.md`) cùng 5 cạnh mô phỏng đúng luồng đã có cho PMI/OMS: dispatch → wms, wms → EXECUTOR (dispatched), wms → /review-order, /verdict → wms (changes-requested loop), wms → /lint (quét backlog).
+- Giải trình: Đây là thiếu sót nội dung diagram (bỏ sót khi onboard WMS), không phải lỗi cơ chế Graph/canvas. Bổ sung thuần túy thêm node+edge mới, không sửa/xoá node cũ nào.
+- Files touched: control-tower-map.canvas
+- Trạng thái: Thành công.
+- Commit: (điền sau khi commit)
