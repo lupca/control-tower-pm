@@ -15,12 +15,12 @@ Người dùng gọi: `/pm $ARGUMENTS`. Bạn đang chạy trong repo `control-t
 2. Xác định dự án đích:
    - Nếu `$ARGUMENTS` có `--project <tên>`, dùng đúng tên đó để tra bảng registry.
    - Nếu không, suy luận từ nội dung mô tả (vd "variant"/"PMI" → `topvnsport-pmi`; "đơn hàng"/"OMS" → `topvnsport-oms`). Nếu không chắc, hỏi lại User.
-   - Lấy `repo_root` tuyệt đối + `Task file` từ registry. Nếu dự án chưa có trong registry, dừng lại, báo User cần onboard trước (`AGENTS.md` mục 10).
+   - Lấy `repo_root` tuyệt đối + `Task dir` (`projects/<tên>/tasks/`) từ registry. Đọc `projects/<tên>/_project.md` để lấy `task_prefix` + `next_task_id`. Nếu dự án chưa có trong registry, dừng lại, báo User cần onboard trước (`AGENTS.md` mục 10).
 
 ### Bước 1 — Xác định giai đoạn đang ở đâu
 
-- **Yêu cầu mới / task chưa tồn tại trong `projects/*.md`** → thực hiện theo `.claude/skills/pm/references/task-creation.md` (Spec Gate, `status: todo`). Dừng chờ duyệt sau khi viết task.
-- **Task đã có, Spec Gate vừa được User duyệt** (User nói "ok", "duyệt", "đồng ý với AC này"...) → thực hiện theo `references/task-execution.md` (Plan Gate → `ready` → `dispatched`). Dừng sau khi ghi `👷 executor` + `dispatched`.
+- **Yêu cầu mới / chưa có file task tương ứng trong `projects/<tên>/tasks/*.md`** (Glob để kiểm tra) → thực hiện theo `.claude/skills/pm/references/task-creation.md` (Spec Gate, `status: todo`). Dừng chờ duyệt sau khi viết task.
+- **Task đã có, Spec Gate vừa được User duyệt** (User nói "ok", "duyệt", "đồng ý với AC này"...) → thực hiện theo `references/task-execution.md` (Plan Gate → `ready` → `dispatched`). Dừng sau khi ghi `executor:` + `dispatched`.
 
 **`/pm` KHÔNG có bước thứ ba.** Sau khi task ở `status: dispatched`, công việc của `/pm` với task đó đã xong. Khi executor báo hoàn tất, bước tiếp theo là `/review-order` (skill khác, chạy riêng, không phải tiếp nối tự động của `/pm`).
 
@@ -31,6 +31,6 @@ Không tự suy luận đã qua gate nếu User chưa xác nhận rõ ràng bằ
 - Quên `repo_root` → graph tool auto-detect theo cwd của `control-tower` và trả kết quả sai/rỗng.
 - Gọi `query_graph_tool` với tham số `edge` — tool thật chỉ có `pattern`/`target`, không có `edge`.
 - Dùng `top_n` mặc định (10) cho `get_hub_nodes_tool`/`get_bridge_nodes_tool` — quá nhỏ so với repo lớn, khiến `⚠️high-risk` gần như không bao giờ kích hoạt. Luôn truyền `top_n=50`.
-- Ghi path tuyệt đối vào `projects/*.md` thay vì path tương đối so với `repo_root`.
+- Ghi path tuyệt đối vào `files:` thay vì path tương đối so với `repo_root`.
 - Tự động nhảy qua gate mà chưa có xác nhận rõ ràng của User.
 - **Tự viết code, tự chạy test, hoặc tự đóng task (`- [x]`).** Đây không còn là việc của `/pm` trong Mô hình B — dù task có vẻ đơn giản đến đâu, việc code luôn ở ngoài hệ và việc đóng task luôn qua `/verdict`.
