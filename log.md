@@ -152,4 +152,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Đây là thiếu sót nội dung diagram (bỏ sót khi onboard WMS), không phải lỗi cơ chế Graph/canvas. Bổ sung thuần túy thêm node+edge mới, không sửa/xoá node cũ nào.
 - Files touched: control-tower-map.canvas
 - Trạng thái: Thành công.
-- Commit: (điền sau khi commit)
+- Commit: `118a546`
