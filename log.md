@@ -57,3 +57,19 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: ~/.code-review-graph/watch.toml (ngoài repo, config máy)
 - Trạng thái: Thành công — `daemon status` xác nhận PID chạy, alias `topvnsport` alive.
 - Commit: n/a
+
+## [2026-07-21 18:30:00] report | Reconcile git history vào task list
+- Dự án: `topvnsport-pmi`
+- Mô tả: Quét git log của `/home/lupca/projects/topvnsport` từ đầu năm, phân tích 50 commit gần nhất, nhóm thành các feature đã implement, reconcile vào `projects/topvnsport-pmi.md` với trạng thái `- [x]`.
+- Giải trình: Backlog control-tower mới được khởi tạo nên chưa track các feature đã làm trước đó. Phân tích git history phát hiện 7 feature lớn đã hoàn thành: (1) Identity Service/SSO `0d22c38`, (2) PMI migrate to Identity `e5461a5`, (3) API Gateway migration `b279b90`, (4) Identity in CD pipeline `91dfb05`, (5) Product Form UX refactor `7e820ae`, (6) Cost/Tax sync PMI↔WMS `cf886a5`, (7) Stock Management → WMS `d14f956`. Tất cả đã có commit + test pass, ghi vào backlog để phản ánh đúng công việc đã làm.
+- Files touched: projects/topvnsport-pmi.md
+- Trạng thái: Thành công.
+- Commit: n/a
+
+## [2026-07-21 19:00:00] plan | Chuyển sang Mô hình B — review hoàn toàn ngoài hệ (§10)
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: Implement §10 của spec cập nhật (Mô hình B): control-tower thu hẹp phạm vi về PLAN + COORDINATE thuần Markdown, bỏ hẳn "Code Gate" nội bộ (control-tower từng gọi `detect_changes_tool` + trực tiếp chạy test để tự verify trước khi đóng task). Giờ EXECUTE (viết code) và REVIEW (đọc diff, chạy test) đều do người/AI khác đảm nhiệm hoàn toàn ngoài hệ, độc lập với nhau (reviewer ≠ executor). Thay đổi cụ thể: viết lại `AGENTS.md` (vai trò PLAN/EXECUTE/REVIEW/COORDINATE §1, cú pháp task thêm metadata `status`/`👷 executor`/`🔎 reviewer`/`🔗result` §2, vòng đời task todo→ready→dispatched→in-review→done|changes-requested §2.3, DoD giờ do reviewer xác nhận §3, chỉ còn 2 gate Spec+Plan trong hệ §4, bàn giao §5); rút gọn `pm/SKILL.md` + `task-execution.md` để dừng ở `dispatched` (xóa `task-finalization.md` — logic đóng task chuyển hẳn sang `/verdict`); tạo mới `review-order/SKILL.md` (phát phiếu review, không tự review/không đọc diff) và `verdict/SKILL.md` (ghi verdict, chặn four-eyes); thêm 2 luật anomaly cho `/lint` (kẹt `dispatched`/`in-review` quá lâu); tạo thư mục `reviews/`.
+- Giải trình: Người dùng chốt rõ 3 điều: (1) test luôn do reviewer ngoài hệ chạy, không phải control-tower/subagent nội bộ; (2) "check" = phiếu review độc lập → reviewer (người/AI khác) tự làm trong repo code → báo verdict → `/verdict` cập nhật hệ thống; (3) đây là formalize hóa quy trình thủ công người dùng đã làm (tạo phiếu → reviewer độc lập → update), giờ có audit trong git. Việc này thay thế hoàn toàn giả định cũ (Tầng A §4 Code Gate) rằng control-tower/subagent tự chạy `detect_changes_tool` + test để tự đóng task — giả định đó không còn đúng vì Mô hình B minh định control-tower không bao giờ đọc diff hay chạy test.
+- Files touched: AGENTS.md, CLAUDE.md, index.md, projects/topvnsport-pmi.md, projects/topvnsport-oms.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/pm/references/task-execution.md, .claude/skills/pm/references/task-finalization.md (đã xóa), .claude/skills/ingest/SKILL.md, .claude/skills/lint/SKILL.md, .claude/skills/review-order/SKILL.md (mới), .claude/skills/verdict/SKILL.md (mới), reviews/README.md (mới)
+- Trạng thái: Thành công.
+- Commit: n/a (sẽ điền sau khi commit)

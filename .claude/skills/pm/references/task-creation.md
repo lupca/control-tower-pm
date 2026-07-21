@@ -2,7 +2,7 @@
 
 Áp dụng khi User giao một yêu cầu mới qua `/pm`. Mục tiêu: sinh ra một task đầy đủ `🔗`/`✅ AC`/`🧪`/`🌀` (cú pháp ở `AGENTS.md` mục 2.1), **không được ghi task nếu chưa gọi graph**.
 
-## Các bước (theo bảng B1 trong `AGENTS.md` mục 5.1)
+## Các bước (theo bảng trong `AGENTS.md` mục 6.1)
 
 Tất cả tool dưới đây bắt buộc kèm `repo_root=<tuyệt đối, tra từ index.md mục 2>`; dùng `detail_level="minimal"` khi tool hỗ trợ.
 
@@ -20,11 +20,11 @@ Tất cả tool dưới đây bắt buộc kèm `repo_root=<tuyệt đối, tra 
 ## Viết task
 
 - Chuyển mọi path tuyệt đối graph trả về thành path **repo-relative** (cắt tiền tố `repo_root`). Không bao giờ ghi path đoán mò — nếu graph không xác nhận được, ghi `*(path chưa xác nhận qua graph)*` thay vì bịa.
-- Viết task cha + sub-task theo đúng cú pháp `AGENTS.md` mục 2.1 vào `projects/<task-file>` (tra từ registry).
+- Viết task cha + sub-task theo đúng cú pháp `AGENTS.md` mục 2.1 vào `projects/<task-file>` (tra từ registry), với `status: todo` trong dòng metadata. KHÔNG điền `👷 executor`/`🔎 reviewer`/`🔗result` — các field này chỉ điền ở giai đoạn sau (Plan Gate/dispatch, review-order, verdict).
 - Nếu task chạm `schemas/`, `models.py`, hoặc thư mục migration → RESTRICTED tự động (`AGENTS.md` mục 1 & 4), nêu rõ trong task.
 - Để trống mục `▸ Plan:` — sẽ điền ở Plan Gate (xem `task-execution.md`), không điền trước.
 
 ## Đóng Spec Gate
 
-1. Ghi 1 entry vào `log.md` (`operation: pm-create`, format `AGENTS.md` mục 6).
+1. Ghi 1 entry vào `log.md` (`operation: pm-create`, format `AGENTS.md` mục 7).
 2. Hiển thị task vừa viết cho User, dừng lại chờ duyệt phạm vi & AC. **Không** tự chuyển sang Plan Gate — cần User xác nhận rõ ràng.

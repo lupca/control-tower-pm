@@ -22,9 +22,11 @@ Chỉ đọc và báo cáo — **không tự sửa/xóa task** (thuộc RESTRICT
    5. **Mâu thuẫn**: 2 task (cùng file hoặc khác file) có cùng `🔗` trùng nhau nhưng mô tả có vẻ xung khắc (heuristic: đọc mô tả, không cần tool) → cờ để User xử lý thủ công.
    6. **Lệch trạng thái**: task đã `[x]` nhưng không tìm thấy entry `Commit:` tương ứng (khác `n/a`) trong `log.md` → cờ "đóng task nhưng thiếu bằng chứng commit".
    7. **Đề xuất dọn**: task có `📅` cách đây > 90 ngày và vẫn `- [ ]`, không có hoạt động log gần đây → gợi ý archive (không tự làm).
+   8. **Kẹt ở `dispatched`** (executor mất hút): task có `status: dispatched` và `📤 dispatched: <ngày>` cách hôm nay > 7 ngày, chưa có `🔗result` → cờ "executor chưa báo kết quả, cân nhắc nhắc `👷 executor` hoặc đổi người".
+   9. **Kẹt ở `in-review`** (reviewer chưa duyệt): task có `status: in-review` và `🔍 in-review: <ngày>` cách hôm nay > 3 ngày, chưa có verdict trong `log.md` → cờ "reviewer chưa trả kết quả, cân nhắc nhắc `🔎 reviewer`".
 
 4. Xuất báo cáo dạng bảng "Findings" trong chat: cột Severity (🔴/🟡/🟢), Task (mô tả ngắn + file), Vấn đề, Đề xuất hành động.
-5. Ghi 1 entry `lint` vào `log.md` theo format `AGENTS.md` mục 6 — tóm tắt số finding theo severity, không cần liệt kê hết trong log (chi tiết đã có trong chat).
+5. Ghi 1 entry `lint` vào `log.md` theo format `AGENTS.md` mục 7 — tóm tắt số finding theo severity, không cần liệt kê hết trong log (chi tiết đã có trong chat).
 
 ### Lưu ý
 - Nếu backlog sạch (không có finding nào), báo ngắn gọn "Backlog sạch, không phát hiện vấn đề" — vẫn ghi log để có dấu vết đã chạy `/lint`.

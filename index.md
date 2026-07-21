@@ -7,7 +7,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 ## 1. THỐNG KÊ TỔNG QUAN (System Status)
 
 *   **Thời gian cập nhật cuối:** 2026-07-21
-*   **Trạng thái Agent:** 🟢 Hoạt động bình thường (Skill `/pm` + `code-review-graph` sẵn sàng)
+*   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
 *   **Tổng số dự án:** 2 dự án đang hoạt động
 
 ---
@@ -27,9 +27,9 @@ Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_roo
 
 ## 3. BẢN ĐỒ TIẾN ĐỘ DỰ ÁN (Project Map)
 
-| Dự án | File Quản Lý | Trạng thái | Tiến độ (Done/Total) | Người Phụ Trách | Ghi chú |
+| Dự án | File Quản Lý | Trạng thái | Tiến độ (Done/Total) | Executor/Reviewer hiện tại | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TopVNSport - PMI** | `projects/topvnsport-pmi.md` | 🔄 Đang chạy | 1/3 | `/pm` Skill + Subagent | Quản lý quy trình, nghiệp vụ PMI |
+| **TopVNSport - PMI** | `projects/topvnsport-pmi.md` | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
 | **TopVNSport - OMS** | `projects/topvnsport-oms.md` | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
 
 ---
@@ -37,14 +37,19 @@ Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_roo
 ## 4. THƯ MỤC CÔNG VIỆC CHỜ XỬ LÝ (Inbox & Logs Quicklink)
 
 *   **[`inbox.md`](inbox.md):** Nơi bạn ném mọi ý tưởng thô, yêu cầu phát sinh hoặc feedback nhanh từ team. Gõ `/ingest` để Agent tự động đọc và phân rã thành các task chính thức.
+*   **[`reviews/`](reviews/):** Phiếu review do `/review-order` sinh cho reviewer độc lập — xem `reviews/README.md`.
 *   **[`log.md`](log.md):** Nhật ký kiểm toán (Audit Trail) ghi lại mọi hành động tự trị hoặc được duyệt của Agent. Đảm bảo tính minh bạch và an toàn hệ thống.
 
 ---
 
-## 5. QUY TRÌNH VẬN HÀNH NHANH (Runbook)
+## 5. QUY TRÌNH VẬN HÀNH NHANH (Runbook) — Mô hình B
 
-1.  **Giao task mới:** Thêm ý tưởng vào `inbox.md` hoặc gõ thẳng `/pm <yêu cầu_của_bạn>` trong chat — task sinh ra sẽ có Acceptance Criteria + test + rủi ro (xem `AGENTS.md` mục 2, 5).
-2.  **Duyệt qua 3 cổng:** Spec Gate (duyệt AC) → Plan Gate (duyệt kế hoạch code trong `▸ Plan:`) → Code Gate (duyệt verify trước khi đóng task). Xem `AGENTS.md` mục 4.
-3.  **Xem báo cáo:** Gõ `/report` để Agent quét các file `.md` và cập nhật lại bảng tiến độ trên đây.
-4.  **Health-check backlog:** Gõ `/lint` định kỳ để phát hiện task trễ hạn, thiếu AC, link file chết, task mồ côi.
-5.  **Thêm dự án mới:** Xem mục 9 của `AGENTS.md` (Onboard dự án mới).
+1.  **Giao task mới:** Thêm ý tưởng vào `inbox.md` hoặc gõ thẳng `/pm <yêu cầu_của_bạn>` trong chat — task sinh ra sẽ có Acceptance Criteria + test + rủi ro (xem `AGENTS.md` mục 2, 6).
+2.  **Duyệt 2 cổng trong hệ:** Spec Gate (duyệt AC) → Plan Gate (duyệt kế hoạch trong `▸ Plan:`) → task chuyển `ready` rồi `dispatched` kèm `👷 executor`. Xem `AGENTS.md` mục 4.
+3.  **Giao việc ra ngoài:** executor (người/AI khác, ngoài hệ) tự viết code + chạy test trong repo code đích, rồi báo lại result-ref (branch/commit/PR).
+4.  **Phát phiếu review:** Gõ `/review-order <task> --ref <result-ref>` → sinh phiếu tại `reviews/`, giao reviewer độc lập (≠ executor).
+5.  **Review ngoài hệ:** reviewer đọc diff + chạy test trong repo code đích (khuyến khích dùng `/code-review` của repo đó) — hoàn toàn ngoài control-tower.
+6.  **Ghi verdict:** Gõ `/verdict <task> pass --reviewer @id --commit <hash>` (hoặc `changes --notes ...`) → đóng task hoặc mở lại kèm findings.
+7.  **Xem báo cáo:** Gõ `/report` để Agent quét các file `.md` và cập nhật lại bảng tiến độ trên đây.
+8.  **Health-check backlog:** Gõ `/lint` định kỳ để phát hiện task trễ hạn, thiếu AC, link file chết, task mồ côi, kẹt ở `dispatched`/`in-review`.
+9.  **Thêm dự án mới:** Xem mục 10 của `AGENTS.md` (Onboard dự án mới).
