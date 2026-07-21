@@ -160,4 +160,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Việc onboard dự án mới trước đây (mục 10) chỉ có 5 bước liên quan tới registry/graph-tool/daemon, không có bước nào nhắc cập nhật phần trực quan hoá Obsidian — đây chính là lý do WMS bị "vô hình" trên canvas dù đã onboard đúng quy trình. Thêm bước 6 để agent tương lai tự làm luôn, không phải đợi user phát hiện qua screenshot.
 - Files touched: AGENTS.md
 - Trạng thái: Thành công.
-- Commit: (điền sau khi commit)
+- Commit: `c486043`
