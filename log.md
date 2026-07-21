@@ -88,4 +88,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Lý do đổi: nhiều executor/reviewer cùng hoạt động trên 1 file task lớn → git conflict liên tục; task không có chỗ chứa spec/plan/review dài mà không phình file dùng chung. Đồng thời control-tower thiếu nơi lưu domain knowledge/ADR — người/AI mới vào không biết "trước mình quyết gì về X". Tách biệt rõ: task (có status, cần hành động) vs knowledge (tài liệu tham khảo sống, không status/executor/deadline) — tránh biến quyết định kiến trúc thành task giả hoặc ngược lại.
 - Files touched: AGENTS.md, CLAUDE.md, index.md, projects/topvnsport-pmi/_project.md (mới), projects/topvnsport-pmi/tasks/PMI-001..009 (mới, 9 file), projects/topvnsport-oms/_project.md (mới), projects/topvnsport-pmi.md (đã xoá), projects/topvnsport-oms.md (đã xoá), knowledge/_index.md (mới), knowledge/decisions/ADR-001-file-over-api.md (mới), .claude/skills/{pm,ingest,report,lint,review-order,verdict}/SKILL.md, .claude/skills/pm/references/{task-creation,task-execution}.md
 - Trạng thái: Thành công.
-- Commit: n/a (sẽ điền sau khi commit)
+- Commit: `d4e16c8`
