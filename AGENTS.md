@@ -270,6 +270,9 @@ Khi cần thêm một dự án mới vào Control Tower:
    ```
 4. Đăng ký daemon watch để graph tự cập nhật (mục 6.6): `daemon add <repo_root> --alias <tên>`.
 5. (Tùy chọn) `code-review-graph register <repo_root> --alias <tên>` nếu cần `cross_repo_search_tool` truy vấn chéo nhiều dự án cùng lúc.
+6. **Cập nhật trực quan hoá Obsidian** (bắt buộc, đừng bỏ sót như đã từng xảy ra với WMS):
+   - `.obsidian/graph.json`: thêm 1 entry vào `colorGroups` — `{"query": "path:projects/<tên-dự-án>", "color": {"a": 1, "rgb": <số rgb decimal chưa dùng bởi entry nào khác>}}`.
+   - `control-tower-map.canvas`: thêm 1 node file trỏ `projects/<tên-dự-án>/<tên-dự-án>.md` + 5 cạnh (dispatch→node, node→`g-exe` "dispatched", node→`n-review-order`, `n-verdict`→node "changes-requested loop", node→`n-lint` "quét backlog"). Dùng node `n-proj-wms` và các cạnh `e15`-`e19` làm mẫu chép lại (đổi id/path). Toạ độ `x`/`y` chỉ cần đặt vào chỗ trống, không cần tính chính xác — đây thuần là sơ đồ trực quan.
 
 ---
 

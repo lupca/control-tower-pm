@@ -153,3 +153,11 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: control-tower-map.canvas
 - Trạng thái: Thành công.
 - Commit: `118a546`
+
+## [2026-07-21 22:35:00] plan | Thêm bước 6 vào runbook Onboard (AGENTS.md mục 10) — không bỏ sót canvas/graph.json cho dự án mới
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: User yêu cầu khi Agent tạo project mới (onboard), phải tự hướng dẫn ghi luôn vào "vanvar" (canvas/vault Obsidian) thay vì phải người dùng phát hiện thiếu sót sau như trường hợp WMS. Đã thêm bước 6 vào runbook `AGENTS.md` mục 10: (a) thêm 1 colorGroup mới trong `.obsidian/graph.json` theo `path:projects/<tên-dự-án>`; (b) thêm 1 node file + 5 cạnh chuẩn vào `control-tower-map.canvas`, dùng `n-proj-wms`/`e15`-`e19` (vừa thêm ở entry log trước) làm mẫu chép lại. Nêu rõ toạ độ không cần chính xác vì đây chỉ là sơ đồ trực quan.
+- Giải trình: Việc onboard dự án mới trước đây (mục 10) chỉ có 5 bước liên quan tới registry/graph-tool/daemon, không có bước nào nhắc cập nhật phần trực quan hoá Obsidian — đây chính là lý do WMS bị "vô hình" trên canvas dù đã onboard đúng quy trình. Thêm bước 6 để agent tương lai tự làm luôn, không phải đợi user phát hiện qua screenshot.
+- Files touched: AGENTS.md
+- Trạng thái: Thành công.
+- Commit: (điền sau khi commit)
