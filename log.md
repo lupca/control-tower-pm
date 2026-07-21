@@ -136,4 +136,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: `verdict/SKILL.md` không đụng `reviews/` nên xác nhận trước khi tin theo bảng đề xuất, tránh sửa nhầm chỗ không tồn tại. Việc dời vào per-project giúp mỗi dự án tự chứa (project, task, review đi cùng nhau), nhất quán với cấu trúc task-per-file đã làm trước đó, và giúp Obsidian Graph tự cụm phiếu review vào đúng màu project (không cần colorGroup riêng).
 - Files touched: AGENTS.md, index.md, .claude/skills/review-order/SKILL.md, control-tower-map.canvas, .obsidian/graph.json, projects/topvnsport-wms/reviews/WMS-001-review.md (di chuyển từ reviews/WMS-001-review.md), reviews/README.md (đã xoá)
 - Trạng thái: Thành công.
-- Commit: (điền sau khi commit)
+- Commit: `3db8a3b`
