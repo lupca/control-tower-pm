@@ -32,17 +32,17 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **TopVNSport - PMI** | `projects/topvnsport-pmi/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
 | **TopVNSport - OMS** | `projects/topvnsport-oms/` (`_project.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
-| **TopVNSport - WMS** | `projects/topvnsport-wms/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 0/1 | Chưa gán | Quản lý kho hàng, tồn kho, barcode |
+| **TopVNSport - WMS** | `projects/topvnsport-wms/` (`_project.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
 
 ---
 
 ## 4. THƯ MỤC CÔNG VIỆC CHỜ XỬ LÝ (Inbox & Logs Quicklink)
 
 *   **[`inbox.md`](inbox.md):** Nơi bạn ném mọi ý tưởng thô, yêu cầu phát sinh hoặc feedback nhanh từ team. Gõ `/ingest` để Agent tự động đọc và phân rã thành các task chính thức.
-*   **[`reviews/`](reviews/):** Phiếu review do `/review-order` sinh cho reviewer độc lập — xem `reviews/README.md`.
+*   **`projects/<tên>/reviews/`:** Phiếu review do `/review-order` sinh cho reviewer độc lập, nằm ngay trong từng project (không còn thư mục `reviews/` chung ở root).
 *   **[`knowledge/`](knowledge/):** Domain knowledge, ADR, quy ước dùng chung nhiều dự án — xem `knowledge/_index.md` và mục 6 dưới đây.
 *   **[`log.md`](log.md):** Nhật ký kiểm toán (Audit Trail) ghi lại mọi hành động tự trị hoặc được duyệt của Agent. Đảm bảo tính minh bạch và an toàn hệ thống.
-*   **[`control-tower-map.canvas`](control-tower-map.canvas):** Sơ đồ Obsidian Canvas trực quan hoá luồng Mô hình B (PLAN/COORDINATE ↔ EXECUTE ↔ REVIEW), có link nhấn được tới `AGENTS.md`, `projects/<tên>/_project.md`, `reviews/`, `log.md`. Mở repo này bằng Obsidian để xem — Graph view cũng đã được tô màu theo nhóm (Core/Tasks/Skills/Reviews).
+*   **[`control-tower-map.canvas`](control-tower-map.canvas):** Sơ đồ Obsidian Canvas trực quan hoá luồng Mô hình B (PLAN/COORDINATE ↔ EXECUTE ↔ REVIEW), có link nhấn được tới `AGENTS.md`, `projects/<tên>/_project.md`, `log.md` (phiếu review nay nằm trong `projects/<tên>/reviews/`, không còn 1 node file chung). Mở repo này bằng Obsidian để xem — Graph view cũng đã được tô màu theo nhóm (Core/PMI/OMS/WMS/knowledge/skills).
 
 ---
 
@@ -51,7 +51,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 1.  **Giao task mới:** Thêm ý tưởng vào `inbox.md` hoặc gõ thẳng `/pm <yêu cầu_của_bạn>` trong chat — task sinh ra sẽ có Acceptance Criteria + test + rủi ro (xem `AGENTS.md` mục 2, 6).
 2.  **Duyệt 2 cổng trong hệ:** Spec Gate (duyệt AC) → Plan Gate (duyệt kế hoạch trong `## Plan`) → task chuyển `ready` rồi `dispatched` kèm `executor:`. Xem `AGENTS.md` mục 4.
 3.  **Giao việc ra ngoài:** executor (người/AI khác, ngoài hệ) tự viết code + chạy test trong repo code đích, rồi báo lại result-ref (branch/commit/PR).
-4.  **Phát phiếu review:** Gõ `/review-order <task> --ref <result-ref>` → sinh phiếu tại `reviews/`, giao reviewer độc lập (≠ executor).
+4.  **Phát phiếu review:** Gõ `/review-order <task> --ref <result-ref>` → sinh phiếu tại `projects/<tên>/reviews/`, giao reviewer độc lập (≠ executor).
 5.  **Review ngoài hệ:** reviewer đọc diff + chạy test trong repo code đích (khuyến khích dùng `/code-review` của repo đó) — hoàn toàn ngoài control-tower.
 6.  **Ghi verdict:** Gõ `/verdict <task> pass --reviewer @id --commit <hash>` (hoặc `changes --notes ...`) → đóng task hoặc mở lại kèm findings.
 7.  **Xem báo cáo:** Gõ `/report` để Agent quét các file `.md` và cập nhật lại bảng tiến độ trên đây.

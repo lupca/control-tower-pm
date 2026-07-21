@@ -13,7 +13,7 @@
 		{"id":"n-inbox","type":"file","file":"inbox.md","x":680,"y":250,"width":240,"height":70},
 		{"id":"n-lint","type":"text","text":"**/lint**\ntask trễ hạn · thiếu AC\nlink chết · kẹt dispatched/in-review","x":640,"y":500,"width":280,"height":110,"color":"6"},
 		{"id":"n-review-order","type":"text","text":"**/review-order**\nphát phiếu review\n`status: in-review`\n(read-only, không tự review)","x":0,"y":360,"width":300,"height":110,"color":"6"},
-		{"id":"n-reviews","type":"file","file":"reviews/README.md","x":340,"y":360,"width":300,"height":70},
+		{"id":"n-reviews","type":"text","text":"**reviews/**\nphiếu review nằm trong\ntừng project: `projects/<tên>/reviews/`","x":340,"y":360,"width":300,"height":70,"color":"6"},
 		{"id":"n-verdict","type":"text","text":"**/verdict**\nkiểm four-eyes\n`pass` → done (cần người xác nhận)\n`changes` → changes-requested","x":0,"y":500,"width":300,"height":110,"color":"6"},
 		{"id":"n-log","type":"file","file":"log.md","x":340,"y":500,"width":260,"height":70},
 		{"id":"n-exe-work","type":"text","text":"Viết code + tự chạy test\ntrong repo code đích\n→ branch/commit/PR\n(báo lại `🔗result`)","x":1400,"y":-85,"width":340,"height":130},

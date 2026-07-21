@@ -22,7 +22,7 @@ Vì phân quyền được rạch ròi theo vai trò ở trên, ma trận AUTONO
 
 | Cấp độ Quyền | Hành động (đều là Markdown, không phải code) | Quy trình xử lý |
 | :--- | :--- | :--- |
-| **AUTONOMOUS** *(Tự quyền)* | - Đọc và phân tích `projects/`, `knowledge/`, `inbox.md`, `reviews/`. <br>- Dùng `code-review-graph` (read-only) để tra blast radius/test gap/flows. <br>- Chạy `/lint` (chỉ đọc + báo cáo). | Tự động thực hiện, không cần hỏi User. |
+| **AUTONOMOUS** *(Tự quyền)* | - Đọc và phân tích `projects/` (bao gồm `projects/<tên>/reviews/`), `knowledge/`, `inbox.md`. <br>- Dùng `code-review-graph` (read-only) để tra blast radius/test gap/flows. <br>- Chạy `/lint` (chỉ đọc + báo cáo). | Tự động thực hiện, không cần hỏi User. |
 | **COLLABORATIVE** *(Cần duyệt)* | - Viết task mới vào `projects/<tên>/tasks/*.md` (Spec Gate). <br>- Ghi kế hoạch vào `## Plan` (Plan Gate). <br>- Đánh dấu `dispatched`, ghi `executor:`. <br>- Phát phiếu review (`/review-order`). <br>- Route knowledge vào `knowledge/`/`docs/` (mục 11). | Ghi giải trình vào `log.md` **và** dừng ở đúng Gate (mục 4) chờ xác nhận (Y/N). |
 | **RESTRICTED** *(Không được tự ý)* | - Ghi verdict `pass` (đóng task `status: done`) — luôn cần xác nhận người. <br>- Bulk update (>3 task). <br>- Xóa task/file dự án. <br>- Ghi verdict khi `reviewer:` == `executor:`. | Bắt buộc dừng lại, xin phê duyệt trực tiếp bằng văn bản/chat, không suy diễn im lặng là "đã duyệt". |
 
@@ -164,7 +164,7 @@ Sau Plan Gate, vòng đời task tiếp tục **ngoài hệ**:
 - **OUT (giao việc)**: file task = phiếu giao việc tự chứa (AC + `files:` + `tests:` + `## Plan` + DoD). Executor chỉ cần path task; không cần cùng hệ/công cụ với control-tower.
 - **IN (trả việc)**: executor báo "xong" kèm **result-ref** (branch/commit/PR) → ghi vào `result_ref:`, chuyển `status: in-review`.
 - Executor có thể là: phiên Claude riêng trong repo code (khuyến nghị), AI khác (Antigravity/Cursor…), hoặc người. Control-tower **không giả định gì** về executor.
-- **REVIEW-OUT**: `/review-order` sinh phiếu review (`reviews/<task>-review.md`) → giao reviewer độc lập (≠ executor).
+- **REVIEW-OUT**: `/review-order` sinh phiếu review (`projects/<tên>/reviews/<ID>-review.md`) → giao reviewer độc lập (≠ executor). control-tower không tự tạo/xóa phiếu ngoài luồng `/review-order` — không sửa tay file trong thư mục này trừ khi cần đính chính thông tin.
 - **VERDICT-IN**: reviewer báo kết quả → `/verdict` ghi vào hệ thống. Reviewer cũng có thể là người hoặc AI khác; control-tower không giả định gì về reviewer.
 
 ---
@@ -262,7 +262,7 @@ Khi phân loại 1 ghi chú từ `inbox.md`: nếu **task tương tự đã tồ
 Khi cần thêm một dự án mới vào Control Tower:
 
 1. Thêm 1 hàng vào bảng **PROJECT REGISTRY** trong `index.md` (mục 2): tên dự án, `repo_root` tuyệt đối, thư mục task.
-2. Tạo thư mục `projects/<tên-dự-án>/` với `_project.md` (copy khung từ `projects/topvnsport-pmi/_project.md`, đặt `task_prefix` + `next_task_id: 1`), `tasks/`, `docs/`.
+2. Tạo thư mục `projects/<tên-dự-án>/` với `_project.md` (copy khung từ `projects/topvnsport-pmi/_project.md`, đặt `task_prefix` + `next_task_id: 1`), `tasks/`, `docs/`, `reviews/`.
 3. Build graph cho repo đó (nếu chưa có):
    ```bash
    /home/lupca/.local/share/code-review-graph-venv/bin/python3 -m code_review_graph build --repo <repo_root>

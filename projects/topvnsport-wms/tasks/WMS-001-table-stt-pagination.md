@@ -1,13 +1,13 @@
 ---
 id: WMS-001
 title: "Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS"
-status: in-review
+status: done
 priority: high
 risk: normal
 deadline: 2026-07-28
 executor: "@antigravity"
-reviewer: null
-result_ref: "local (uncommitted)"
+reviewer: "@claude"
+result_ref: "f4a0971"
 depends_on: []
 files:
   - WMS/frontend/src/components/ui/DataTable.tsx
@@ -39,13 +39,13 @@ Hệ thống WMS đang dùng component `DataTable` chung nhưng:
 PMI đã implement đầy đủ (client-side pagination), WMS cần làm tương tự để nhất quán.
 
 ## Tiêu chí nghiệm thu (AC)
-- [ ] **AC1:** `DataTable.tsx` có prop `showRowNumber?: boolean` (default `true`), hiển thị cột STT đầu tiên
-- [ ] **AC2:** STT tính đúng theo công thức: `(currentPage - 1) * limit + index + 1` (có pagination) hoặc `index + 1` (không có)
-- [ ] **AC3:** Trang `inventory/page.tsx` có pagination hoạt động (dropdown số dòng, nút prev/next, hiển thị "Trang X/Y")
-- [ ] **AC4:** Trang `transactions/page.tsx` có pagination hoạt động
-- [ ] **AC5:** Trang `barcode-mappings/page.tsx` có pagination hoạt động
-- [ ] **AC6:** Filter/Search reset về trang 1 khi thay đổi
-- [ ] **AC7:** Test file `WMS/frontend/src/__tests__/components/DataTable.test.tsx` tồn tại và cover các case: render STT, pagination controls, page change
+- [x] **AC1:** `DataTable.tsx` có prop `showRowNumber?: boolean` (default `true`), hiển thị cột STT đầu tiên
+- [x] **AC2:** STT tính đúng theo công thức: `(currentPage - 1) * limit + index + 1` (có pagination) hoặc `index + 1` (không có)
+- [x] **AC3:** Trang `inventory/page.tsx` có pagination hoạt động (dropdown số dòng, nút prev/next, hiển thị "Trang X/Y")
+- [x] **AC4:** Trang `transactions/page.tsx` có pagination hoạt động
+- [x] **AC5:** Trang `barcode-mappings/page.tsx` có pagination hoạt động
+- [x] **AC6:** Filter/Search reset về trang 1 khi thay đổi
+- [x] **AC7:** Test file `WMS/frontend/src/__tests__/components/DataTable.test.tsx` tồn tại và cover các case: render STT, pagination controls, page change
 
 ## Plan
 
@@ -148,12 +148,12 @@ Copy từ `PMI/frontend/src/__tests__/components/DataTable.test.tsx`, thêm:
 - Test pagination controls (prev/next, dropdown limit)
 
 ## Sub-tasks
-- [ ] **Phase 1:** Cập nhật `DataTable.tsx` — thêm prop `showRowNumber`, render cột STT
-- [ ] **Phase 2.1:** `inventory/page.tsx` — thêm state `currentPage`, `limit`, tính `paginatedData`, truyền `pagination` prop
-- [ ] **Phase 2.2:** `transactions/page.tsx` — tương tự Phase 2.1
-- [ ] **Phase 2.3:** `barcode-mappings/page.tsx` — tương tự Phase 2.1
+- [x] **Phase 1:** Cập nhật `DataTable.tsx` — thêm prop `showRowNumber`, render cột STT
+- [x] **Phase 2.1:** `inventory/page.tsx` — thêm state `currentPage`, `limit`, tính `paginatedData`, truyền `pagination` prop
+- [x] **Phase 2.2:** `transactions/page.tsx` — tương tự Phase 2.1
+- [x] **Phase 2.3:** `barcode-mappings/page.tsx` — tương tự Phase 2.1
 - [ ] **Phase 3 (optional):** Migrate `warehouses/page.tsx` locations table sang DataTable (hiện dùng HTML table thủ công)
-- [ ] **Phase 4:** Viết test `DataTable.test.tsx` cho WMS (copy từ PMI + thêm case STT/pagination)
+- [x] **Phase 4:** Viết test `DataTable.test.tsx` cho WMS (copy từ PMI + thêm case STT/pagination)
 
 ## References
 - PMI DataTable: `PMI/frontend/src/components/ui/DataTable.tsx`

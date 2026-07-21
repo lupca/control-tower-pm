@@ -34,7 +34,7 @@ Nếu graph không trả về gì hữu ích hoặc lỗi, bỏ qua bước này
 
 ### Bước 4 — Sinh phiếu review
 
-Viết file `reviews/<ID>-review.md` (vd `PMI-001-review.md`):
+Viết file `projects/<tên>/reviews/<ID>-review.md` (vd `projects/topvnsport-pmi/reviews/PMI-001-review.md`) — `<tên>` lấy từ path task đã tìm ở Bước 1. Tạo thư mục `reviews/` nếu project đó chưa có.
 
 ```markdown
 # Phiếu Review: <ID> — <title>
@@ -71,7 +71,7 @@ Sau khi review xong, báo lại cho control-tower bằng lệnh:
 ### Bước 5 — Đóng bước
 
 1. Ghi 1 entry vào `log.md` (`operation: review-order`, format `AGENTS.md` mục 7) — nêu rõ path phiếu review vừa sinh.
-2. Báo User: phiếu đã sẵn tại `reviews/<ID>-review.md`, giao cho reviewer độc lập (**phải khác** `executor:` của task — nhắc lại rule four-eyes).
+2. Báo User: phiếu đã sẵn tại `projects/<tên>/reviews/<ID>-review.md`, giao cho reviewer độc lập (**phải khác** `executor:` của task — nhắc lại rule four-eyes).
 
 ### Lỗi thường gặp cần tránh
 - Tự ý review/chấm điểm AC ngay trong bước này — đó là việc của reviewer ngoài hệ, không phải `/review-order`.

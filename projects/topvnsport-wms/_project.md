@@ -15,8 +15,8 @@ Dự án quản lý kho hàng (Warehouse Management System) cho hệ thống Top
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
-| done | 0 |
-| todo | 1 |
+| done | 1 |
+| todo | 0 |
 *(Cập nhật bởi `/report`)*
 
 ## Tasks

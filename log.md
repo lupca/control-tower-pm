@@ -121,3 +121,19 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: .obsidian/graph.json, control-tower-map.canvas, AGENTS.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, knowledge/_index.md, projects/topvnsport-pmi/_project.md, projects/topvnsport-oms/_project.md, projects/topvnsport-wms/_project.md, projects/topvnsport-pmi/tasks/PMI-001..009.md, projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md
 - Trạng thái: Thành công.
 - Commit: `d49d0a4`
+
+## [2026-07-21 21:50:00] verdict | WMS-001 PASS
+- Dự án: `topvnsport-wms`
+- Mô tả: Ghi verdict PASS cho task WMS-001 "Nâng cấp DataTable: thêm cột STT và pagination". Reviewer: @claude. Executor: @antigravity.
+- Giải trình: Four-eyes check passed (@claude ≠ @antigravity). Reviewer xác nhận: "All 7 ACs verified. 16/16 tests green. No regressions."
+- Files touched: projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md
+- Trạng thái: Thành công — `status: done`.
+- Commit: f4a0971
+
+## [2026-07-21 22:05:00] plan | Dời `reviews/` (root) vào từng project — `projects/<tên>/reviews/`
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: User đề xuất bảng rà soát 12 điểm cần sửa khi dời thư mục `reviews/` chung ở root vào bên trong từng project, nhờ kiểm tra trước khi sửa. Đã đọc lại từng file trong bảng để xác minh, phát hiện: mục #7 (`verdict/SKILL.md`) sai — file này không tham chiếu path `reviews/` (chỉ thao tác trực tiếp trên frontmatter của task), nên không cần sửa; đồng thời phát hiện thiếu 1 chỗ ngoài bảng — `AGENTS.md` mục 10 (runbook onboard dự án mới) chưa liệt kê tạo `reviews/` khi thêm project mới, và `index.md` dòng mô tả canvas còn nhắc nhóm màu "Reviews" cũ. Đã sửa: (1) `AGENTS.md` mục 1 (AUTONOMOUS row), mục 5 (REVIEW-OUT, gộp thêm câu quy tắc từ `reviews/README.md` cũ), mục 10 (thêm `reviews/` vào runbook onboard); (2) `index.md` dòng 42/45/54 — bỏ quicklink `reviews/` chung, đổi mô tả canvas; (3) `.claude/skills/review-order/SKILL.md` — sinh phiếu tại `projects/<tên>/reviews/<ID>-review.md` (tên dự án lấy từ path task ở Bước 1), tự tạo thư mục nếu chưa có; (4) `control-tower-map.canvas` — đổi node `n-reviews` từ type `file` (trỏ `reviews/README.md`, sắp thành file chết) sang type `text` mô tả chung; (5) `.obsidian/graph.json` — xoá colorGroup riêng `path:reviews` (không cần nữa vì phiếu giờ nằm trong `path:projects/<tên>` đã có màu); (6) `git mv reviews/WMS-001-review.md` → `projects/topvnsport-wms/reviews/WMS-001-review.md`; (7) xoá `reviews/README.md` (nội dung cốt lõi đã gộp vào `AGENTS.md` mục 5). Không sửa các entry lịch sử trong `log.md` (append-only, giữ nguyên path cũ theo đúng thời điểm ghi).
+- Giải trình: `verdict/SKILL.md` không đụng `reviews/` nên xác nhận trước khi tin theo bảng đề xuất, tránh sửa nhầm chỗ không tồn tại. Việc dời vào per-project giúp mỗi dự án tự chứa (project, task, review đi cùng nhau), nhất quán với cấu trúc task-per-file đã làm trước đó, và giúp Obsidian Graph tự cụm phiếu review vào đúng màu project (không cần colorGroup riêng).
+- Files touched: AGENTS.md, index.md, .claude/skills/review-order/SKILL.md, control-tower-map.canvas, .obsidian/graph.json, projects/topvnsport-wms/reviews/WMS-001-review.md (di chuyển từ reviews/WMS-001-review.md), reviews/README.md (đã xoá)
+- Trạng thái: Thành công.
+- Commit: (điền sau khi commit)
