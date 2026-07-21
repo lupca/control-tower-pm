@@ -2,6 +2,8 @@
 *.swp
 .claude/settings.local.json
 
-# Obsidian vault artifacts (this repo is sometimes browsed as an Obsidian vault)
-.obsidian/
-*.canvas
+# Obsidian: this repo doubles as a vault. Share plugin/graph/appearance config
+# (portable, useful to commit) but not personal window/session state.
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache

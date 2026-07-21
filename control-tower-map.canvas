@@ -1,0 +1,46 @@
+{
+  "nodes": [
+    {"id": "g-ct", "type": "group", "x": -40, "y": -40, "width": 1000, "height": 700, "label": "🗼 control-tower — PLAN + COORDINATE (chỉ Markdown, không đụng code)", "color": "5"},
+    {"id": "g-exe", "type": "group", "x": 1080, "y": 60, "width": 420, "height": 220, "label": "🛠️ EXECUTOR — ngoài hệ (người hoặc AI khác)", "color": "1"},
+    {"id": "g-rev", "type": "group", "x": 1080, "y": 400, "width": 420, "height": 240, "label": "🔎 REVIEWER — ngoài hệ, độc lập (≠ executor)", "color": "4"},
+
+    {"id": "n-agents", "type": "file", "file": "AGENTS.md", "x": 0, "y": 0, "width": 260, "height": 70},
+    {"id": "n-index", "type": "file", "file": "index.md", "x": 300, "y": 0, "width": 260, "height": 70},
+    {"id": "n-claude", "type": "file", "file": "CLAUDE.md", "x": 600, "y": 0, "width": 260, "height": 70},
+
+    {"id": "n-pm", "type": "text", "x": 0, "y": 110, "width": 300, "height": 110, "color": "6", "text": "**/pm**\nSpec Gate (duyệt AC) →\nPlan Gate (duyệt ▸ Plan:)\n`status: todo → ready`"},
+    {"id": "n-dispatch", "type": "text", "x": 340, "y": 110, "width": 300, "height": 110, "color": "6", "text": "**dispatch**\nghi `👷 executor`\n`status: dispatched`\n📤 giao việc ra ngoài"},
+
+    {"id": "n-proj-pmi", "type": "file", "file": "projects/topvnsport-pmi.md", "x": 0, "y": 250, "width": 300, "height": 70},
+    {"id": "n-proj-oms", "type": "file", "file": "projects/topvnsport-oms.md", "x": 340, "y": 250, "width": 300, "height": 70},
+    {"id": "n-inbox", "type": "file", "file": "inbox.md", "x": 680, "y": 250, "width": 240, "height": 70},
+
+    {"id": "n-review-order", "type": "text", "x": 0, "y": 360, "width": 300, "height": 110, "color": "6", "text": "**/review-order**\nphát phiếu review\n`status: in-review`\n(read-only, không tự review)"},
+    {"id": "n-reviews", "type": "file", "file": "reviews/README.md", "x": 340, "y": 360, "width": 300, "height": 70},
+
+    {"id": "n-verdict", "type": "text", "x": 0, "y": 500, "width": 300, "height": 110, "color": "6", "text": "**/verdict**\nkiểm four-eyes\n`pass` → done (cần người xác nhận)\n`changes` → changes-requested"},
+    {"id": "n-log", "type": "file", "file": "log.md", "x": 340, "y": 500, "width": 260, "height": 70},
+    {"id": "n-lint", "type": "text", "x": 640, "y": 500, "width": 280, "height": 110, "color": "6", "text": "**/lint**\ntask trễ hạn · thiếu AC\nlink chết · kẹt dispatched/in-review"},
+
+    {"id": "n-exe-work", "type": "text", "x": 1120, "y": 110, "width": 340, "height": 130, "text": "Viết code + tự chạy test\ntrong repo code đích\n→ branch/commit/PR\n(báo lại `🔗result`)"},
+
+    {"id": "n-rev-work", "type": "text", "x": 1120, "y": 450, "width": 340, "height": 150, "text": "Đọc diff · chạy test · soát AC/DoD\n(khuyến khích dùng `/code-review`\ncủa repo code đích)\n→ báo verdict"}
+  ],
+  "edges": [
+    {"id": "e1", "fromNode": "n-agents", "fromSide": "bottom", "toNode": "n-pm", "toSide": "top", "label": "luật chơi"},
+    {"id": "e2", "fromNode": "n-index", "fromSide": "bottom", "toNode": "n-pm", "toSide": "top", "label": "PROJECT REGISTRY"},
+    {"id": "e3", "fromNode": "n-pm", "fromSide": "right", "toNode": "n-dispatch", "toSide": "left"},
+    {"id": "e4", "fromNode": "n-dispatch", "fromSide": "bottom", "toNode": "n-proj-oms", "toSide": "top"},
+    {"id": "e4b", "fromNode": "n-pm", "fromSide": "bottom", "toNode": "n-proj-pmi", "toSide": "top", "label": "viết task + AC + Plan"},
+    {"id": "e5", "fromNode": "n-proj-pmi", "fromSide": "right", "toNode": "g-exe", "toSide": "left", "label": "📤 dispatched"},
+    {"id": "e6", "fromNode": "n-exe-work", "fromSide": "bottom", "toNode": "g-rev", "toSide": "top", "label": "🔗result + /review-order"},
+    {"id": "e7", "fromNode": "n-proj-pmi", "fromSide": "bottom", "toNode": "n-review-order", "toSide": "top"},
+    {"id": "e8", "fromNode": "n-review-order", "fromSide": "right", "toNode": "n-reviews", "toSide": "left", "label": "sinh phiếu"},
+    {"id": "e9", "fromNode": "n-reviews", "fromSide": "right", "toNode": "g-rev", "toSide": "left", "label": "giao phiếu"},
+    {"id": "e10", "fromNode": "n-rev-work", "fromSide": "left", "toNode": "n-verdict", "toSide": "right", "label": "verdict"},
+    {"id": "e11", "fromNode": "n-review-order", "fromSide": "bottom", "toNode": "n-verdict", "toSide": "top"},
+    {"id": "e12", "fromNode": "n-verdict", "fromSide": "right", "toNode": "n-log", "toSide": "left", "label": "ghi audit + commit hash"},
+    {"id": "e13", "fromNode": "n-verdict", "fromSide": "top", "toNode": "n-proj-pmi", "toSide": "bottom", "label": "changes-requested (loop)"},
+    {"id": "e14", "fromNode": "n-proj-oms", "fromSide": "bottom", "toNode": "n-lint", "toSide": "top", "label": "quét backlog"}
+  ]
+}

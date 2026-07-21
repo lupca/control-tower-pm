@@ -39,6 +39,7 @@ Ghi chú: `topvnsport-pmi` và `topvnsport-oms` cùng trỏ về một `repo_roo
 *   **[`inbox.md`](inbox.md):** Nơi bạn ném mọi ý tưởng thô, yêu cầu phát sinh hoặc feedback nhanh từ team. Gõ `/ingest` để Agent tự động đọc và phân rã thành các task chính thức.
 *   **[`reviews/`](reviews/):** Phiếu review do `/review-order` sinh cho reviewer độc lập — xem `reviews/README.md`.
 *   **[`log.md`](log.md):** Nhật ký kiểm toán (Audit Trail) ghi lại mọi hành động tự trị hoặc được duyệt của Agent. Đảm bảo tính minh bạch và an toàn hệ thống.
+*   **[`control-tower-map.canvas`](control-tower-map.canvas):** Sơ đồ Obsidian Canvas trực quan hoá luồng Mô hình B (PLAN/COORDINATE ↔ EXECUTE ↔ REVIEW), có link nhấn được tới `AGENTS.md`, `projects/*.md`, `reviews/`, `log.md`. Mở repo này bằng Obsidian để xem — Graph view cũng đã được tô màu theo nhóm (Core/Tasks/Skills/Reviews).
 
 ---
 
