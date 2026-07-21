@@ -333,3 +333,27 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Trạng thái: Thành công.
 - Commit: `565f69f`
 
+
+## [2026-07-22 16:15:00] review-order | CT-002 Reputation System
+- Dự án: `control-tower`
+- Mô tả: Phát phiếu review cho CT-002 "Reputation System". Executor @antigravity đã hoàn thành và báo result-ref `control-tower@main (commit 9183f6a)`. Phiếu review tại `projects/control-tower/reviews/CT-002-review.md`.
+- Giải trình: Task implement reputation system với 5 bootstrapped profiles, AGENTS.md §12, verdict auto-update, và pm executor suggestions. Cần reviewer độc lập (≠ @antigravity) verify AC + DoD.
+- Files touched: projects/control-tower/tasks/CT-002-reputation-system.md (status: in-review), projects/control-tower/reviews/CT-002-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập.
+- Commit: n/a
+
+## [2026-07-22 16:30:00] verdict | CT-002 Reputation System — PASS
+- Dự án: `control-tower`
+- Mô tả: Ghi verdict PASS cho CT-002 "Reputation System". Reviewer: @claude. Executor: @antigravity.
+- Giải trình: Four-eyes check passed (@claude ≠ @antigravity). Reviewer verified: AC1 (5 profiles in knowledge/agents/), AC2 (correct schema), AC3 (verdict auto-updates), AC4 (pm executor suggestions), AC5 (low success_rate warning).
+- Files touched: projects/control-tower/tasks/CT-002-reputation-system.md (status: done), projects/control-tower/reviews/CT-002-review.md
+- Trạng thái: Thành công — task closed.
+- Commit: 9183f6a
+
+## [2026-07-22 16:45:00] dispatch | CT-003 Causal Analysis
+- Dự án: `control-tower`
+- Mô tả: Dispatch CT-003 "Causal Analysis" cho executor @sonnet-5. Task implement hệ thống tracking WHY fixes work — causal analysis section, pattern library, pm suggestions, lint cross-reference.
+- Giải trình: Spec Gate + Plan Gate approved. Plan gồm 5 phases: (1) Schema update, (2) Pattern library với 4 initial patterns, (3) Verdict integration, (4) PM pattern matching, (5) Lint cross-reference. Estimated ~2 hours. New executor @sonnet-5 (profile created).
+- Files touched: projects/control-tower/tasks/CT-003-causal-analysis.md (status: dispatched, executor: @sonnet-5), knowledge/agents/@sonnet-5.md (mới)
+- Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref.
+- Commit: n/a
