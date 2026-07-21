@@ -144,4 +144,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: `verdict/SKILL.md`, `review-order/SKILL.md`, `lint/SKILL.md`, `task-execution.md` không tham chiếu `_project.md` nên không cần sửa (đã grep xác nhận trước khi đổi). Đổi tên là thay đổi nội dung/tên file thuần Markdown, không đụng field frontmatter hay logic gate nào — mọi skill vốn đã biết `<tên>` project từ context nên tự suy ra đúng path mới, không cần glob pattern đặc biệt.
 - Files touched: AGENTS.md, CLAUDE.md, index.md, control-tower-map.canvas, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, .claude/skills/ingest/SKILL.md, projects/topvnsport-pmi/topvnsport-pmi.md (đổi tên từ _project.md), projects/topvnsport-oms/topvnsport-oms.md (đổi tên), projects/topvnsport-wms/topvnsport-wms.md (đổi tên), projects/*/tasks/*.md (10 file, sửa dòng backlink)
 - Trạng thái: Thành công.
-- Commit: (điền sau khi commit)
+- Commit: `bf3b238`
