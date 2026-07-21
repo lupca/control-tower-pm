@@ -48,7 +48,7 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Đối chiếu spec với source thật của `code-review-graph` (đọc `main.py`, `daemon.py`, chạy CLI) trước khi implement, phát hiện 2 lỗi chặn trong spec gốc: (1) `query_graph_tool` không có tham số `edge` — tham số đúng là `pattern`/`target`, giá trị pattern đúng là `"tests_for"` không phải `"tested_by"`; (2) `list_graph_stats_tool` (MCP) không có field `head_matches_build` — thông tin so khớp commit chỉ có ở CLI `code-review-graph status --json` (field `built_at_commit`/`current_sha`). Đã sửa cả hai trong `AGENTS.md` mục 5.1 và 5.5 trước khi viết vào skill, tránh implement một lỗi đã biết. Cũng sửa: `get_hub_nodes_tool`/`get_bridge_nodes_tool` dùng `top_n=50` thay vì mặc định 10 (repo lớn sẽ khiến `⚠️high-risk` gần như không bao giờ kích hoạt nếu để mặc định); `crg-daemon` không nằm trong PATH nên mọi lệnh daemon đều gọi qua `python3 -m code_review_graph daemon ...` với path venv đầy đủ.
 - Files touched: AGENTS.md, CLAUDE.md, index.md, .claude/skills/lint/SKILL.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/pm/references/task-execution.md, .claude/skills/pm/references/task-finalization.md, .claude/skills/ingest/SKILL.md
 - Trạng thái: Thành công.
-- Commit: n/a (sẽ điền sau khi commit)
+- Commit: `e2361d7`
 
 ## [2026-07-21 18:05:00] plan | Đăng ký topvnsport vào crg-daemon watch
 - Dự án: `topvnsport-pmi` / `topvnsport-oms`
@@ -72,4 +72,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Người dùng chốt rõ 3 điều: (1) test luôn do reviewer ngoài hệ chạy, không phải control-tower/subagent nội bộ; (2) "check" = phiếu review độc lập → reviewer (người/AI khác) tự làm trong repo code → báo verdict → `/verdict` cập nhật hệ thống; (3) đây là formalize hóa quy trình thủ công người dùng đã làm (tạo phiếu → reviewer độc lập → update), giờ có audit trong git. Việc này thay thế hoàn toàn giả định cũ (Tầng A §4 Code Gate) rằng control-tower/subagent tự chạy `detect_changes_tool` + test để tự đóng task — giả định đó không còn đúng vì Mô hình B minh định control-tower không bao giờ đọc diff hay chạy test.
 - Files touched: AGENTS.md, CLAUDE.md, index.md, projects/topvnsport-pmi.md, projects/topvnsport-oms.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/pm/references/task-execution.md, .claude/skills/pm/references/task-finalization.md (đã xóa), .claude/skills/ingest/SKILL.md, .claude/skills/lint/SKILL.md, .claude/skills/review-order/SKILL.md (mới), .claude/skills/verdict/SKILL.md (mới), reviews/README.md (mới)
 - Trạng thái: Thành công.
-- Commit: n/a (sẽ điền sau khi commit)
+- Commit: `d1980a5`
