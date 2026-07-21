@@ -30,7 +30,8 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 4. Update the frontmatter: `status: done`, `reviewer: "<--reviewer>"`, `result_ref:` (keep as-is or update to the real commit), `updated: <today>`.
 5. If the task declares `depends_on:` (see `AGENTS.md` §2.2): tell the User which tasks might now be unblocked, since there's no automatic parsing/unblocking mechanism yet — don't infer it yourself.
 6. Write 1 entry to `log.md` (`operation: verdict`, format in `AGENTS.md` §7), with the `Commit:` field = the real hash just received.
-7. Give the User a summary: which task closed, who reviewed it, which commit.
+7. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `pass` (Success), update accuracy metrics.
+8. Give the User a summary: which task closed, who reviewed it, which commit, and updated prediction accuracy.
 
 ### Step 3b — Verdict `changes`
 
@@ -38,7 +39,8 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 2. Add a `## Findings từ reviewer` section to the task's body (under `## Plan` or at the end of the file), turning each point in `--notes` into a rework sub-task in `- [ ]` form.
 3. Update the frontmatter: `status: changes-requested`, `updated: <today>`. Keep `executor:` unchanged (by default the same executor will fix it) unless the User says to reassign.
 4. Write 1 entry to `log.md` (`operation: verdict`, `Trạng thái: Chờ duyệt` or a description of the rework, `Commit: n/a`).
-5. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
+5. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `changes` (Rework/Fail), update accuracy metrics.
+6. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
 
 ### Common mistakes to avoid
 - Recording a `pass` verdict when `reviewer:` == `executor:` — always refuse, no exceptions.

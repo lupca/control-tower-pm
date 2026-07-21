@@ -16,12 +16,29 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
    `- [ ] Write a test for <symbol/file> (currently no coverage — knowledge gap) — suggested test file: <suggested test file>`
 6. `get_hub_nodes_tool(top_n=50, repo_root=...)` and `get_bridge_nodes_tool(top_n=50, repo_root=...)` — if any node in `files:` matches the returned list → flag `risk: high` in the frontmatter.
 7. `get_affected_flows_tool(changed_files=[...], repo_root=...)` → fills in `flows:`.
+8. **Compute Pre-Execution Prediction Score (`predicted_success`)**:
+   - Start with `Score = 1.0`.
+   - `blast_radius > 8`: Score -= 0.3
+   - `blast_radius > 15`: Score -= 0.2 (cumulative -0.5)
+   - `hits hub/bridge node`: Score -= 0.2
+   - `similar tasks in log.md (same files/flows) had < 50% success`: Score -= 0.3
+   - `no existing tests (tests: [])`: Score -= 0.1
+   - Classification:
+     - `high`: Score >= 0.7
+     - `medium`: 0.4 <= Score < 0.7
+     - `low`: Score < 0.4
+   - Record `predicted_success: <high|medium|low>` and `prediction_factors:` (with `score:` and list of `deductions:`) in the frontmatter.
+   - **If `predicted_success: low`**, proactively generate auto-suggestions:
+     - Blast radius large (>8 files) → suggest splitting task into smaller sub-tasks (1 PR each).
+     - Hub/bridge node hit → suggest adding extra test coverage for the hub component.
+     - Past task failure → reference the failed task from `log.md` and suggest addressing its root cause.
+     - Missing tests → add a test creation sub-task.
 
 ## Writing the task
 
 - Convert every absolute path returned by the graph into a **repo-relative** path (strip the `repo_root` prefix). Never write a guessed path — if the graph can't confirm it, write `*(path not confirmed via graph)*` instead of making one up.
 - Read `<name>.md` (the file matching the project's folder name) → get `task_prefix` + `next_task_id`. ID = `<task_prefix>-<NNN>` (NNN = `next_task_id`, zero-padded to 3 digits). Slug = kebab-case of the title (max 40 ASCII characters).
-- Create the file `projects/<name>/tasks/<ID>-<slug>.md` with the standard frontmatter + body (`AGENTS.md` §2.1), `status: todo`. The body MUST have the backlink line `> Dự án: [[projects/<name>/<name>]]` right below the H1 title (a real wikilink, not path text — so Obsidian's Graph can draw the edge; no alias needed since the filename already matches `<name>`). Do NOT fill in `executor:`/`reviewer:`/`result_ref:` — those fields only get filled in later (Plan Gate/dispatch, review-order, verdict).
+- Create the file `projects/<name>/tasks/<ID>-<slug>.md` with standard frontmatter (`AGENTS.md` §2.1 including `predicted_success` & `prediction_factors`) + body, `status: todo`. The body MUST have the backlink line `> Dự án: [[projects/<name>/<name>]]` right below the H1 title (a real wikilink, not path text — so Obsidian's Graph can draw the edge; no alias needed since the filename already matches `<name>`). Do NOT fill in `executor:`/`reviewer:`/`result_ref:` — those fields only get filled in later (Plan Gate/dispatch, review-order, verdict).
 - Increment `next_task_id` in `<name>.md` by 1 once the file is created.
 - Add 1 line to the `## Tasks` section of `<name>.md`: `- [[<ID>-<slug>]] — <title> (todo)`. If `<name>.md` doesn't have a `## Tasks` section yet, create one (placed before the "Quy tắc phê duyệt riêng" section). This doesn't need to be perfect — `/report` regenerates this whole section on every run, so small mistakes self-heal.
 - If the task touches `schemas/`, `models.py`, or a migration directory → automatic RESTRICTED (`AGENTS.md` §1 & §4), flag `risk: high` and call it out explicitly in the task.

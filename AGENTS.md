@@ -64,6 +64,13 @@ tests:                                # existing tests, from query_graph_tool
   - PMI/backend/tests/test_variant_cost_tax.py
 dispatched: null                     # YYYY-MM-DD when it moves to dispatched
 in_review: null                      # YYYY-MM-DD when it moves to in-review
+predicted_success: high              # high (>=0.7) | medium (0.4-0.7) | low (<0.4) - calculated by /pm
+prediction_factors:                  # list of factors & score deductions
+  score: 0.8
+  deductions:
+    - "blast_radius: 5 (-0.0)"
+    - "hub_bridge: false (-0.0)"
+    - "no_tests: false (-0.0)"
 created: 2026-07-21
 updated: 2026-07-21
 ---

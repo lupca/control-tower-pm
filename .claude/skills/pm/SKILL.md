@@ -1,6 +1,6 @@
 ---
 name: pm
-description: Hand off a new task or break down an ambiguous request into a task with verifiable Acceptance Criteria, using code-review-graph (read-only) to find blast radius/tests/risk, walk it through Spec Gate + Plan Gate, then dispatch it to an executor outside the system. Never writes code itself, never self-verifies — review happens entirely outside control-tower (see /review-order, /verdict). Activate when the user types /pm or talks about handing off/managing/planning a task for a specific project.
+description: Hand off a new task or break down an ambiguous request into a task with verifiable Acceptance Criteria, using code-review-graph (read-only) to find blast radius/tests/risk, compute pre-execution prediction score (predicted_success), walk it through Spec Gate + Plan Gate, then dispatch it to an executor outside the system. Never writes code itself, never self-verifies — review happens entirely outside control-tower (see /review-order, /verdict). Activate when the user types /pm or talks about handing off/managing/planning a task for a specific project.
 argument-hint: <task description> [--project <project name>]
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash, mcp__code-review-graph__get_minimal_context_tool, mcp__code-review-graph__get_impact_radius_tool, mcp__code-review-graph__query_graph_tool, mcp__code-review-graph__semantic_search_nodes_tool, mcp__code-review-graph__get_knowledge_gaps_tool, mcp__code-review-graph__get_hub_nodes_tool, mcp__code-review-graph__get_bridge_nodes_tool, mcp__code-review-graph__get_affected_flows_tool, mcp__code-review-graph__get_architecture_overview_tool
 ---
@@ -19,7 +19,7 @@ The user invokes: `/pm $ARGUMENTS`. You're running inside the `control-tower` re
 
 ### Step 1 — Determine which stage you're at
 
-- **New request / no matching task file yet in `projects/<name>/tasks/*.md`** (Glob to check) → follow `.claude/skills/pm/references/task-creation.md` (Spec Gate, `status: todo`). Stop and wait for approval after writing the task.
+- **New request / no matching task file yet in `projects/<name>/tasks/*.md`** (Glob to check) → follow `.claude/skills/pm/references/task-creation.md` (Spec Gate, `status: todo`). Computes `predicted_success` and `prediction_factors` before creating task. Stop and wait for approval after writing the task.
 - **Task already exists, Spec Gate was just approved by the User** (User says "ok", "approved", "I agree with this AC"...) → follow `references/task-execution.md` (Plan Gate → `ready` → `dispatched`). Stop after recording `executor:` + `dispatched`.
 
 **`/pm` has NO third step.** Once a task is `status: dispatched`, `/pm`'s job on that task is done. When the executor reports completion, the next step is `/review-order` (a separate skill, run independently — not an automatic continuation of `/pm`).

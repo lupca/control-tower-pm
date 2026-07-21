@@ -169,3 +169,134 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: AGENTS.md, CLAUDE.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/pm/references/task-execution.md, .claude/skills/ingest/SKILL.md, .claude/skills/report/SKILL.md, .claude/skills/lint/SKILL.md, .claude/skills/review-order/SKILL.md, .claude/skills/verdict/SKILL.md
 - Trạng thái: Thành công.
 - Commit: `016f282`
+
+## [2026-07-22 00:48:00] pm-create | WMS-002 Fix 414 Request-URI Too Large
+- Dự án: `topvnsport-wms`
+- Mô tả: Tạo task WMS-002 "Fix 414 Request-URI Too Large when fetching stock for many SKUs". Bug trên production: frontend gọi `GET /public/stock?sku_codes=...` với hàng trăm SKU, URL vượt 8KB limit, server trả 414. Fix: (1) WMS backend thêm POST endpoint cho `/public/stock` nhận JSON body; (2) frontend `fetchWmsStock()` chuyển sang POST.
+- Giải trình: Dùng `semantic_search_nodes_tool` tìm ra 2 file chính (`WMS/backend/routers/inventory.py`, `web/src/services/sport-api/index.ts`). `get_impact_radius_tool` cho thấy blast radius HIGH (500 nodes, 133 files). `get_affected_flows_tool` xác nhận 7 flows ảnh hưởng (getStringOptions, adjust_inventory...). `query_graph_tool(tests_for)` xác nhận cả 2 file đều chưa có test — AC yêu cầu viết test mới. `get_hub_nodes_tool(top_n=50)` xác nhận không có file nào trong hub nodes nhưng blast radius cao nên vẫn đánh `risk: high`.
+- Files touched: projects/topvnsport-wms/tasks/WMS-002-fix-414-stock-api-uri-too-large.md (mới), projects/topvnsport-wms/topvnsport-wms.md (tăng next_task_id)
+- Trạng thái: Thành công — task đã qua Spec Gate + Plan Gate, `status: dispatched`, `executor: @antigravity`.
+- Commit: n/a
+
+## [2026-07-22 01:00:00] pm-create | WMS-003 Fix CI Docker Compose network label mismatch
+- Dự án: `topvnsport-wms`
+- Mô tả: Tạo task WMS-003 "Fix CI Docker Compose network label mismatch for oms_default". GitHub Actions E2E workflow fail với lỗi `network oms_default was found but has incorrect label com.docker.compose.network set to "" (expected: "default")`.
+- Giải trình: Root cause: `start_all.sh` (lines 73-79) pre-creates networks với `docker network create` (không có compose labels), sau đó khi docker-compose chạy, nó tìm thấy network `oms_default` đã tồn tại nhưng với label sai/thiếu. Fix đề xuất: chỉ pre-create các network thực sự "external" (dùng chung nhiều project), KHÔNG pre-create project-default networks như `oms_default` — để docker-compose tự quản lý. Blast radius: infra/CI files, không ảnh hưởng application code — `get_impact_radius_tool` trả về risk medium (64 nodes impacted). Không có direct tests cho `start_all.sh`, validation qua E2E tests (`e2e_tests/tests/test_full_flow.py`).
+- Files touched: projects/topvnsport-wms/tasks/WMS-003-fix-ci-docker-network-label-mismatch.md (mới), projects/topvnsport-wms/topvnsport-wms.md (tăng next_task_id 3→4)
+- Trạng thái: Chờ duyệt — Spec Gate, chờ User approve AC.
+- Commit: n/a
+
+## [2026-07-22 01:05:00] plan | WMS-003 Fix CI Docker Compose network label mismatch
+- Dự án: `topvnsport-wms`
+- Mô tả: Viết Plan Gate cho WMS-003. Phân tích network declarations: PMI và WMS đã khai báo `default: {name: xxx_default, external: true}` đúng cách, nhưng OMS không khai báo explicit — compose sẽ cố tạo `oms_default` thay vì dùng network đã tồn tại. Fix: thêm khai báo `default: {name: oms_default, external: true}` vào `OMS/docker-compose.yml` (và `.prod.yml` nếu cần), giữ nguyên `start_all.sh`.
+- Giải trình: Đọc source thật của 4 compose files (PMI/OMS/WMS/gateway) để xác nhận root cause. PMI line 101-105, WMS line 74-85 đều có `default: external: true` pattern, OMS line 81-87 thiếu. Gateway tự tạo `gateway_network` (driver: bridge) nên không liên quan lỗi này.
+- Files touched: projects/topvnsport-wms/tasks/WMS-003-fix-ci-docker-network-label-mismatch.md (cập nhật `## Plan`)
+- Trạng thái: Chờ duyệt — Plan Gate, chờ User approve plan.
+
+## [2026-07-22 01:10:00] dispatch | WMS-003 Fix CI Docker Compose network label mismatch
+- Dự án: `topvnsport-wms`
+- Mô tả: Dispatch WMS-003 cho executor @antigravity. Task file là work order tự đủ: AC + files + tests + Plan + DoD (AGENTS.md §3). Executor chỉ cần đọc `projects/topvnsport-wms/tasks/WMS-003-fix-ci-docker-network-label-mismatch.md`, không cần truy cập control-tower hay tooling khác.
+- Giải trình: User approve Plan Gate và chỉ định antigravity AI làm executor. Task chuyển từ `todo` → `dispatched`, ghi `executor: @antigravity`, `dispatched: 2026-07-22`.
+- Files touched: projects/topvnsport-wms/tasks/WMS-003-fix-ci-docker-network-label-mismatch.md (cập nhật frontmatter)
+- Trạng thái: Thành công — task đã dispatch, chờ executor hoàn thành và báo result_ref.
+
+## [2026-07-22 01:20:00] review-order | WMS-003 Fix CI Docker Compose network label mismatch
+- Dự án: `topvnsport-wms`
+- Mô tả: Phát phiếu review cho WMS-003. Executor @antigravity đã hoàn thành và báo result-ref `feature/WMS-003-fix-ci-docker-network-label-mismatch`. Tạo phiếu review tại `projects/topvnsport-wms/reviews/WMS-003-review.md`.
+- Giải trình: Task chuyển từ `dispatched` → `in-review`, ghi `in_review: 2026-07-22`. Phiếu review chứa AC, DoD, test commands, và câu hỏi rủi ro để reviewer độc lập (≠ @antigravity) kiểm tra.
+- Files touched: projects/topvnsport-wms/tasks/WMS-003-fix-ci-docker-network-label-mismatch.md (cập nhật in_review date), projects/topvnsport-wms/reviews/WMS-003-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập kiểm tra và báo verdict.
+
+## [2026-07-22 01:25:00] verdict | WMS-003 Fix CI Docker Compose network label mismatch — PASS
+- Dự án: `topvnsport-wms`
+- Mô tả: Ghi nhận verdict PASS cho WMS-003 từ reviewer @claude. Four-eyes check: @claude ≠ @antigravity (executor) ✓. Reviewer notes: "Cleaned up unrelated breaking changes. Only Docker network external declarations remain."
+- Giải trình: Task đã qua review độc lập, tất cả AC pass, commit 76aace1 đã merge vào main. Task chuyển từ `in-review` → `done`.
+- Files touched: projects/topvnsport-wms/tasks/WMS-003-fix-ci-docker-network-label-mismatch.md (status: done, reviewer: @claude, AC marked [x])
+- Trạng thái: Thành công.
+- Commit: 76aace1
+
+## [2026-07-22 01:02:00] review-order | WMS-002 Fix 414 Stock API
+- Dự án: `topvnsport-wms`
+- Mô tả: Phát phiếu review cho WMS-002 "Fix 414 Request-URI Too Large when fetching stock for many SKUs". Result-ref: `feature/WMS-002-fix-414-stock-api`. Executor: @antigravity.
+- Giải trình: Task đã qua Spec Gate + Plan Gate + dispatch. Executor báo done với branch `feature/WMS-002-fix-414-stock-api`. Phiếu review sinh tại `projects/topvnsport-wms/reviews/WMS-002-review.md`, giao cho reviewer độc lập (≠ @antigravity).
+- Files touched: projects/topvnsport-wms/tasks/WMS-002-fix-414-stock-api-uri-too-large.md (status: in-review), projects/topvnsport-wms/reviews/WMS-002-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập.
+- Commit: n/a
+
+## [2026-07-22 01:08:00] verdict | WMS-002 PASS
+- Dự án: `topvnsport-wms`
+- Mô tả: Ghi verdict PASS cho WMS-002 "Fix 414 Request-URI Too Large when fetching stock for many SKUs". Reviewer: @claude. Executor: @antigravity.
+- Giải trình: Four-eyes check passed (@claude ≠ @antigravity). Task đã implement POST endpoint cho `/public/stock`, frontend đổi sang POST, test coverage đầy đủ (backend + frontend), full test suite green.
+- Files touched: projects/topvnsport-wms/tasks/WMS-002-fix-414-stock-api-uri-too-large.md
+- Trạng thái: Thành công — `status: done`.
+- Commit: 7fd6e663d2fc
+
+## [2026-07-22 09:15:00] plan | Onboard dự án mới topvnsport-web
+- Dự án: `topvnsport-web`
+- Mô tả: Tạo project mới cho frontend application (`web/` trong monorepo topvnsport). Theo AGENTS.md §10: (1) thêm row vào PROJECT REGISTRY trong `index.md`; (2) tạo thư mục `projects/topvnsport-web/` với `topvnsport-web.md`, `tasks/`, `docs/`, `reviews/`; (3) graph đã build sẵn (dùng chung monorepo topvnsport); (4) daemon watch đã có (dùng chung alias `topvnsport`); (5) cập nhật `.obsidian/graph.json` với colorGroup mới (rgb: 8388863); (6) thêm node + 5 edges vào `control-tower-map.canvas`.
+- Giải trình: User yêu cầu tạo project quản lý cho thư mục `web` trong topvnsport. Thư mục tồn tại (`/home/lupca/projects/topvnsport/web`) với Vue/React frontend (có `package.json`, `vite.config.ts`, `src/`). Prefix task: `WEB`, next_task_id: 1.
+- Files touched: index.md, projects/topvnsport-web/topvnsport-web.md (mới), .obsidian/graph.json, control-tower-map.canvas
+- Trạng thái: Thành công.
+- Commit: n/a
+
+## [2026-07-22 10:30:00] pm-create | WEB-001 Implement Promotion Module
+- Dự án: `topvnsport-web`
+- Mô tả: Tạo task WEB-001 "Implement Promotion Module cho Marketing Team". Module mới hoàn toàn gồm: Backend (4 bảng mới, CRUD API, compute engine, scheduler), Frontend PMI (menu Promotions, list/create forms), Frontend Web (hook useComputedPrice, cập nhật ProductCard hiển thị giá giảm). Scope chỉ cho web (topvnsport.vn), không ảnh hưởng sàn TMĐT. Chuẩn bị sẵn fields cho AI-agent tương lai (intent, ai_reasoning, created_by).
+- Giải trình: Query `semantic_search_nodes_tool` xác nhận chưa có promotion/discount module nào tồn tại. Query `get_hub_nodes_tool(top_n=50)` và `get_bridge_nodes_tool(top_n=50)` — module mới không đụng hub/bridge nodes hiện có (chỉ thêm bảng/API mới). Query `get_affected_flows_tool` xác nhận 24 flows liên quan (getProducts, update_product...) sẽ tích hợp với computed price API. Yêu cầu automated tests đầy đủ, không manual test (coverage backend >= 85%, frontend >= 80%, E2E cho full flow).
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (mới), projects/topvnsport-web/topvnsport-web.md (tăng next_task_id)
+- Trạng thái: Thành công — Spec Gate approved.
+- Commit: n/a
+
+## [2026-07-22 10:35:00] plan | WEB-001 Implement Promotion Module
+- Dự án: `topvnsport-web`
+- Mô tả: Viết Plan cho WEB-001. Chia thành 7 phases, 18 sub-tasks: (1) DB migrations + models, (2) Business logic service, (3) CRUD + lifecycle APIs, (4) Backend tests, (5) PMI frontend pages, (6) Web frontend hook + components, (7) E2E tests.
+- Giải trình: Plan chi tiết theo thứ tự dependencies: DB trước → service → API → tests → frontend. Mỗi phase có thể review/test độc lập. Design doc đầy đủ tại `knowledge/research/discount-promotion-architecture.md` với test specs.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (cập nhật `## Plan`, `## Sub-tasks`)
+- Trạng thái: Thành công — Plan Gate approved.
+
+## [2026-07-22 10:40:00] dispatch | WEB-001 Implement Promotion Module
+- Dự án: `topvnsport-web`
+- Mô tả: Dispatch WEB-001 cho executor @antigravity-3.6. Task file là work order tự đủ: AC + files + tests + Plan + 18 sub-tasks. Executor chỉ cần đọc `projects/topvnsport-web/tasks/WEB-001-promotion-module.md` và design doc `knowledge/research/discount-promotion-architecture.md`.
+- Giải trình: User approve cả Spec Gate và Plan Gate. Executor @antigravity-3.6 sẽ implement trong repo `/home/lupca/projects/topvnsport`, báo result-ref khi xong để phát phiếu review.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (status: dispatched, executor: @antigravity-3.6)
+- Trạng thái: Thành công — task đã dispatch, chờ executor hoàn thành.
+
+## [2026-07-22 11:00:00] review-order | WEB-001 Implement Promotion Module
+- Dự án: `topvnsport-web`
+- Mô tả: Phát phiếu review cho WEB-001. Result-ref: `80875eca6dd8351a25661fe03d8ad3895bb13dbe`. Executor: @antigravity-3.6. Phiếu review tại `projects/topvnsport-web/reviews/WEB-001-review.md`.
+- Giải trình: Task chuyển từ `dispatched` → `in-review`. Query `get_suggested_questions_tool` để bổ sung câu hỏi rủi ro (hub nodes, untested hotspots). Phiếu chứa AC, DoD, test commands, câu hỏi rủi ro để reviewer độc lập (≠ @antigravity-3.6) kiểm tra.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (status: in-review, result_ref), projects/topvnsport-web/reviews/WEB-001-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập kiểm tra và báo verdict.
+
+## [2026-07-22 11:30:00] verdict | WEB-001 Implement Promotion Module — CHANGES REQUESTED
+- Dự án: `topvnsport-web`
+- Mô tả: Ghi nhận verdict CHANGES cho WEB-001. Reviewer: @claude-opus. Four-eyes check: @claude-opus ≠ @antigravity-3.6 (executor) ✓.
+- Giải trình: Fundamental scope mismatch — AC yêu cầu product-level promotion system trong PMI, implementation là order-level coupon system trong OMS. Critical issues: (1) Wrong commit ref (80875ec là script khác, code promotion uncommitted); (2) Backend ở OMS thay vì PMI; (3) Scope Product-level vs Order-level; (4) Missing 13+ AC items (4 tables, lifecycle APIs, scheduler, PMI frontend, Web frontend hooks, AI-agent fields); (5) Tests ở sai path (OMS thay vì PMI). Findings đã được ghi vào task file dưới dạng rework sub-tasks.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (status: changes-requested, thêm `## Findings từ reviewer`)
+- Trạng thái: Chờ executor fix và báo lại result-ref mới.
+- Commit: n/a
+
+## [2026-07-22 14:30:00] plan | Onboard meta-project control-tower + tạo 10 paradigm shift tasks
+- Dự án: `control-tower`
+- Mô tả: Onboard control-tower như một meta-project để tự quản lý việc cải tiến chính nó. Tạo 10 tasks (CT-001 đến CT-010) cho các paradigm shifts được nghiên cứu từ industry + academia.
+- Giải trình: Sau khi so sánh với các hệ thống đối thủ (Devin, OpenHands, MetaGPT, CrewAI, etc.) và nghiên cứu 10 paradigm areas (Goal-Oriented Planning, Auto-Remediation, Formal Methods, Stigmergy, etc.), xác định 10 hướng đột phá có thể biến đổi hoàn toàn control-tower. Chia thành 3 tiers: Tier 1 (quick wins: prediction, reputation), Tier 2 (foundational: causal, cross-repo, verifier, confidence), Tier 3 (paradigm shifts: goal autonomy, stigmergy, auto-remediation, vericoding). Document đầy đủ trong ADR-002.
+- Files touched: projects/control-tower/control-tower.md (mới), projects/control-tower/tasks/CT-001..010 (mới, 10 files), index.md (thêm project), .obsidian/graph.json (thêm colorGroup), control-tower-map.canvas (thêm node + edges), knowledge/decisions/ADR-002-paradigm-shifts-roadmap.md (mới), knowledge/_index.md
+- Trạng thái: Thành công — 10 tasks ở `status: todo`, chờ User chọn task nào để duyệt Spec Gate.
+- Commit: n/a
+
+## [2026-07-22 15:00:00] dispatch | CT-001 Pre-Execution Prediction
+- Dự án: `control-tower`
+- Mô tả: Dispatch CT-001 "Pre-Execution Prediction" cho executor @antigravity. Task implement prediction system để dự đoán task success/failure TRƯỚC KHI execute, dựa trên blast radius, hub nodes, và historical similarity.
+- Giải trình: Spec Gate + Plan Gate approved. Plan gồm 5 phases: (1) Schema update AGENTS.md, (2) Prediction logic trong pm/SKILL.md, (3) Suggestion generator, (4) Accuracy tracking trong verdict/SKILL.md, (5) Integration. Estimated ~2 hours. Low risk — additive changes only.
+- Files touched: projects/control-tower/tasks/CT-001-pre-execution-prediction.md (status: dispatched, executor: @antigravity)
+- Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref.
+- Commit: n/a
+
+## [2026-07-22 15:30:00] execute | CT-001 Pre-Execution Prediction Implementation
+- Dự án: `control-tower`
+- Mô tả: Hoàn thành implementation hệ thống Pre-Execution Prediction theo Work Order CT-001.
+- Giải trình: Đã cập nhật 5 thành phần chính: (1) `AGENTS.md` §2.1 thêm standard fields `predicted_success` & `prediction_factors`; (2) `.claude/skills/pm/SKILL.md` thêm mô tả pre-execution prediction score; (3) `.claude/skills/pm/references/task-creation.md` thêm bước tính score theo công thức (Score = 1.0 base, deductions cho blast radius, hub/bridge hits, historical success, missing tests), phân loại high/medium/low và tự động tạo gợi ý rủi ro khi low; (4) `.claude/skills/verdict/SKILL.md` bổ sung bước tự động ghi nhận kết quả dự đoán vs thực tế vào metrics file; (5) tạo mới `knowledge/metrics/prediction-accuracy.md` và đăng ký vào `knowledge/_index.md`.
+- Files touched: AGENTS.md, .claude/skills/pm/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/verdict/SKILL.md, knowledge/metrics/prediction-accuracy.md, knowledge/_index.md, projects/control-tower/tasks/CT-001-pre-execution-prediction.md
+- Trạng thái: Thành công.
+- Commit: `df5b3f7`
+
