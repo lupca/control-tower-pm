@@ -96,7 +96,7 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: User yêu cầu update UI table WMS (thêm STT, phân trang), nhưng WMS chưa có trong registry. Đã onboard trước rồi mới tạo task. Dùng `semantic_search_nodes_tool` và `get_hub_nodes_tool(top_n=50)` xác nhận: DataTable WMS không nằm trong hub nodes → risk `normal`; WMS chưa có test cho DataTable (PMI có) → AC7 yêu cầu tạo test mới.
 - Files touched: projects/topvnsport-wms/_project.md (mới), projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md (mới), index.md
 - Trạng thái: Thành công — task ở `status: todo`, chờ User duyệt Spec Gate (AC).
-- Commit: n/a
+- Commit: `d49d0a4` (ghi vào git muộn, cùng đợt commit sửa Obsidian Graph view)
 
 ## [2026-07-21 21:20:00] plan | Dispatch WMS-001 cho @antigravity
 - Dự án: `topvnsport-wms`
@@ -104,7 +104,7 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Task đã qua đủ 2 gate nội bộ (Spec + Plan). Executor sẽ thực hiện code trong repo `/home/lupca/projects/topvnsport`, sau đó báo result-ref để phát phiếu review.
 - Files touched: projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md
 - Trạng thái: Thành công — `status: dispatched`, `executor: @antigravity`.
-- Commit: n/a
+- Commit: `d49d0a4` (ghi vào git muộn, cùng đợt commit sửa Obsidian Graph view)
 
 ## [2026-07-21 21:42:00] review-order | Phát phiếu review WMS-001
 - Dự án: `topvnsport-wms`
@@ -112,7 +112,7 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Code đã xong ở local (chưa commit). Gọi `get_affected_flows_tool` xác nhận 7 flows bị ảnh hưởng (InventoryPage, TransactionsPage, các handlers). Phiếu review tại `reviews/WMS-001-review.md`.
 - Files touched: projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md, reviews/WMS-001-review.md (mới)
 - Trạng thái: Thành công — task ở `status: in-review`, chờ reviewer độc lập (≠ @antigravity).
-- Commit: n/a
+- Commit: `d49d0a4` (ghi vào git muộn, cùng đợt commit sửa Obsidian Graph view)
 
 ## [2026-07-21 21:50:00] plan | Sửa Obsidian Graph view — thêm wikilink thật + màu theo project
 - Dự án: Toàn bộ hệ thống Control Tower
@@ -120,4 +120,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Đây thuần là vấn đề cấu hình + nội dung Markdown, không đổi bất kỳ frontmatter field hay heading nào các skill đang parse (`status`, `files`, `tests`, `## Tiêu chí nghiệm thu (AC)`, `## Plan`, `## Sub-tasks`) — xác nhận trước khi sửa để không ảnh hưởng vòng đời/gate hiện có. Chọn mức đầy đủ (config + content + skill) theo yêu cầu của User để về sau task mới do `/pm` tạo tự động có link, không phải làm tay mỗi lần. Nhân tiện dọn luôn rác canvas còn sót từ lần migrate task-per-file trước (commit `d4e16c8`) — 2 node trỏ file đã xoá.
 - Files touched: .obsidian/graph.json, control-tower-map.canvas, AGENTS.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, knowledge/_index.md, projects/topvnsport-pmi/_project.md, projects/topvnsport-oms/_project.md, projects/topvnsport-wms/_project.md, projects/topvnsport-pmi/tasks/PMI-001..009.md, projects/topvnsport-wms/tasks/WMS-001-table-stt-pagination.md
 - Trạng thái: Thành công.
-- Commit: n/a (sẽ điền sau khi commit)
+- Commit: `d49d0a4`
