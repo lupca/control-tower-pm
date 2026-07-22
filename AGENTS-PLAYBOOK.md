@@ -27,14 +27,24 @@ When adding a new project to Control Tower:
 
 1. Add 1 row to the **PROJECT REGISTRY** table in `index.md` (§2): project name, absolute `repo_root`, task directory.
 2. Create `projects/<project-name>/` with a `<project-name>.md` file (filename MATCHES the folder name — copy the skeleton from `projects/topvnsport-pmi/topvnsport-pmi.md`, set `task_prefix` + `next_task_id: 1`), `tasks/`, `docs/`, `reviews/`.
-3. Build the graph for that repo (if not already built):
+3. **Setup code-review-graph** in the target repo — use the setup script or follow the guide:
    ```bash
-   /home/lupca/.local/share/code-review-graph-venv/bin/python3 -m code_review_graph build --repo <repo_root>
-   /home/lupca/.local/share/code-review-graph-venv/bin/python3 -m code_review_graph embed --repo <repo_root>
+   # Quick setup (runs all steps)
+   ~/projects/control-tower/templates/code-review-graph/setup.sh <repo_root>
+   
+   # Or manually: see knowledge/guides/setup-code-review-graph.md
    ```
+   This installs:
+   - `.mcp.json` — MCP server config
+   - `.code-review-graph/` — graph database
+   - `.claude/` — skills + hooks for Claude Code
+   - `.agents/` — skills + hooks + rules for Codex/Antigravity
+   - `CLAUDE.md` section — MCP tools usage guide
 4. Register a daemon watch so the graph updates itself (§6.6): `daemon add <repo_root> --alias <name>`.
 5. (Optional) `code-review-graph register <repo_root> --alias <name>` if you need `cross_repo_search_tool` to query across multiple projects at once.
 
+> **Full guide:** `knowledge/guides/setup-code-review-graph.md`
+> 
 > Obsidian visualization (graph.json colorGroups, control-tower-map.canvas) was **removed** per ADR-004 (2026-07-22) — no visualization step is needed when onboarding.
 
 ---
