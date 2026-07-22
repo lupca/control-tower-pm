@@ -589,4 +589,12 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: User ra lệnh trực tiếp "Bỏ obsidian, xóa hoàn toàn, không quan tâm nữa" (2026-07-22). Bước cập nhật visualization thủ công từng bị bỏ sót (WMS) và không phục vụ vận hành. Dòng backlink `> Dự án: [[...]]` + wikilink trong ## Tasks GIỮ NGUYÊN (quy ước điều hướng thuần, tồn tại trong 40+ file task cũ). Project Gate yêu cầu ADR khi sửa playbook/skill → ADR-004 (ADR-003 đã đặt chỗ cho CT-012).
 - Files touched: .obsidian/ (xóa), control-tower-map.canvas (xóa), .gitignore, AGENTS-PLAYBOOK.md, index.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, knowledge/decisions/ADR-004-drop-obsidian.md (mới)
 - Trạng thái: Thành công
-- Commit: (điền sau khi commit)
+- Commit: 6931194
+
+## [2026-07-22 19:55:00] pm-create | CT-012 bổ sung codex cli vào bộ CLI khảo sát
+- Dự án: `control-tower` (meta-project)
+- Mô tả: Sửa CT-012 theo lệnh User — thêm `codex` cli vào danh sách CLI executor/reviewer ở 5 vị trí (title, Bối cảnh, AC2, Plan Step 1, Sub-task 1). Bộ CLI giờ là: agy / claude / codex / github copilot.
+- Giải trình: User chỉ đạo trực tiếp "CT12 thêm codex cli" (2026-07-22). Sửa spec nhỏ, không đổi status (CT-012 vẫn todo, chờ duyệt Plan Gate).
+- Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md
+- Trạng thái: Thành công
+- Commit: (điền sau)

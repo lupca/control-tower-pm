@@ -1,6 +1,6 @@
 ---
 id: CT-012
-title: "Mô hình A — Điều phối agent EXECUTE + REVIEW qua CLI (agy / claude / copilot)"
+title: "Mô hình A — Điều phối agent EXECUTE + REVIEW qua CLI (agy / claude / codex / copilot)"
 status: todo
 priority: high
 risk: high
@@ -20,7 +20,7 @@ tests: []
 dispatched: null
 in_review: null
 created: 2026-07-22
-updated: 2026-07-22
+updated: 2026-07-22T19:55
 tier: 3
 paradigm_source: "Model A — control-tower as active CLI-agent orchestrator (đối lập Model B hiện tại)"
 ---
@@ -37,7 +37,7 @@ paradigm_source: "Model A — control-tower as active CLI-agent orchestrator (đ
 
 **Mô hình A (đề xuất trong task này):** control-tower **chủ động điều phối** `EXECUTE` và `REVIEW` bằng cách gọi các **coding-agent CLI** ở chế độ headless/non-interactive, ngay trong `repo_root` của dự án đích:
 
-- **Executor** = một CLI agent viết code, ví dụ: `agy` cli, `claude` cli, `github copilot` cli.
+- **Executor** = một CLI agent viết code, ví dụ: `agy` cli, `claude` cli, `codex` cli, `github copilot` cli.
 - **Reviewer** = một CLI agent **KHÁC** đọc diff + chạy test (khuyến khích chạy `/code-review` của repo đích).
 - control-tower chuyển từ "bảng handoff thụ động" → "orchestrator chủ động spawn agent", nhưng **vẫn giữ nguyên** four-eyes (`AGENTS.md` §1) và 2 Gate (§4).
 
@@ -48,7 +48,7 @@ paradigm_source: "Model A — control-tower as active CLI-agent orchestrator (đ
 > AC ở đây là tiêu chí cho **bản thiết kế + ADR** (task này là spec/TODO), không phải cho code chạy được.
 
 - [ ] AC1: ADR-003 (`knowledge/decisions/ADR-003-model-a-cli-agent-orchestration.md`) mô tả rõ Model A vs Model B: khi nào dùng cái nào, và khẳng định Model A là **opt-in**, Model B vẫn là mặc định — không âm thầm thay invariant của `AGENTS.md` §1.
-- [ ] AC2: Thiết kế nêu cụ thể **cách gọi từng CLI ở chế độ non-interactive/headless** để làm executor (ít nhất `agy` cli, `claude` cli, `github copilot` cli): lệnh, cách truyền AC/Plan của task làm prompt, cwd = `repo_root` lấy từ PROJECT REGISTRY (`index.md`), cách thu `result_ref` (branch/commit/PR) trả về.
+- [ ] AC2: Thiết kế nêu cụ thể **cách gọi từng CLI ở chế độ non-interactive/headless** để làm executor (ít nhất `agy` cli, `claude` cli, `codex` cli, `github copilot` cli): lệnh, cách truyền AC/Plan của task làm prompt, cwd = `repo_root` lấy từ PROJECT REGISTRY (`index.md`), cách thu `result_ref` (branch/commit/PR) trả về.
 - [ ] AC3: Thiết kế **bảo toàn four-eyes**: reviewer CLI phải khác executor CLI (ví dụ exec=`claude` cli → review=`copilot` cli), map rõ ràng vào `executor:`/`reviewer:` của task; `/verdict pass` vẫn từ chối khi `reviewer == executor`.
 - [ ] AC4: Thiết kế nêu **ranh giới an toàn**: 2 Gate (§4) vẫn mandatory trước khi spawn executor; không auto-commit/auto-merge nếu chưa có `/verdict pass` + xác nhận người (nhất quán với §19.2 no-auto-commit của CT-009); ghi audit `log.md` (§7) cho mỗi lần spawn agent.
 - [ ] AC5: Thiết kế chỉ ra **điểm tích hợp với hạ tầng paradigm-shift sẵn có**: dùng Reputation (CT-002) để chọn CLI-agent nào cho task nào, đặt trong khung Goal-Conditioned Autonomy (CT-007) và Auto-Remediation TNR (CT-009); liệt kê skill/thay đổi AGENTS.md cần có (chưa cần code).
@@ -58,7 +58,7 @@ paradigm_source: "Model A — control-tower as active CLI-agent orchestrator (đ
 > Spec Gate đã được User duyệt (2026-07-22). Đây là kế hoạch **thiết kế** (deliverable = bản design + ADR-003), KHÔNG phải viết code sản phẩm. Sau khi User duyệt Plan này → `status: ready` → chọn `executor:` → `dispatched`.
 
 ### Step 1 — Khảo sát chế độ headless của các CLI (→ AC2)
-Với từng CLI (`agy` cli, `claude` cli, `github copilot` cli), xác định: lệnh chạy non-interactive (print/headless mode), cách truyền prompt (AC + Plan của task), cách set cwd = `repo_root` (lấy từ PROJECT REGISTRY `index.md`), exit code, và cách đọc `result_ref` trả về (branch/commit/PR). Ghi thành bảng so sánh trong design doc. Không cần chạy thật ở bước này — chỉ tra tài liệu/`--help`.
+Với từng CLI (`agy` cli, `claude` cli, `codex` cli, `github copilot` cli), xác định: lệnh chạy non-interactive (print/headless mode), cách truyền prompt (AC + Plan của task), cách set cwd = `repo_root` (lấy từ PROJECT REGISTRY `index.md`), exit code, và cách đọc `result_ref` trả về (branch/commit/PR). Ghi thành bảng so sánh trong design doc. Không cần chạy thật ở bước này — chỉ tra tài liệu/`--help`.
 
 ### Step 2 — Viết ADR-003 (→ AC1)
 `knowledge/decisions/ADR-003-model-a-cli-agent-orchestration.md`: nêu Context (Model B invariant "control-tower NEVER writes code"), Decision (Model A là nhánh **opt-in song song**, Model B vẫn mặc định), Consequences, và tiêu chí "khi nào chọn Model A vs Model B". Bắt buộc theo Project Gate của control-tower.
@@ -77,7 +77,7 @@ Gom Step 1–5 thành design doc + ADR-003, đối chiếu đủ 5 AC, rồi han
 
 ## Sub-tasks
 
-- [ ] Khảo sát chế độ headless của `agy` cli, `claude` cli, `github copilot` cli (lệnh, prompt, exit code, cách lấy commit/branch)
+- [ ] Khảo sát chế độ headless của `agy` cli, `claude` cli, `codex` cli, `github copilot` cli (lệnh, prompt, exit code, cách lấy commit/branch)
 - [ ] Viết ADR-003 (Model A opt-in vs Model B mặc định) — bắt buộc theo Project Gate
 - [ ] Thiết kế cơ chế giữ four-eyes khi executor/reviewer đều là CLI agent
 - [ ] Thiết kế ranh giới an toàn: gates vẫn mandatory, no-auto-commit, audit từng lần spawn
