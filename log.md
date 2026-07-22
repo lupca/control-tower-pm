@@ -468,4 +468,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: control-tower là meta-project (registry `index.md`: no code graph) nên không query code-review-graph. Task là spec-only: 5 AC ràng buộc bản thiết kế + ADR-003 (bắt buộc theo Project Gate: đổi AGENTS.md phải kèm ADR), giữ nguyên four-eyes (§1) và 2 Gate (§4), no-auto-commit (§19.2). Model A là opt-in song song, KHÔNG thay Model B mặc định. `next_task_id` 12 → 13.
 - Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (mới, status: todo), control-tower.md (task list + next_task_id)
 - Trạng thái: Chờ duyệt — đang ở Spec Gate, chờ User duyệt scope & AC trước khi vào Plan Gate.
-- Commit: (pending)
+- Commit: f383a95
