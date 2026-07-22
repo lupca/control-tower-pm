@@ -24,7 +24,11 @@ Applies after the User has approved the Spec Gate (the task's scope + AC have be
 3. Ask the User: who will be the `executor:` for this task (a human or another AI, in the target code repo)?
 4. Record `executor: "@name"`, `status: dispatched`, `dispatched: <today's date>`, `updated: <today's date>` in the frontmatter.
 5. Write 1 entry to `log.md` (`operation: dispatch`) — summarizing: which task, handed to whom, noting the task file is already a self-contained work order with AC/`files:`/`tests:`/`## Plan`/DoD, no extra tooling needed.
-6. Tell the User: the task is ready to hand to the executor — they only need the path to `projects/<name>/tasks/<ID>-<slug>.md` (no need for control-tower access or any other tooling).
+6. **Spawn the executor using `/dispatch`:**
+   ```
+   /dispatch <task-id> @<executor>
+   ```
+   This runs a CLI command via Bash (NOT Agent() tool!) to spawn the executor in the target repo. See `/dispatch` skill for details.
 7. **Stop completely.** Once the executor reports done (with `result_ref:`), the User (or the executor themselves) will run `/review-order` — that's the next step, not part of `/pm`.
 
 ## If the task is flagged `⚠️high-risk` or touches `schemas/`/`models.py`/migrations
