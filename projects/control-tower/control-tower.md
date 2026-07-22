@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 12
+next_task_id: 13
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -41,3 +41,4 @@ updated: 2026-07-22
 - [[CT-009-auto-remediation-tnr]] ✅ POC (self-reviewed, waived — see CT-011)
 - [[CT-010-vericoding-formal-proofs]] ✅ (self-reviewed, waived — see CT-011)
 - [[CT-011-review-paradigm-shift-batch]] ✅ (reviewer: @claude-4.5, independent — compensating control confirmed batch)
+- [[CT-012-model-a-cli-agent-orchestration]] 📋 todo (Spec Gate — TODO thiết kế Mô hình A: điều phối EXECUTE/REVIEW qua CLI, cần ADR-003)

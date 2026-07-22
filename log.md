@@ -461,3 +461,11 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/control-tower/tasks/CT-011-review-paradigm-shift-batch.md (status: done), projects/control-tower/reviews/CT-011-review.md (verdict: pass), control-tower.md (11/11), index.md (project completed)
 - Trạng thái: Thành công — CT-011 closed, control-tower meta-project hoàn thành 11/11 tasks.
 - Commit: b324adc
+
+## [2026-07-22 21:00:00] pm-create | CT-012 Mô hình A — CLI-agent orchestration (TODO/spec-only)
+- Dự án: `control-tower`
+- Mô tả: Tạo task CT-012 ở `status: todo` (Spec Gate) — TODO thiết kế Mô hình A: control-tower chủ động điều phối agent EXECUTE + REVIEW qua các coding CLI (agy cli / claude cli / github copilot cli), đối lập Model B hiện tại (handoff ra ngoài). Chỉ tạo task theo yêu cầu User, KHÔNG dispatch, KHÔNG implement.
+- Giải trình: control-tower là meta-project (registry `index.md`: no code graph) nên không query code-review-graph. Task là spec-only: 5 AC ràng buộc bản thiết kế + ADR-003 (bắt buộc theo Project Gate: đổi AGENTS.md phải kèm ADR), giữ nguyên four-eyes (§1) và 2 Gate (§4), no-auto-commit (§19.2). Model A là opt-in song song, KHÔNG thay Model B mặc định. `next_task_id` 12 → 13.
+- Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (mới, status: todo), control-tower.md (task list + next_task_id)
+- Trạng thái: Chờ duyệt — đang ở Spec Gate, chờ User duyệt scope & AC trước khi vào Plan Gate.
+- Commit: (pending)
