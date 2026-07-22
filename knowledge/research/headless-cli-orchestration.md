@@ -108,41 +108,69 @@ Each spawn logs to `log.md`:
 
 ## 6. Example Spawn Commands
 
-### Claude as Executor
+Superseded by §8 (Correct Spawn Pattern) — see §8.1 for the canonical template and §8.3 for a full worked example. The prior version of this section inlined AC/Plan text directly into the prompt, which §8's rationale (¶151) explicitly rules out in favor of pointing at the task file path.
+
+---
+
+## 8. Correct Spawn Pattern
+
+Every spawn MUST pin four things explicitly: **cwd** (`cd <repo_root>`, the *target* repo — not control-tower), **model** (`--model <model>`, resolved via reputation, §8.2), **prompt** (`-p "<task_file_path>"` — the task file's path, never inlined AC/Plan text), and the CLI-specific **bypass** flag. Do NOT rely on the CLI's default model, and do NOT paste AC/Plan into the prompt — pin the model so the executor/reviewer mapping stays deterministic and auditable, and point at the task file so the CLI always reads the current AC/Plan from the one place they're tracked.
+
+### 8.1 Canonical Template
+
 ```bash
-cd /home/lupca/projects/topvnsport && claude -p "$(cat <<'EOF'
-Task: PMI-042 - Add discount validation
-
-AC:
-- [ ] validate discount percentage 0-100
-- [ ] validate discount dates (start < end)
-
-Plan:
-1. Edit PMI/backend/schemas/discount.py
-2. Add tests to PMI/backend/tests/test_discount.py
-3. Run pytest
-
-Return JSON: {"branch": "...", "commit_sha": "...", "summary": "..."}
-EOF
-)" --dangerously-skip-permissions --output-format json --json-schema '{"type":"object","properties":{"branch":{"type":"string"},"commit_sha":{"type":"string"},"summary":{"type":"string"}},"required":["branch","commit_sha","summary"]}'
+cd <repo_root> && <cli> --model <model> -p "Execute task at <task_file_path>" <bypass>
 ```
 
-### Codex as Reviewer
+- `<repo_root>` — absolute path from PROJECT REGISTRY in `index.md` (the *target* project's repo, e.g. `/home/lupca/projects/topvnsport`).
+- `<task_file_path>` — **absolute** path to the task file inside the **control-tower** repo, e.g. `/home/lupca/projects/control-tower/projects/topvnsport-pmi/tasks/PMI-042-add-discount-validation.md`. The task file does NOT live in `<repo_root>` — control-tower and the target repo are two different repos, so a relative path would break as soon as the CLI's cwd is the target repo. Never inline AC/Plan into the prompt: the task file is the single source of truth, and inlining lets the dispatched prompt drift from what's recorded there (e.g. after a `/verdict changes` edit adds findings).
+- `<model>` — never hardcoded; resolved per §8.2 from `knowledge/agents/*.md` reputation, tiered per §8.4.
+- `<bypass>` — CLI-specific permission flag from §1.
+
+### 8.2 Model Selection via Reputation (§12.3)
+
+Do NOT hardcode a CLI→model table. At dispatch time, resolve the model by querying reputation:
+
+1. Derive the task's domain(s) from its `files:` field using the §12.2 auto-detection rules (e.g. `*.py` / `/backend/` → `backend`).
+2. Read every `knowledge/agents/@*.md` profile; filter to agents whose `strengths` include a matching domain.
+3. Drop/flag any match with `success_rate < 0.6` or a matching `weaknesses` entry (§12.3's low-success/weakness warning) — surface the warning, don't silently dispatch to it.
+4. Rank remaining candidates by `success_rate` (tie-break: lower `avg_review_rounds`, then `recent_trend: improving` > `stable` > `declining`).
+5. Split by tier (§8.4): pick the top **executor-tier** match to execute, and a **reviewer-tier** match on a *different* CLI (four-eyes, §3) to review.
+6. Record the resolved `agent_id` + model in the spawn command and the audit log entry (§4.3).
+
+Re-run this lookup at every dispatch — never cache a fixed table. The roster below is a snapshot of current profiles for illustration only:
+
+| Agent profile | CLI | Model flag | Domains (`strengths`) | Tier (§8.4) |
+|---|---|---|---|---|
+| `@sonnet-5` | `claude` | `--model claude-sonnet-5` | skills, documentation, process-design | executor |
+| `@antigravity` | `agy` | `--model antigravity` | backend, frontend, testing, infra, database | executor |
+| `@antigravity-3.6` | `agy` | `--model antigravity-3.6` | frontend, backend, database — `weaknesses: [scope-compliance]`, `success_rate: 0.0` | executor — fails step 3, flag/skip unless scope is unusually tight |
+| `@gpt-5.6-luna` | `codex` | `--model gpt-5.6` | backend, frontend, cleanup | executor |
+| `@claude-opus` | `claude` | `--model claude-opus-4-8` | code-review, architecture, backend, frontend, database | reviewer |
+| `@claude` | `claude` | (review-only profile) | code-review, backend, frontend, infra, testing | reviewer |
+| `@dev-tung` | human | n/a | backend, database | either (human) |
+
+### 8.3 Full Example — cwd + task file path + reputation-recommended model
+
+Task `PMI-042` touches `PMI/backend/schemas/discount.py` + `PMI/backend/tests/test_discount.py` → §12.2 domain = `backend` + `testing`. Reputation lookup (§8.2): `@antigravity` (backend/frontend/testing/infra/database, 100% success) and `@gpt-5.6-luna` (backend/frontend/cleanup, 100% success) both match; `@antigravity` ranks first on `recent_trend` (§8.2 step 4 tie-break), so it's the executor. The reviewer must be a different CLI and reviewer-tier: `@claude-opus` (code-review, architecture, backend) fits — its `total_tasks_executed: 0` doesn't disqualify it, since reviewer-tier is picked for thoroughness, not `success_rate` (§8.4).
+
+Executor (`@antigravity` via `agy`, reputation-recommended, cwd = target repo):
+
 ```bash
-cd /home/lupca/projects/topvnsport && codex exec "$(cat <<'EOF'
-Review task PMI-042 - Add discount validation
-
-Check:
-- [ ] AC1: discount 0-100 validated
-- [ ] AC2: date validation (start < end)
-- [ ] Tests pass
-
-Run: pytest PMI/backend/tests/test_discount.py
-
-Return JSON: {"pass": true/false, "findings": ["..."]}
-EOF
-)" --sandbox workspace-write --ask-for-approval never --json
+cd /home/lupca/projects/topvnsport && agy --model antigravity -p "Execute task at /home/lupca/projects/control-tower/projects/topvnsport-pmi/tasks/PMI-042-add-discount-validation.md" --dangerously-skip-permissions --output-format json --json-schema '{"type":"object","properties":{"branch":{"type":"string"},"commit_sha":{"type":"string"},"summary":{"type":"string"}},"required":["branch","commit_sha","summary"]}'
 ```
+
+Reviewer (`@claude-opus` via `claude`, different CLI → four-eyes holds):
+
+```bash
+cd /home/lupca/projects/topvnsport && claude --model claude-opus-4-8 -p "Review task at /home/lupca/projects/control-tower/projects/topvnsport-pmi/tasks/PMI-042-add-discount-validation.md — verify AC, run tests, return pass/fail + findings" --dangerously-skip-permissions --output-format json
+```
+
+### 8.4 Tiering Rule: Executor (cheap) vs Reviewer (expensive)
+
+- **Executor tier** — optimized for cost/throughput: cheap, fast models with a proven high `success_rate` on the matching domain (`@sonnet-5`, `@antigravity`, `@gpt-5.6-luna`). Pick the cheapest model that clears the success-rate bar in §8.2 step 3 — don't default to the most expensive model just because it's available.
+- **Reviewer tier** — optimized for thoroughness, not cost: models chosen for depth of review even at higher per-call cost (`@claude-opus`, `@claude`). A reviewer profile with `total_tasks_executed: 0` is expected — these agents are dispatched review-only, and their value is bugs caught (e.g. `@claude-opus` catching the scope mismatch + OMS bug on WEB-001), not raw `success_rate`.
+- Executor and reviewer must never resolve to the same `agent_id`, and should run on different CLIs (§3 four-eyes).
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 14
+next_task_id: 15
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -43,3 +43,4 @@ updated: 2026-07-22
 - [[CT-011-review-paradigm-shift-batch]] ✅ (reviewer: @claude-4.5, independent — compensating control confirmed batch)
 - [[CT-012-model-a-cli-agent-orchestration]] ✅ (executor: @claude-opus-4.5, reviewer: @agy-cli — Model A design + ADR-003)
 - [[CT-013-token-cost-automation-optimization]] ✅ (executor: @claude-opus-4.5, reviewer: @lupca — baseline token measurement)
+- [[CT-014-fix-spawn-pattern-design]] ✅ (executor: @sonnet-5, reviewer: @claude-opus — spawn pattern: task file + reputation + tiering)

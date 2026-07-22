@@ -665,3 +665,25 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - **Reviewer:** @lupca (human)
 - **Deliverable:** knowledge/research/token-baseline-manual-flow.md
 - **Key findings:** ~3575 input tokens/cycle (reading only), log.md growing ~30 lines/task
+
+## [2026-07-22 23:30:00] spawn | CT-014 executor=@sonnet-5 model=sonnet
+- **Task:** CT-014 — Fix spawn pattern design
+- **Action:** Edit §8 (task file path + reputation + tiering)
+- **Result:** 4 ACs checked, moved to in-review
+
+## [2026-07-22 23:35:00] spawn | CT-014 reviewer=@claude-opus model=opus
+- **Task:** CT-014
+- **Action:** Review §8 changes
+- **Result:** PASS 4 ACs, found 3 issues (§6 anti-pattern, 2 refs)
+
+## [2026-07-22 23:40:00] spawn | CT-014 executor=@sonnet-5 (fix round)
+- **Task:** CT-014
+- **Action:** Fix 3 reviewer findings
+- **Result:** All 3 fixed (§6→pointer, §8.2→§4.3, §8.3→recent_trend)
+
+## [2026-07-22 23:45:00] verdict | CT-014 pass
+- **Reviewer:** @claude-opus
+- **Executor:** @sonnet-5
+- **Four-eyes:** ✅ (sonnet ≠ opus)
+- **Review rounds:** 2
+- **Status:** done
