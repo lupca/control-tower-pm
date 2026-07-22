@@ -6,6 +6,10 @@
 - `/dispatch MVA-001 @claude-sonnet-medium` — dispatch executor
 - `/dispatch MVA-001 @gpt-5.6-sol --review` — dispatch reviewer
 
+> **CRITICAL:** Use `Bash()` to spawn CLI processes, NOT `Agent()` tool!
+> - ✅ `Bash("cd <repo> && claude -p '...'")` — separate process, outside the system
+> - ❌ `Agent("Execute task...")` — subagent in same session, still inside control-tower
+
 ## Steps
 
 ### 1. Parse input

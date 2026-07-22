@@ -23,6 +23,12 @@ Welcome, Agent, to Control Tower. This is the top-level control file defining th
 
 **Separation-of-duties principle (mandatory): reviewer ≠ executor.** If `reviewer:` matches the `executor:` of the same task → refuse to record a `pass` verdict, and require a second, independent signature (human or AI).
 
+**"Outside the system" means a SEPARATE CLI process, NOT a subagent:**
+- ✅ `Bash("cd <repo> && claude -p '...' --dangerously-skip-permissions")` — spawns a new Claude Code process in the target repo
+- ✅ `Bash("cd <repo> && codex exec ...")` — spawns a new Codex process
+- ❌ `Agent()` tool — this is a subagent WITHIN the same Claude Code session, still "inside" control-tower
+- See `spawn-patterns.md` (memory) and `/dispatch` skill for correct CLI commands.
+
 Because roles are cleanly separated as above, the AUTONOMOUS/COLLABORATIVE/RESTRICTED matrix only applies to actions **taken by control-tower itself** (always Markdown, never code):
 
 | Permission Level | Action (all Markdown, never code) | Process |
