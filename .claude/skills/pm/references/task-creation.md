@@ -2,14 +2,14 @@
 
 Applies when the User hands off a new request via `/pm`. Goal: create a dedicated task file, complete with `files:`/AC/`tests:`/`flows:` (frontmatter syntax in `AGENTS.md` §2.1), **never write the task before the graph has been queried**.
 
-## Steps (per the table in `AGENTS.md` §6.1)
+## Steps (per the table in `AGENTS-REFERENCE.md` §6.1)
 
 Every tool below must be called with `repo_root=<absolute, looked up from index.md §2>`; use `detail_level="minimal"` wherever the tool supports it.
 
 1. `get_minimal_context_tool(task="<task description>", repo_root=...)` — get oriented first, avoid blind searching.
 2. `semantic_search_nodes_tool(query="<keywords from the task description>", repo_root=..., detail_level="minimal")` — find the real file/symbol. If the result shows the feature **already exists** (passing test, schema constraint already in place...), STOP, tell the User the request may already be implemented — don't create a fake task for something already done (real-world example: `PMI-001` — "add cost/tax validation for variant" was once discovered to already exist in topvnsport).
-3. **Pattern match** (`AGENTS.md` §13): Glob `knowledge/patterns/*.md` (skip `_index.md`), read each file's `## Problem Signature`. If the task description's symptoms match a pattern (e.g. "list page getting slower with more rows" ↔ `n-plus-one-query`'s signature), surface it to the User before writing the task: "This looks like pattern `<pattern_id>`, see how `<task from Past Instances>` was fixed" — a suggestion only, never auto-applied, never blocks the gate. If `Past Instances` is empty, still mention the matching pattern's `Solution Template` as a hint.
-4. **Cross-repo search** (`AGENTS.md` §14): first check `knowledge/patterns/cross-repo/_index.md` for a cached match on related keywords. If nothing cached, call `cross_repo_search_tool(query=<keywords>, repo_root=<target repo_root>)` scoped to every OTHER registered repo (`index.md` §2) with `patterns_exportable: true`. A match above ~70% similarity gets noted in the task draft: "Similar implementation exists in `<project>/<file>` (`<score>`% match) — consider reusing/adapting." Never a blocker, User decides.
+3. **Pattern match** (`AGENTS-EXPERIMENTAL.md` §13): Glob `knowledge/patterns/*.md` (skip `_index.md`), read each file's `## Problem Signature`. If the task description's symptoms match a pattern (e.g. "list page getting slower with more rows" ↔ `n-plus-one-query`'s signature), surface it to the User before writing the task: "This looks like pattern `<pattern_id>`, see how `<task from Past Instances>` was fixed" — a suggestion only, never auto-applied, never blocks the gate. If `Past Instances` is empty, still mention the matching pattern's `Solution Template` as a hint.
+4. **Cross-repo search** (`AGENTS-EXPERIMENTAL.md` §14): first check `knowledge/patterns/cross-repo/_index.md` for a cached match on related keywords. If nothing cached, call `cross_repo_search_tool(query=<keywords>, repo_root=<target repo_root>)` scoped to every OTHER registered repo (`index.md` §2) with `patterns_exportable: true`. A match above ~70% similarity gets noted in the task draft: "Similar implementation exists in `<project>/<file>` (`<score>`% match) — consider reusing/adapting." Never a blocker, User decides.
 5. `get_impact_radius_tool(changed_files=[...paths found in step 2...], repo_root=..., detail_level="minimal")` → fills in `files:`.
    - If the blast radius has more than **8** files, do NOT write one big task — propose splitting into smaller tasks (1 PR each), present the split plan to the User before writing any task.
 6. `query_graph_tool(pattern="tests_for", target=<file/symbol from step 3>, repo_root=..., detail_level="minimal")` → fills in `tests:` (existing tests).
@@ -35,8 +35,8 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
       - Hub/bridge node hit → suggest adding extra test coverage for the hub component.
       - Past task failure → reference the failed task from `log.md` and suggest addressing its root cause.
       - Missing tests → add a test creation sub-task.
-11. **Confidence Calibration** (`AGENTS.md` §16): compute `confidence_interval: [lower, upper]` from the score in step 10, whether step 12's verifier passed clean, and historical accuracy on similar tasks in `knowledge/metrics/prediction-accuracy.md`. Record it in the frontmatter next to `predicted_success`. Apply the dynamic gate rule (§16.2) to decide how much scrutiny to ask for at the Spec Gate stop below — this changes gate FRICTION, never whether the gate happens.
-12. **LLM-Modulo verifier** (`AGENTS.md` §15): evaluate every rule in `.claude/verifier-rules.yaml` against the draft task, print the results block (§15.3). Any `❌` needs a mechanical auto-fix or an explicit User override (§15.4, recorded in `## Verifier Overrides`) before the Spec Gate can close below.
+11. **Confidence Calibration** (`AGENTS-EXPERIMENTAL.md` §16): compute `confidence_interval: [lower, upper]` from the score in step 10, whether step 12's verifier passed clean, and historical accuracy on similar tasks in `knowledge/metrics/prediction-accuracy.md`. Record it in the frontmatter next to `predicted_success`. Apply the dynamic gate rule (§16.2) to decide how much scrutiny to ask for at the Spec Gate stop below — this changes gate FRICTION, never whether the gate happens.
+12. **LLM-Modulo verifier** (`AGENTS-EXPERIMENTAL.md` §15): evaluate every rule in `.claude/verifier-rules.yaml` against the draft task, print the results block (§15.3). Any `❌` needs a mechanical auto-fix or an explicit User override (§15.4, recorded in `## Verifier Overrides`) before the Spec Gate can close below.
 
 ## Writing the task
 
@@ -47,9 +47,9 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
 - Add 1 line to the `## Tasks` section of `<name>.md`: `- [[<ID>-<slug>]] — <title> (todo)`. If `<name>.md` doesn't have a `## Tasks` section yet, create one (placed before the "Quy tắc phê duyệt riêng" section). This doesn't need to be perfect — `/report` regenerates this whole section on every run, so small mistakes self-heal.
 - If the task touches `schemas/`, `models.py`, or a migration directory → automatic RESTRICTED (`AGENTS.md` §1 & §4), flag `risk: high` and call it out explicitly in the task.
 - Leave the `## Plan` section of the body empty — it gets filled in at the Plan Gate (see `task-execution.md`), don't pre-fill it.
-- **Formal spec draft** (`AGENTS.md` §20.2, only when the User opts in — a formal-methods keyword in the description, or an explicit ask): rephrase the AC's measurable clauses as best-effort `ensures`/`requires` into a `formal_spec:` block. Never verified by `/pm` itself (no Dafny/Lean/Verus toolchain here) — show it to the User as a draft, don't insert it silently.
+- **Formal spec draft** (`AGENTS-EXPERIMENTAL.md` §20.2, only when the User opts in — a formal-methods keyword in the description, or an explicit ask): rephrase the AC's measurable clauses as best-effort `ensures`/`requires` into a `formal_spec:` block. Never verified by `/pm` itself (no Dafny/Lean/Verus toolchain here) — show it to the User as a draft, don't insert it silently.
 
 ## Closing the Spec Gate
 
-1. Write 1 entry to `log.md` (`operation: pm-create`, format in `AGENTS.md` §7).
+1. Write 1 entry to `log.md` (`operation: pm-create`, format in `AGENTS-REFERENCE.md` §7).
 2. Show the User the task you just wrote, stop and wait for approval of the scope & AC. **Do not** automatically move on to the Plan Gate — you need explicit User confirmation.
