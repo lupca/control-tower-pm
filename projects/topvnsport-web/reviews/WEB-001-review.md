@@ -2,9 +2,27 @@
 
 - Dự án: topvnsport-web (`/home/lupca/projects/topvnsport`)
 - Task gốc: `projects/topvnsport-web/tasks/WEB-001-promotion-module.md`
-- Result-ref: `topvnsport@main (commit 80875eca6dd8351a25661fe03d8ad3895bb13dbe)`
+- Result-ref: `topvnsport@feature/promotion-module`
 - Executor: @antigravity-3.6
-- Ngày phát phiếu: 2026-07-22
+- Ngày phát phiếu: 2026-07-22 (lần 2 — sau rework)
+
+---
+
+## ⚠️ CẢNH BÁO: Lần 1 executor làm SAI SCOPE
+
+**Lần 1 bị reject vì:**
+- Executor implement **order-level coupon trong OMS** (nhập mã khi checkout)
+- AC yêu cầu **product-level promotion trong PMI** (giá giảm hiện sẵn trên ProductCard)
+
+**Reviewer PHẢI kiểm tra kỹ:**
+1. Code mới nằm trong **PMI/** (backend + frontend), KHÔNG PHẢI OMS/
+2. Có 4 bảng mới trong **PMI database**: `promotions`, `promotion_scope`, `promotion_computed_prices`, `promotion_usage_log`
+3. API endpoints ở **PMI** (`/api/promotions/*`, `/api/variants/{id}/computed-price`)
+4. Web hiển thị giá giảm **trên ProductCard**, không phải chỉ ở checkout
+
+**Bugfix history:** Executor gặp lỗi loop 5 lần, đã kill và cho AI khác fix (xem `/home/lupca/projects/topvnsport/.bugfix`).
+
+---
 
 ## Acceptance Criteria cần verify
 
@@ -83,26 +101,31 @@ docker compose up -d
 cd e2e_tests && pytest tests/test_promotion_full_flow.py -v
 ```
 
-## Câu hỏi rủi ro (từ code-review-graph, tĩnh — không thay thế việc bạn tự đọc diff)
+## Câu hỏi rủi ro
+
+### Critical (từ lần 1)
+1. **Đúng hệ thống chưa?** Code mới PHẢI nằm trong PMI/, không phải OMS/. Kiểm tra migration file, router, schemas đều ở PMI.
+2. **Đúng loại promotion chưa?** Phải là product-level (giá hiện trên ProductCard), không phải order-level (coupon checkout).
 
 ### High Priority
-1. **Hub node 'upgrade' (migration)**: Migration file có 204 connections nhưng không có test trực tiếp. Kiểm tra migration mới cho promotions có đúng format và rollback được không.
+3. **Hub node 'upgrade' (migration)**: Migration file có 204 connections nhưng không có test trực tiếp. Kiểm tra migration mới cho promotions có đúng format và rollback được không.
 
 ### Medium Priority
-2. **Untested hotspot**: `OrdersPageContent` có 195 connections nhưng không test. Nếu promotion module tích hợp với OMS, cần verify không break flow này.
+4. **Untested hotspot**: `OrdersPageContent` có 195 connections nhưng không test. Nếu promotion module tích hợp với OMS, cần verify không break flow này.
 
-### Lưu ý cho task này
+### Lưu ý
 - Task này thêm module MỚI (không sửa code cũ nhiều), nên risk thấp hơn so với refactor.
 - Cần đặc biệt chú ý: migration có thể rollback không, và E2E test cover full flow.
+- Bugfix đã áp dụng (xem `.bugfix` trong repo) — verify fix không introduce regression.
 
 ## Gợi ý công cụ
 
-Repo code đích có thể có sẵn skill `/code-review` (hoặc tương đương) — khuyến khích dùng để đọc diff + chạy test một cách có cấu trúc.
+Repo code đích có sẵn skill `/code-review` — khuyến khích dùng để đọc diff + chạy test một cách có cấu trúc.
 
 ## Trả kết quả
 
 Sau khi review xong, báo lại cho control-tower bằng lệnh:
 
 ```
-/verdict WEB-001 <pass|changes> --reviewer @<tên bạn> --commit 80875eca6dd8 [--notes "..."]
+/verdict WEB-001 <pass|changes> --reviewer @<tên bạn> --commit <hash> [--notes "..."]
 ```
