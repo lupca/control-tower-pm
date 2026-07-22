@@ -1,13 +1,13 @@
 ---
 id: MVA-001
 title: "Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent"
-status: dispatched
+status: changes-requested
 priority: high
 risk: high
 deadline: null
 executor: "@gpt-5.6-luna"
-reviewer: null
-result_ref: null
+reviewer: "@claude-opus"
+result_ref: "marketing-video-agent@main (commit 77bc43b)"
 depends_on: []
 files:
   - worker_agent/agent_runner.py
@@ -29,7 +29,7 @@ tests:
   - test_flow.py
   - tests/test_translify_graph.py
 dispatched: 2026-07-22
-in_review: null
+in_review: 2026-07-22
 predicted_success: low
 prediction_factors:
   score: 0.2
@@ -70,6 +70,101 @@ plan_approved: true
 ## Verifier Overrides
 
 User cần xác nhận chấp nhận scope lớn VÀ phương án split thành phases dưới đây.
+
+## Findings từ reviewer (Lần 1)
+
+**Status: CHANGES REQUESTED** — Phase 4 (Cleanup) chưa hoàn thành.
+
+### Đã làm đúng (Phase 1-3):
+- [x] `engines/` với 4 files + `unbox/` subdirectory
+- [x] `tools/` với 4 files
+- [x] Root files: `agent.py`, `config.py`, `storage.py`, `database.py`, `run.py`
+- [x] `tests/test_simplified.py` mới
+
+### Chưa làm (Phase 4 - Cleanup):
+
+**17 worker folders cần xóa:**
+```bash
+rm -rf worker_agent/ worker_base/ worker_capcut/ worker_chat/ \
+       worker_delivery/ worker_download/ worker_leader/ worker_promotion/ \
+       worker_research/ worker_review/ worker_slideshow/ worker_text2img/ \
+       worker_text2video/ worker_translify/ worker_tts/ worker_unbox/
+```
+
+**Legacy scripts cần xóa:**
+```bash
+rm -f dev-stop.sh
+```
+
+**shared_core/ cần xử lý (12 files):**
+
+| File | Action | Lý do |
+|:---|:---|:---|
+| `__init__.py` | XÓA | Không cần |
+| `__pycache__/` | XÓA | Cache |
+| `alter_db.py` | XÓA | PostgreSQL migration |
+| `audio_utils.py` | GIỮ/MOVE | Nếu `engines/unbox/` còn dùng → move sang `engines/utils/` |
+| `config.py` | XÓA | Đã thay bằng root `config.py` |
+| `constants.py` | REVIEW | Nếu còn dùng → move sang root hoặc `engines/` |
+| `database.py` | XÓA | PostgreSQL, đã thay bằng SQLite `database.py` |
+| `gpu_utils.py` | GIỮ/MOVE | Nếu engines còn dùng → move sang `engines/utils/` |
+| `llm_resolver.py` | REVIEW | Nếu `agent.py` còn dùng → move sang root |
+| `minio_utils.py` | XÓA | MinIO không còn dùng |
+| `models.py` | XÓA | SQLAlchemy models cho PostgreSQL |
+| `schemas.py` | REVIEW | Pydantic schemas — nếu còn dùng → move |
+| `video_schemas.py` | REVIEW | Nếu engines còn dùng → move |
+
+### Action Plan cho Executor
+
+```bash
+cd /data/projects/marketing-video-agent
+
+# 1. Xóa tất cả worker folders
+rm -rf worker_agent/ worker_base/ worker_capcut/ worker_chat/ \
+       worker_delivery/ worker_download/ worker_leader/ worker_promotion/ \
+       worker_research/ worker_review/ worker_slideshow/ worker_text2img/ \
+       worker_text2video/ worker_translify/ worker_tts/ worker_unbox/
+
+# 2. Xóa legacy script
+rm -f dev-stop.sh
+
+# 3. Xử lý shared_core/ - XÓA những file chắc chắn không dùng
+rm -rf shared_core/__pycache__/
+rm -f shared_core/__init__.py
+rm -f shared_core/alter_db.py
+rm -f shared_core/config.py
+rm -f shared_core/database.py
+rm -f shared_core/minio_utils.py
+rm -f shared_core/models.py
+
+# 4. REVIEW các file còn lại trước khi xóa/move:
+# - grep -r "audio_utils" engines/ → nếu dùng, move
+# - grep -r "gpu_utils" engines/ → nếu dùng, move
+# - grep -r "llm_resolver" . → nếu agent.py dùng, move
+# - grep -r "schemas" engines/ → nếu dùng, move
+# - grep -r "video_schemas" engines/ → nếu dùng, move
+# - grep -r "constants" . → nếu dùng, move
+
+# 5. Nếu không file nào còn dùng shared_core/:
+rm -rf shared_core/
+
+# 6. Verify không còn import shared_core trong code mới
+grep -r "from shared_core" engines/ tools/ agent.py config.py database.py run.py
+# Phải trả về empty
+
+# 7. Test lại
+python -c "from engines.tts import generate_speech; print('OK')"
+python -c "from database import JobDB; print('OK')"
+pytest tests/test_simplified.py -v
+```
+
+### Checklist trước khi báo lại
+
+- [ ] Tất cả 17 worker_* folders đã xóa
+- [ ] `dev-stop.sh` đã xóa
+- [ ] `shared_core/` đã xử lý (xóa hoặc move files còn dùng)
+- [ ] Không còn `from shared_core` import trong code mới
+- [ ] Tests vẫn pass
 
 ## Plan
 

@@ -9,6 +9,10 @@ allowed-tools: Read, Edit, Write, Grep, Glob, Bash, mcp__code-review-graph__get_
 
 The user invokes: `/pm $ARGUMENTS`. You're running inside the `control-tower` repo, NOT the target repo — every graph tool call must include an absolute `repo_root`. **Model B: `/pm` only plans and coordinates. It NEVER writes code itself, never spawns an executing subagent, never runs tests, never closes a task.** EXECUTE and REVIEW both happen outside the system (see `AGENTS.md` §1, §4).
 
+### Coordinator output style
+
+Keep responses to 1–2 terse sentences with no long explanation. When confirmations are adjacent, batch them as `Spec+Plan ok? Dispatch @agent? [y/n]`; after spawning a CLI process, report only pass/fail and the next action, without summarizing its output.
+
 ### Step 0 — Locate the project
 
 1. Read `AGENTS.md` (roles, DoD, gates, task syntax) and `AGENTS-REFERENCE.md` §6 (graph rules) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.

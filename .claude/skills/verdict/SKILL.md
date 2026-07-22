@@ -9,6 +9,10 @@ allowed-tools: Read, Edit, Write, Glob
 
 This skill **never checks the AC itself, never runs tests, never reads a diff** — it only records the outcome that an (outside-the-system) reviewer already determined, after checking the four-eyes constraint.
 
+### Coordinator output style
+
+Keep responses to 1–2 terse sentences with no long explanation. Batch adjacent confirmations as `Spec+Plan ok? Dispatch @agent? [y/n]`; after spawning a CLI process, report only pass/fail and the next action, without summarizing its output.
+
 ### Step 1 — Locate the task and parse arguments
 
 1. Read `AGENTS.md` §1, §3, §4 if not already read this session (separation of duties, DoD, task lifecycle). For reputation/patterns/causal-analysis features, also read `AGENTS-EXPERIMENTAL.md` §12, §13.

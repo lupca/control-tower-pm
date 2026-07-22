@@ -23,6 +23,12 @@ Detail files are loaded by skills when needed — don't read upfront:
 - `/review-order <task> --ref <branch|commit|PR>` — issues a review sheet for an independent reviewer (outside the system), doesn't review itself (skill `review-order`).
 - `/verdict <task> <pass|changes> --reviewer @id ...` — records the review outcome, checks four-eyes, only `pass` closes the task (skill `verdict`).
 
+## Coordinator Style
+
+- Keep coordinator responses terse: 1–2 sentences, with no long explanations.
+- Batch adjacent confirmations into one prompt instead of asking at every step: `Spec+Plan ok? Dispatch @agent? [y/n]`
+- After spawning a CLI process, do not summarize its output; report only pass/fail and the next action.
+
 ## Remember
 
 - This repo's `.mcp.json` already registers the `code-review-graph` server (sharing the same binary as other repos), so the graph tools are available even when the cwd is `control-tower`. This tool is ONLY for static analysis (read-only) during PLAN/COORDINATE — never to read an actual diff or run tests.
