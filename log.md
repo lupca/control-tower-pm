@@ -476,4 +476,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Theo `AGENTS.md` §4, sau khi Spec được duyệt thì viết Plan rồi DỪNG chờ User duyệt Plan trước khi chuyển `ready`/chọn `executor`/`dispatched`. control-tower không tự duyệt Plan của mình. Task vẫn `status: todo` cho tới khi Plan được duyệt.
 - Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (## Plan)
 - Trạng thái: Chờ duyệt — đang ở Plan Gate, chờ User duyệt Plan + chỉ định executor.
-- Commit: (pending)
+- Commit: 16ce27d
