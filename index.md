@@ -24,7 +24,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 | `topvnsport-web` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-web/tasks/` (`topvnsport-web.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) | `true` |
 | `control-tower` | `/home/lupca/projects/control-tower` | `projects/control-tower/tasks/` (`control-tower.md`) | n/a (meta-project, no code graph) | n/a | n/a | `false` |
 | `marketing-video-agent` | `/data/projects/marketing-video-agent` | `projects/marketing-video-agent/tasks/` (`marketing-video-agent.md`) | ✅ yes (1035 nodes) | ✅ yes (867 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `mva`) | `false` |
-| `control-tower-web` | `/home/lupca/projects/control-tower-web` | `projects/control-tower-web/tasks/` (`control-tower-web.md`) | ❌ chưa build | ❌ chưa embed | ❌ chưa watch | `false` |
+| `control-tower-web` | `/home/lupca/projects/control-tower-web` | `projects/control-tower-web/tasks/` (`control-tower-web.md`) | ✅ yes (62 nodes) | ✅ yes (29 embeddings, model `all-MiniLM-L6-v2`) | ❌ chưa watch | `false` |
 
 Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng. `patterns_exportable` (`AGENTS.md` §14.1): `true` khi code trong repo đủ generic để đáng surface sang project khác (case này — cùng 1 monorepo topvnsport, code dùng chung thật sự); `control-tower` là `false` vì không có code, chỉ có process Markdown.
 

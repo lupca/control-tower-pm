@@ -3,7 +3,7 @@ project: control-tower-web
 full_name: "Control Tower Web - Dashboard UI"
 repo_root: /home/lupca/projects/control-tower-web
 task_prefix: CTW
-next_task_id: 1
+next_task_id: 3
 created: 2026-07-23
 updated: 2026-07-23
 ---
@@ -21,6 +21,9 @@ Web dashboard cho control-tower, built với Astro + Tailwind CSS.
 
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
+
+- [[CTW-001-research-css-and-file-overwrite-bugs]] — Research: CSS not loading + file overwrite bugs (in-progress)
+- [[CTW-002-setup-npm-environment]] — Setup npm environment cho control-tower-web (todo)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - UI changes cần screenshot hoặc preview trước khi merge.

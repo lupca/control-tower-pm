@@ -16,6 +16,29 @@ pipx install code-review-graph
 
 ---
 
+## Quick Setup (one-liner)
+
+```bash
+~/projects/control-tower/templates/code-review-graph/setup.sh <project_root>
+```
+
+Script này chạy tất cả steps bên dưới. Hoặc làm thủ công từng bước.
+
+---
+
+## Tổng quan các bước
+
+| Step | Mục đích | Tạo ra |
+|------|----------|--------|
+| 0 | Check Git | — |
+| 1 | Auto Install | `.mcp.json` |
+| 2 | Build Graph | `.code-review-graph/` |
+| 3 | Copy Skills + Hooks | `.claude/skills/`, `.claude/settings.json` |
+| 4 | Update CLAUDE.md | Section hướng dẫn dùng MCP tools |
+| 5 | Test | Verify everything works |
+
+---
+
 ## Step 0 — Check Git (BẮT BUỘC)
 
 code-review-graph **yêu cầu git repo** để track files (`git ls-files`).
@@ -98,7 +121,121 @@ ls -la .code-review-graph/
 
 ---
 
-## Step 3 — Test MCP Tools
+## Step 3 — Copy Skills + Hooks
+
+Templates nằm trong `control-tower/templates/code-review-graph/`.
+
+### 3a. Claude Code (`.claude/`)
+
+```bash
+cd <project_root>
+
+# Copy skills (4 skills: debug-issue, explore-codebase, refactor-safely, review-changes)
+mkdir -p .claude/skills
+cp -r ~/projects/control-tower/templates/code-review-graph/.claude/skills/* .claude/skills/
+
+# Copy settings.json (hooks auto-update graph on Edit/Write)
+# Nếu đã có settings.json, merge hooks vào file hiện tại
+cp ~/projects/control-tower/templates/code-review-graph/.claude/settings.json .claude/settings.json
+```
+
+### 3b. Codex / Antigravity (`.agents/`)
+
+```bash
+cd <project_root>
+PROJECT_ROOT="$(pwd)"
+
+# Copy skills + rules
+mkdir -p .agents/{rules,skills}
+cp -r ~/projects/control-tower/templates/code-review-graph/.agents/skills/* .agents/skills/
+cp ~/projects/control-tower/templates/code-review-graph/.agents/rules/* .agents/rules/
+
+# Copy MCP config + hooks (replace placeholder with actual path)
+sed "s|__PROJECT_ROOT__|$PROJECT_ROOT|g" \
+    ~/projects/control-tower/templates/code-review-graph/.agents/mcp_config.json > .agents/mcp_config.json
+
+sed "s|__PROJECT_ROOT__|$PROJECT_ROOT|g" \
+    ~/projects/control-tower/templates/code-review-graph/.agents/hooks.json > .agents/hooks.json
+```
+
+### Verify:
+
+```bash
+# Claude Code
+ls .claude/skills/
+# Output: debug-issue  explore-codebase  refactor-safely  review-changes
+
+# Codex/Antigravity
+ls .agents/
+# Output: hooks.json  mcp_config.json  rules  skills
+```
+
+### Các skills có sẵn (cả 2 platforms):
+
+| Skill | Mô tả |
+|-------|-------|
+| `debug-issue` | Debug issues bằng graph navigation |
+| `explore-codebase` | Khám phá codebase qua architecture overview |
+| `refactor-safely` | Refactor với dependency analysis |
+| `review-changes` | Code review với risk scoring |
+
+---
+
+## Step 4 — Update CLAUDE.md
+
+Thêm section hướng dẫn dùng MCP tools vào `CLAUDE.md`:
+
+```bash
+# Append snippet vào CLAUDE.md
+cat ~/projects/control-tower/templates/code-review-graph/CLAUDE.md.snippet >> CLAUDE.md
+```
+
+**Hoặc copy nội dung sau vào cuối CLAUDE.md:**
+
+```markdown
+<!-- code-review-graph MCP tools -->
+## MCP Tools: code-review-graph
+
+**IMPORTANT: This project has a knowledge graph. ALWAYS use the
+code-review-graph MCP tools BEFORE using Grep/Glob/Read to explore
+the codebase.** The graph is faster, cheaper (fewer tokens), and gives
+you structural context (callers, dependents, test coverage) that file
+scanning cannot.
+
+### When to use graph tools FIRST
+
+- **Exploring code**: `semantic_search_nodes_tool` or `query_graph_tool` instead of Grep
+- **Understanding impact**: `get_impact_radius_tool` instead of manually tracing imports
+- **Code review**: `detect_changes_tool` + `get_review_context_tool` instead of reading entire files
+- **Finding relationships**: `query_graph_tool` with callers_of/callees_of/imports_of/tests_for
+- **Architecture questions**: `get_architecture_overview_tool` + `list_communities_tool`
+
+Fall back to Grep/Glob/Read **only** when the graph doesn't cover what you need.
+
+### Key Tools
+
+| Tool | Use when |
+| ------ | ---------- |
+| `detect_changes_tool` | Reviewing code changes — gives risk-scored analysis |
+| `get_review_context_tool` | Need source snippets for review — token-efficient |
+| `get_impact_radius_tool` | Understanding blast radius of a change |
+| `get_affected_flows_tool` | Finding which execution paths are impacted |
+| `query_graph_tool` | Tracing callers, callees, imports, tests, dependencies |
+| `semantic_search_nodes_tool` | Finding functions/classes by name or keyword |
+| `get_architecture_overview_tool` | Understanding high-level codebase structure |
+| `refactor_tool` | Planning renames, finding dead code |
+
+### Workflow
+
+1. The graph auto-updates on file changes (via hooks).
+2. Use `detect_changes_tool` for code review.
+3. Use `get_affected_flows_tool` to understand impact.
+4. Use `query_graph_tool` pattern="tests_for" to check coverage.
+```
+
+---
+
+## Step 5 — Test MCP Tools
 
 Trong CLI (claude/codex/agy):
 
@@ -111,6 +248,13 @@ Hoặc test trực tiếp:
 ```bash
 code-review-graph query "main entry point"
 code-review-graph detect-changes --brief
+```
+
+Test skills (trong Claude Code):
+
+```
+/explore-codebase
+/review-changes
 ```
 
 ---
@@ -288,10 +432,26 @@ code-review-graph uninstall --keep-data
 
 ## Quick Checklist
 
+**Cơ bản:**
 - [ ] Git repo tồn tại (`git status` OK)
 - [ ] Có ít nhất 1 commit (`git log` OK)
 - [ ] `code-review-graph install` chạy OK
 - [ ] `code-review-graph build` chạy OK
 - [ ] `code-review-graph status` shows nodes > 0
 - [ ] `.mcp.json` tồn tại tại project root
-- [ ] Test query: `code-review-graph query "main"`
+
+**Claude Code (`.claude/`):**
+- [ ] `.claude/skills/` có 4 thư mục (debug-issue, explore-codebase, refactor-safely, review-changes)
+- [ ] `.claude/settings.json` có hooks PostToolUse và SessionStart
+- [ ] `CLAUDE.md` có section "MCP Tools: code-review-graph"
+
+**Codex/Antigravity (`.agents/`):**
+- [ ] `.agents/skills/` có 4 thư mục
+- [ ] `.agents/rules/code-review-graph.md` tồn tại
+- [ ] `.agents/mcp_config.json` có absolute path đúng
+- [ ] `.agents/hooks.json` có absolute path đúng
+
+**Test:**
+- [ ] `code-review-graph query "main"` returns results
+- [ ] `/explore-codebase` skill works in Claude Code
+- [ ] Codex với `--mcp-config .agents/mcp_config.json` thấy MCP tools

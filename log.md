@@ -735,3 +735,11 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md
 - Trạng thái: Chờ rework
 - Commit: e337a5e79a4f
+
+## [2026-07-23 00:50:00] pm-create | CTW-002 Setup npm environment
+- Dự án: control-tower-web
+- Mô tả: Tạo task CTW-002 "Setup npm environment cho control-tower-web". npm wrapper (`/home/lupca/.local/bin/npm`) chạy `docker exec pim-frontend npm "$@"` — chỉ hỗ trợ topvnsport, không hỗ trợ project khác.
+- Giải trình: Task là DevOps/environment setup, không phải code change — graph analysis limited. `predicted_success: high` (0.9) vì blast radius nhỏ, không hub/bridge, chỉ -0.1 do no_tests (expected cho devops task).
+- Files touched: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md (mới), projects/control-tower-web/control-tower-web.md (next_task_id 1→3)
+- Trạng thái: Chờ duyệt — Spec Gate.
+- Commit: n/a
