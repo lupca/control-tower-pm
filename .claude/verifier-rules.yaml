@@ -1,0 +1,14 @@
+# LLM-Modulo verifier rules (AGENTS.md §15) — /pm evaluates these against every
+# draft task before the Spec Gate. Each check is read and judged by the agent
+# against the task draft + graph/backlog state, not executed as a program.
+rules:
+  - id: no-circular-deps
+    check: "depends_on does not create a cycle"
+  - id: files-exist
+    check: "every path in files: exists in the graph (or is flagged '(path not confirmed via graph)')"
+  - id: reasonable-scope
+    check: "blast radius <= 8 files, or already proposed as a split"
+  - id: tests-for-changes
+    check: "at least one entry in tests:, or a knowledge-gap sub-task was added (AGENTS.md §6.2)"
+  - id: no-conflicting-tasks
+    check: "no other task with overlapping files: is currently dispatched/in-review"

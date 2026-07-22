@@ -8,7 +8,7 @@ Applies after the User has approved the Spec Gate (the task's scope + AC have be
 2. Write the plan DIRECTLY into the `## Plan` section of the task file at `projects/<name>/tasks/<ID>-<slug>.md`: list the order of files/functions/migrations to change (if any), matching the sub-tasks already listed at the Spec Gate.
 3. If, while planning, you find you need to touch a file **outside** the already-approved `files:` → go back to the Spec Gate, don't expand the scope unilaterally.
 4. Write 1 entry to `log.md` (`operation: plan`), update `updated:` in the frontmatter.
-5. Stop, show `## Plan` to the User, wait for approval.
+5. Stop, show `## Plan` to the User, wait for approval. Apply the same confidence-based friction rule as the Spec Gate (`AGENTS.md` §16.2, using the task's recorded `confidence_interval:`): narrow-and-high still stops here but accepts a quick "ok"; wide-or-low asks the User to confirm specific uncertain points, not just approve in general. The gate itself never disappears — only how much scrutiny is requested.
 
 ## After the Plan Gate is approved: move to `ready` then `dispatched`
 

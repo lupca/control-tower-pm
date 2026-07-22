@@ -13,7 +13,7 @@ This skill **never checks the AC itself, never runs tests, never reads a diff** 
 
 1. Read `AGENTS.md` §1, §3, §4 if not already read this session (separation of duties, DoD, task lifecycle).
 2. Find the task by ID/path in `$ARGUMENTS`: Glob `projects/*/tasks/<ID>-*.md` if the User gave an ID (e.g. `PMI-001`), or by the full path.
-3. Parse: verdict (`pass` or `changes`), `--reviewer @id` (required), `--commit <hash>` (required if `pass`), `--notes "..."` (required if `changes`).
+3. Parse: verdict (`pass` or `changes`), `--reviewer @id` (required), `--commit <hash>` (required if `pass`), `--notes "..."` (required if `changes`), `--auto-remediated` (optional flag, §3a step 5).
 4. Read the frontmatter, check the current `status:`: only accept a verdict for a task that's `status: in-review`. If it's anything else → stop, tell the User (e.g. the task hasn't gone through `/review-order` yet, or is already `done`).
 
 ### Step 2 — Check four-eyes (MANDATORY, never skip)
@@ -26,6 +26,8 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 
 1. Require a real `--commit <hash>` (the actual commit hash of the change, never invented). If missing, ask the User/reviewer instead of guessing or leaving it blank.
 2. **This is still a human decision** (`AGENTS.md` §3, §4: "A PASS verdict is only valid once a human confirms it"). If this `/verdict` command was typed directly by the User in the current session, treat that as confirmation. If you (the agent) are proposing to run `/verdict pass` yourself rather than the User typing it directly, you MUST stop and ask for explicit confirmation before recording it.
+2a. **Formal spec DoD substitution** (`AGENTS.md` §20.3) — if the task frontmatter has `formal_spec:` and the reviewer reports the proof kernel passed (noted in `result_ref`/`--notes`), the reviewer may substitute "proof kernel passed" for "ran the test suite" on that specific AC in the DoD (§3). The reviewer still must confirm the spec matches the AC's intent — this never skips human confirmation from step 2.
+2b. **Auto-remediated flag** (`AGENTS.md` §19.4) — if `--auto-remediated` was passed, record `auto_remediated: true` in the frontmatter. This is metadata about how the fix was validated in the target repo; it changes nothing else about this flow — human confirmation (step 2) and four-eyes (Step 2 above) still apply with no exception.
 3. **Causal analysis** (`AGENTS.md` §2.1b, §13) — prompt the reviewer for `root_cause`, `mechanism`, `counterfactual`, and `pattern_id`:
    - If `risk: high` → **required**. Ask for all four fields and refuse to proceed to step 4 until they're provided — do not record `pass` without them.
    - If `risk: normal` → optional. Prompt once; if the reviewer declines or doesn't answer, skip this step entirely (no `## Causal Analysis` section gets added).
@@ -33,15 +35,16 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
    - If `pattern_id` is set: Glob `knowledge/patterns/<pattern_id>.md`.
      - **Match found** → append `- [[<task ID>]] — <1-line summary from root_cause>` to that file's `## Past Instances` section, bump `updated:` in its frontmatter, and increment its row's instance count in `knowledge/patterns/_index.md`.
      - **No match** → this is COLLABORATIVE (`AGENTS.md` §1, §11.6: never invent knowledge content unilaterally) — propose the new pattern file (schema in `AGENTS.md` §13.1) to the User and stop for confirmation before writing it. If the User declines, still record `pattern_id` in the task's `causal_analysis` block, just skip creating the pattern file.
-4. Mark every related AC and sub-task in the body as `- [x]`.
-5. Update the frontmatter: `status: done`, `reviewer: "<--reviewer>"`, `result_ref:` (keep as-is or update to the real commit), `updated: <today>`.
-6. If the task declares `depends_on:` (see `AGENTS.md` §2.2): tell the User which tasks might now be unblocked, since there's no automatic parsing/unblocking mechanism yet — don't infer it yourself.
-7. Write 1 entry to `log.md` (`operation: verdict`, format in `AGENTS.md` §7), with the `Commit:` field = the real hash just received.
-8. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `pass` (Success), update accuracy metrics.
-9. Update Agent Reputation Profiles (`knowledge/agents/@<id>.md` per `AGENTS.md` §12):
-   - **Executor**: Read `knowledge/agents/@<executor>.md` (create if missing). Increment `total_tasks_executed`. Recalculate `success_rate` = (pass_on_first_review / total_executed). Auto-detect strengths from task's `files:` (`*.py` → `backend`, `*.tsx/*.vue` → `frontend`, `*models.py/migrations` → `database`, `*test*.py` → `testing`, `docker*/.github/` → `infra`) and add to `strengths`. Update `last_active: <today>`.
-   - **Reviewer**: Read `knowledge/agents/@<reviewer>.md` (create if missing). Increment `total_tasks_reviewed`. Add `code-review` and domain strengths to `strengths`. Update `last_active: <today>`.
-10. Give the User a summary: which task closed, who reviewed it, which commit, causal analysis captured (and pattern matched/created, if any), updated prediction accuracy, and updated agent profile stats.
+4. **Cross-repo pattern learning** (`AGENTS.md` §14.4) — if the task's project has `patterns_exportable: true` (`index.md` §2), check informationally whether the fix looks generic enough to apply to another `patterns_exportable` project; if so, suggest to the User "this may apply to `<other project>` too" — never auto-files a task for it.
+5. Mark every related AC and sub-task in the body as `- [x]`.
+6. Update the frontmatter: `status: done`, `reviewer: "<--reviewer>"`, `result_ref:` (keep as-is or update to the real commit), `updated: <today>`.
+7. If the task declares `depends_on:` (see `AGENTS.md` §2.2): tell the User which tasks might now be unblocked, since there's no automatic parsing/unblocking mechanism yet — don't infer it yourself.
+8. Write 1 entry to `log.md` (`operation: verdict`, format in `AGENTS.md` §7), with the `Commit:` field = the real hash just received.
+9. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `pass` (Success), update accuracy metrics. If the task has `confidence_interval:` (`AGENTS.md` §16.4), also record whether the actual outcome fell inside the interval, in a `confidence_interval` column alongside the existing ones.
+10. Update Agent Reputation Profiles (`knowledge/agents/@<id>.md` per `AGENTS.md` §12):
+    - **Executor**: Read `knowledge/agents/@<executor>.md` (create if missing). Increment `total_tasks_executed`. Recalculate `success_rate` = (pass_on_first_review / total_executed). Auto-detect strengths from task's `files:` (`*.py` → `backend`, `*.tsx/*.vue` → `frontend`, `*models.py/migrations` → `database`, `*test*.py` → `testing`, `docker*/.github/` → `infra`) and add to `strengths`. Update `last_active: <today>`.
+    - **Reviewer**: Read `knowledge/agents/@<reviewer>.md` (create if missing). Increment `total_tasks_reviewed`. Add `code-review` and domain strengths to `strengths`. Update `last_active: <today>`.
+11. Give the User a summary: which task closed, who reviewed it, which commit, causal analysis captured (and pattern matched/created, if any), updated prediction/confidence accuracy, and updated agent profile stats.
 
 ### Step 3b — Verdict `changes`
 

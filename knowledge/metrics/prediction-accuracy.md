@@ -45,7 +45,9 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 ## 3. Log History (Task Predictions vs Actual Outcomes)
 
-| Date | Task ID | Predicted Level | Score | Factors / Deductions | Actual Verdict | Match? |
-|:---|:---|:---|:---|:---|:---|:---|
-| 2026-07-22 | CT-001 | high | 0.9 | blast_radius: 3 (-0.0), hub_bridge: false (-0.0), no_tests: true (-0.1) | pass | ✅ |
+`Confidence Interval` / `In Interval?` columns added per `AGENTS.md` §16.4 (CT-006, Confidence Calibration) — populated only for tasks that recorded a `confidence_interval:` at Spec Gate; older rows leave them blank rather than backfilled.
+
+| Date | Task ID | Predicted Level | Score | Factors / Deductions | Confidence Interval | Actual Verdict | Match? | In Interval? |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 2026-07-22 | CT-001 | high | 0.9 | blast_radius: 3 (-0.0), hub_bridge: false (-0.0), no_tests: true (-0.1) | — | pass | ✅ | — |
 <!-- Updated automatically by /verdict -->
