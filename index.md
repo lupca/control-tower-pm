@@ -8,7 +8,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 *   **Thời gian cập nhật cuối:** 2026-07-22
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
-*   **Tổng số dự án:** 5 dự án đang hoạt động
+*   **Tổng số dự án:** 6 dự án đang hoạt động
 
 ---
 
@@ -23,6 +23,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 | `topvnsport-wms` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-wms/tasks/` (`topvnsport-wms.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) | `true` |
 | `topvnsport-web` | `/home/lupca/projects/topvnsport` | `projects/topvnsport-web/tasks/` (`topvnsport-web.md`) | ✅ yes (dùng chung graph, cùng monorepo) | ✅ yes (dùng chung embeddings) | ✅ yes (dùng chung daemon watch) | `true` |
 | `control-tower` | `/home/lupca/projects/control-tower` | `projects/control-tower/tasks/` (`control-tower.md`) | n/a (meta-project, no code graph) | n/a | n/a | `false` |
+| `marketing-video-agent` | `/data/projects/marketing-video-agent` | `projects/marketing-video-agent/tasks/` (`marketing-video-agent.md`) | ✅ yes (1035 nodes) | ✅ yes (867 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `mva`) | `false` |
 
 Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng. `patterns_exportable` (`AGENTS.md` §14.1): `true` khi code trong repo đủ generic để đáng surface sang project khác (case này — cùng 1 monorepo topvnsport, code dùng chung thật sự); `control-tower` là `false` vì không có code, chỉ có process Markdown.
 
@@ -37,6 +38,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | **TopVNSport - WMS** | `projects/topvnsport-wms/` (`topvnsport-wms.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
 | **TopVNSport - Web** | `projects/topvnsport-web/` (`topvnsport-web.md`, `tasks/`) | 🔄 Đang chạy | 0/0 | — | Frontend application (Vue/React) |
 | **Control Tower** | `projects/control-tower/` (`control-tower.md`, `tasks/`) | ✅ Hoàn thành | 11/11 | — | Meta-project: paradigm shifts, self-improvement. All 10 paradigm shifts implemented + CT-011 independent review passed. |
+| **Marketing Video Agent** | `projects/marketing-video-agent/` (`marketing-video-agent.md`, `tasks/`) | 🆕 Mới onboard | 0/0 | — | AI video creation pipeline với workers: leader, capcut, slideshow, tts, delivery... |
 
 ---
 

@@ -55,6 +55,13 @@
         "a": 1,
         "rgb": 5361510
       }
+    },
+    {
+      "query": "path:projects/marketing-video-agent",
+      "color": {
+        "a": 1,
+        "rgb": 16742144
+      }
     }
   ],
   "collapse-display": false,
