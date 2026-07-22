@@ -292,6 +292,14 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref.
 - Commit: n/a
 
+## [2026-07-22 16:00:00] review-order | WEB-001 Implement Promotion Module (LẦN 2)
+- Dự án: `topvnsport-web`
+- Mô tả: Phát phiếu review lần 2 cho WEB-001 sau khi executor rework. Result-ref: `feature/promotion-module`. Executor: @antigravity-3.6.
+- Giải trình: Lần 1 bị reject vì scope mismatch (OMS coupon thay vì PMI product-level). Executor đã implement lại đúng plan. Trong quá trình rework, antigravity gặp lỗi loop 5 lần, user kill và đưa cho AI khác fix (xem `.bugfix`). Phiếu review lần 2 có thêm mục CẢNH BÁO nhắc reviewer kiểm tra kỹ: (1) code nằm trong PMI/ không phải OMS/; (2) đúng loại product-level không phải order-level; (3) có đủ 4 bảng mới; (4) Web ProductCard hiện giá giảm.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (status: in-review, result_ref cập nhật), projects/topvnsport-web/reviews/WEB-001-review.md (cập nhật)
+- Trạng thái: Thành công — chờ reviewer độc lập kiểm tra và báo verdict.
+- Commit: n/a
+
 ## [2026-07-22 15:30:00] execute | CT-001 Pre-Execution Prediction Implementation
 - Dự án: `control-tower`
 - Mô tả: Hoàn thành implementation hệ thống Pre-Execution Prediction theo Work Order CT-001.
@@ -477,3 +485,84 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (## Plan)
 - Trạng thái: Chờ duyệt — đang ở Plan Gate, chờ User duyệt Plan + chỉ định executor.
 - Commit: 16ce27d
+
+## [2026-07-22 22:00:00] verdict | WEB-001 Implement Promotion Module (LẦN 2) — CHANGES REQUESTED
+- Dự án: `topvnsport-web`
+- Mô tả: Ghi nhận verdict CHANGES lần 2 cho WEB-001. Reviewer: @claude-opus. Executor: @antigravity-3.6. Four-eyes: ✓ (@claude-opus ≠ @antigravity-3.6).
+- Giải trình: PMI implementation đúng scope và đúng plan — lần này executor làm đúng. Tuy nhiên phát hiện 2 lỗi OMS side effect: (1) `Order.updated_at` bị xoá nhầm khi thêm `discount_amount`/`promotion_code` fields; (2) Thiếu OMS migration cho các thay đổi model. Reviewer đánh giá PMI excellent, chỉ cần fix 2 lỗi OMS nhỏ này.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (status: changes-requested, thêm `## Findings từ reviewer LẦN 2`)
+- Trạng thái: Chờ executor fix OMS bug và báo lại.
+- Commit: 1e790fc
+
+## [2026-07-22 22:30:00] verdict | WEB-001 Implement Promotion Module — PASS ✅
+- Dự án: `topvnsport-web`
+- Mô tả: Ghi nhận verdict PASS cho WEB-001 "Implement Promotion Module cho Marketing Team". Reviewer: @claude-opus. Executor: @antigravity-3.6.
+- Giải trình: Four-eyes check passed (@claude-opus ≠ @antigravity-3.6). Executor đã fix OMS bug (restore Order.updated_at). PMI implementation hoàn chỉnh đúng scope và đúng plan: (1) Backend PMI: 4 bảng mới, CRUD/lifecycle/computed-price APIs, scheduler; (2) Frontend PMI: Marketing team UI; (3) Frontend Web: useComputedPrice hook, ProductCard hiện giá giảm. Task trải qua 3 review rounds: lần 1 reject (sai scope OMS coupon), lần 2 reject (PMI đúng, OMS bug), lần 3 pass.
+- Files touched: projects/topvnsport-web/tasks/WEB-001-promotion-module.md (status: done, reviewer: @claude-opus, all AC marked [x]), projects/topvnsport-web/topvnsport-web.md (done: 1)
+- Trạng thái: Thành công — task closed.
+- Commit: ce32e31
+
+
+## [2026-07-22 22:45:00] pm-create | WEB-002 Cleanup OMS coupon code
+- Dự án: `topvnsport-web`
+- Mô tả: Tạo task WEB-002 "Xóa code OMS coupon thừa từ WEB-001 lần 1". Dọn code OMS coupon (Promotion table, Order.discount_amount, Order.promotion_code, CartModal coupon input) được implement nhầm trong lần 1 của WEB-001.
+- Giải trình: WEB-001 lần 1 executor làm sai scope (OMS coupon thay vì PMI promotion). Sau khi WEB-001 đã pass với PMI implementation đúng, code OMS là rác cần dọn. Query `file_summary` xác nhận OMS/backend/models.py có Promotion + PromotionUsage classes. Tìm thêm: OMS/backend/schemas/promotion.py, e2e_tests/tests/test_promotions.py (test OMS). Risk: normal — chỉ xóa code, không thêm mới. Predicted success: high.
+- Files touched: projects/topvnsport-web/tasks/WEB-002-cleanup-oms-coupon-code.md (mới), projects/topvnsport-web/topvnsport-web.md (tăng next_task_id, thêm task)
+- Trạng thái: Chờ duyệt — đang ở Spec Gate, chờ User duyệt AC.
+- Commit: n/a
+
+## [2026-07-22 22:50:00] dispatch | WEB-002 Cleanup OMS coupon code
+- Dự án: `topvnsport-web`
+- Mô tả: Dispatch WEB-002 "Xóa code OMS coupon thừa từ WEB-001 lần 1" cho executor @gpt-5.6-luna. Task dọn code OMS coupon thừa: models, schemas, endpoints, CartModal UI, e2e test.
+- Giải trình: Spec Gate + Plan Gate approved. Plan gồm 6 steps, 8 sub-tasks. Chỉ xóa code, không viết mới — estimated ~30 phút. Priority: low.
+- Files touched: projects/topvnsport-web/tasks/WEB-002-cleanup-oms-coupon-code.md (status: dispatched, executor: @gpt-5.6-luna)
+- Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref.
+- Commit: n/a
+
+## [2026-07-22 23:15:00] onboard | marketing-video-agent
+- Dự án: `marketing-video-agent` (mới)
+- Mô tả: Onboard project mới tại `/data/projects/marketing-video-agent` vào Control Tower theo `AGENTS.md` §10.
+- Giải trình: Project là AI video creation pipeline với kiến trúc worker-based (leader, capcut, slideshow, tts, delivery...). Ngôn ngữ: Python, Bash, SQL. Graph đã build sẵn (1035 nodes, 11370 edges). Embed thành công 867 nodes với model `all-MiniLM-L6-v2`. Daemon watch đăng ký alias `mva`. Task prefix: `MVA`.
+- Files touched: projects/marketing-video-agent/ (thư mục mới: tasks/, docs/, reviews/), projects/marketing-video-agent/marketing-video-agent.md (project file), index.md (PROJECT REGISTRY + Project Map), .obsidian/graph.json (thêm color group), control-tower-map.canvas (thêm node + edges)
+- Trạng thái: Thành công
+- Commit: n/a (chờ User commit)
+
+## [2026-07-22 23:00:00] review-order | WEB-002 Cleanup OMS coupon code
+- Dự án: `topvnsport-web`
+- Mô tả: Phát phiếu review cho WEB-002 "Xóa code OMS coupon thừa từ WEB-001 lần 1". Result-ref: `3380533`. Executor: @gpt-5.6-luna.
+- Giải trình: Executor báo cleanup hoàn tất. Frontend lint/tests pass. Backend có 7 test fail do auth issue cũ (không phải regression từ WEB-002). Phiếu review nhắc reviewer verify PMI code không bị xóa nhầm.
+- Files touched: projects/topvnsport-web/tasks/WEB-002-cleanup-oms-coupon-code.md (status: in-review), projects/topvnsport-web/reviews/WEB-002-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập (≠ @gpt-5.6-luna).
+- Commit: n/a
+
+## [2026-07-22 23:25:00] pm-create | MVA-001 Đơn giản hóa kiến trúc
+- Dự án: `marketing-video-agent`
+- Mô tả: Tạo task MVA-001 "Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent" dựa trên PLAN_SIMPLIFY.md.
+- Giải trình: Graph query xác nhận scope lớn: 168 files, 1035 nodes, 11370 edges. Hub nodes bị ảnh hưởng: `make_unbox_viral` (115°), `insert_log` (78°), `execute_video_task` (59°). Bridge nodes: `analyze_video`, `get_settings`. Risk: HIGH. Predicted success: LOW (0.2) do blast radius > 15 files + hub/bridge hits. Verifier rule `reasonable-scope` FAILED → đề xuất split 4 phases theo migration steps trong plan. Confidence interval [0.1, 0.4] → cần explicit User approval với scrutiny.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md (mới), projects/marketing-video-agent/marketing-video-agent.md (next_task_id: 2, thêm task)
+- Trạng thái: Chờ duyệt — Spec Gate, chờ User xác nhận AC + scope split
+- Commit: n/a
+
+## [2026-07-22 23:05:00] verdict | WEB-002 Cleanup OMS coupon code — PASS ✅
+- Dự án: `topvnsport-web`
+- Mô tả: Ghi nhận verdict PASS cho WEB-002 "Xóa code OMS coupon thừa từ WEB-001 lần 1". Reviewer: @claude-opus. Executor: @gpt-5.6-luna.
+- Giải trình: Four-eyes check passed (@claude-opus ≠ @gpt-5.6-luna). Clean removal of 601 lines of obsolete OMS coupon code. PMI promotion module intact. @gpt-5.6-luna's first task — passed on first review (success_rate: 100%).
+- Files touched: projects/topvnsport-web/tasks/WEB-002-cleanup-oms-coupon-code.md (status: done, all AC marked [x]), projects/topvnsport-web/topvnsport-web.md (done: 2), knowledge/agents/@gpt-5.6-luna.md (updated stats)
+- Trạng thái: Thành công — task closed.
+- Commit: 3380533
+
+## [2026-07-22 23:30:00] plan | MVA-001 Đơn giản hóa kiến trúc
+- Dự án: `marketing-video-agent`
+- Mô tả: Viết Plan chi tiết cho MVA-001. Chia 4 phases: (1) Core modules — config.py, database.py, storage.py; (2) Extract engines — TTS, Text2Video, Download, Unbox; (3) Agent + CLI — smolagents Tools, VideoAgent, run.py; (4) Cleanup — xóa admin-api, docker files, celery workers.
+- Giải trình: Đọc source files để hiểu dependencies: `agent_runner.py` dùng smolagents CodeAgent (giữ), `worker_tts/engine.py` dùng edge-tts + MeloTTS (giữ logic, xóa DB/MinIO), `shared_core/config.py` quá phức tạp (simplified). Unbox engine giữ nguyên structure vì phức tạp (6 files). Estimated total: ~3.5 hours.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md (cập nhật `## Plan`)
+- Trạng thái: Thành công — Plan Gate approved
+- Commit: n/a
+
+## [2026-07-22 23:35:00] dispatch | MVA-001 Đơn giản hóa kiến trúc
+- Dự án: `marketing-video-agent`
+- Mô tả: Dispatch MVA-001 cho executor @gpt-5.6-luna. Task refactor kiến trúc từ 17 workers + Celery/Redis/PostgreSQL/MinIO xuống 1 VideoAgent (smolagents) với local storage + SQLite.
+- Giải trình: Spec Gate + Plan Gate approved. Plan gồm 4 phases, ~3.5 hours. User chọn @gpt-5.6-luna (100% success rate, 1 task). Task file là work order tự đủ: AC + files + tests + Plan + 16 sub-tasks. Executor chỉ cần đọc task file và PLAN_SIMPLIFY.md trong repo.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md (status: dispatched, executor: @gpt-5.6-luna, dispatched: 2026-07-22)
+- Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref
+- Commit: n/a
