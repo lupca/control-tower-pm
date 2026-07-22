@@ -460,4 +460,4 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: Four-eyes check passed (@claude-4.5 ≠ @sonnet-5 — đây là review thật, không waive). Reviewer verified all 5 ACs: (1) Mọi [x] trong CT-004–CT-010 đều truthfully backed by file content — kiểm tra .claude/verifier-rules.yaml, AGENTS.md §14-§20, index.md patterns_exportable, etc. (2) Deferred items (CT-007 AC3/5, CT-008 AC1/3/5, CT-009 AC1/4) có legitimate POC/scope justifications. (3) §14-§20 không contradict §1-§13 — critically §16.2 adjusts FRICTION not PRESENCE (gates vẫn mandatory), §19.4 không bypass human confirmation. (4) Four-eyes waiver consistently noted trên cả 7 tasks với pointer đến CT-011. (5) Không task nào cần changes-requested.
 - Files touched: projects/control-tower/tasks/CT-011-review-paradigm-shift-batch.md (status: done), projects/control-tower/reviews/CT-011-review.md (verdict: pass), control-tower.md (11/11), index.md (project completed)
 - Trạng thái: Thành công — CT-011 closed, control-tower meta-project hoàn thành 11/11 tasks.
-- Commit: (pending)
+- Commit: b324adc
