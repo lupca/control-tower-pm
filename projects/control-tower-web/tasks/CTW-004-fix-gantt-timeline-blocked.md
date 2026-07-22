@@ -1,13 +1,13 @@
 ---
 id: CTW-004
 title: "Fix Gantt Timeline bị che không thao tác được"
-status: in-review
+status: done
 priority: high
 risk: low
 deadline: 2026-07-25
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-result_ref: "504accb"
+result_ref: "98523be"
 depends_on: []
 files:
   - src/components/timeline/GanttChart.tsx

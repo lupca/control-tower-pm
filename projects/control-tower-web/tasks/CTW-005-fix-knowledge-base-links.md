@@ -1,13 +1,13 @@
 ---
 id: CTW-005
 title: "Fix Knowledge Base không click xem chi tiết được"
-status: in-review
+status: done
 priority: high
 risk: low
 deadline: 2026-07-25
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-result_ref: "504accb"
+result_ref: "98523be"
 depends_on: []
 files:
   - src/pages/knowledge/index.astro
