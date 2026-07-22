@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 15
+next_task_id: 16
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -44,3 +44,4 @@ updated: 2026-07-22
 - [[CT-012-model-a-cli-agent-orchestration]] ✅ (executor: @claude-opus-4.5, reviewer: @agy-cli — Model A design + ADR-003)
 - [[CT-013-token-cost-automation-optimization]] ✅ (executor: @claude-opus-4.5, reviewer: @lupca — baseline token measurement)
 - [[CT-014-fix-spawn-pattern-design]] ✅ (executor: @sonnet-5, reviewer: @claude-opus — spawn pattern: task file + reputation + tiering)
+- [[CT-015-reorganize-agent-profiles]] ✅ (executor: @sonnet-5, reviewer: @antigravity — agent tiering: claude/antigravity/human)

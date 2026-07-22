@@ -5,7 +5,7 @@ total_tasks_executed: 0
 total_tasks_reviewed: 0
 success_rate: 1.0
 avg_review_rounds: 1.0
-strengths: [backend, database]
+strengths: [confirmation, creative, deep-research, final-decision]
 weaknesses: []
 recent_trend: stable
 last_active: 2026-07-21

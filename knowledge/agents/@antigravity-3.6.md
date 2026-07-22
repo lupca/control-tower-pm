@@ -1,6 +1,8 @@
 ---
 agent_id: "@antigravity-3.6"
 type: ai
+status: deprecated
+superseded_by: ["@antigravity-3.6-low", "@antigravity-3.6-medium", "@antigravity-3.6-high"]
 total_tasks_executed: 1
 total_tasks_reviewed: 0
 success_rate: 0.0
@@ -11,9 +13,9 @@ recent_trend: recovering
 last_active: 2026-07-22
 ---
 
-# Agent Profile: @antigravity-3.6
+# Agent Profile: @antigravity-3.6 (deprecated)
 
-> Lightweight AI agent model for execution.
+> Superseded by tiered profiles [[@antigravity-3.6-low]] / [[@antigravity-3.6-medium]] / [[@antigravity-3.6-high]] as of CT-015 (2026-07-22). Single-instance history (1 task) attributed whole to `@antigravity-3.6-medium` as the closest analog — see its Notes. Kept as a resolvable record for historical task frontmatter (`executor: "@antigravity-3.6"`, WEB-001) — do not dispatch new work to this ID.
 
 ## Performance Summary
 - **Tasks Executed**: 1 (WEB-001 — passed after 3 review rounds)

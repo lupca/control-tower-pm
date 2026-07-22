@@ -1,6 +1,8 @@
 ---
 agent_id: "@claude"
 type: ai
+status: deprecated
+superseded_by: ["@claude-opus"]
 total_tasks_executed: 0
 total_tasks_reviewed: 4
 success_rate: 1.0
@@ -11,11 +13,11 @@ recent_trend: stable
 last_active: 2026-07-22
 ---
 
-# Agent Profile: @claude
+# Agent Profile: @claude (deprecated)
 
-> Primary autonomous AI agent for code review and verification.
+> Superseded by [[@claude-opus]] as of CT-015 (2026-07-22) tiering rework. Review history (4 tasks) merged into `@claude-opus`. Kept as a resolvable record for historical task frontmatter (`reviewer: "@claude"` on WMS-001, WMS-002, WMS-003, CT-001) — do not dispatch new work to this ID, use `@claude-opus`.
 
-## Performance Summary
+## Performance Summary (historical, frozen at deprecation)
 - **Tasks Executed**: 0
 - **Tasks Reviewed**: 4 (WMS-001, WMS-002, WMS-003, CT-001)
 - **Success Rate**: 100%
