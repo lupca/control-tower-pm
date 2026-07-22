@@ -6,10 +6,13 @@ This is the **control-tower** repo — where work is handed off to and tracked f
 
 ## Before doing anything in this session
 
-1. Read **`AGENTS.md`** — the rules of the game: PLAN/EXECUTE/REVIEW/COORDINATE roles, task lifecycle, task syntax, rules for calling `code-review-graph`, audit log standard.
+1. Read **`AGENTS.md`** — core rules (roles, gates, task syntax, DoD).
 2. Read **`index.md`** — the project map + PROJECT REGISTRY (look up the target project's absolute `repo_root` here).
 
-Never skip these two files just because a task looks simple — they are the single source of truth for authority and process.
+Detail files are loaded by skills when needed — don't read upfront:
+- `AGENTS-REFERENCE.md` — §5-§7: handoff artifacts, code-review-graph usage, audit log
+- `AGENTS-PLAYBOOK.md` — §8-§11: macros, reconcile rule, onboarding, knowledge management
+- `AGENTS-EXPERIMENTAL.md` — §12-§20: POC features (reputation, patterns, verifier, goals, etc.)
 
 ## Macros
 
@@ -24,9 +27,9 @@ Never skip these two files just because a task looks simple — they are the sin
 
 - This repo's `.mcp.json` already registers the `code-review-graph` server (sharing the same binary as other repos), so the graph tools are available even when the cwd is `control-tower`. This tool is ONLY for static analysis (read-only) during PLAN/COORDINATE — never to read an actual diff or run tests.
 - Every `code-review-graph` tool call must be made with `repo_root=<absolute path>` looked up from the PROJECT REGISTRY in `index.md` — this session's cwd is `control-tower`, not the target repo, so auto-detect will be wrong.
-- A task must have Acceptance Criteria, tests (`tests:`), and related files (`files:`) sourced from the real graph — see `AGENTS.md` §2, §6 before using `/pm`/`/ingest`.
+- A task must have Acceptance Criteria, tests (`tests:`), and related files (`files:`) sourced from the real graph — see `AGENTS.md` §2, `AGENTS-REFERENCE.md` §6 before using `/pm`/`/ingest`.
 - `/pm` only goes through Spec Gate → Plan Gate then stops at `dispatched` (`AGENTS.md` §4) — never skip a gate, never silently assume approval, and **there is no internal Code Gate**.
 - Writing code always happens outside the system (executor); reviewing/verifying always happens outside the system (reviewer, using the target repo's `/code-review`) — control-tower only issues the review sheet (`/review-order`) and records the outcome (`/verdict`).
 - Never close a task (`status: done`) outside the `/verdict pass` flow, and `/verdict pass` always refuses if `reviewer:` == `executor:` (separation of duties).
 - Each task is its own file under `projects/<name>/tasks/<ID>-<slug>.md` with YAML frontmatter — tasks are no longer bundled into one shared file (`AGENTS.md` §2).
-- Knowledge files (`knowledge/`, `projects/<name>/docs/`) have no `status`/`executor`/`deadline` — see `AGENTS.md` §11 before creating/routing knowledge.
+- Knowledge files (`knowledge/`, `projects/<name>/docs/`) have no `status`/`executor`/`deadline` — see `AGENTS-PLAYBOOK.md` §11 before creating/routing knowledge.

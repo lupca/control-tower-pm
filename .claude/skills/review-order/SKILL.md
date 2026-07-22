@@ -11,7 +11,7 @@ You're in control-tower, NOT the target code repo. This skill **never reads the 
 
 ### Step 1 — Locate the task
 
-1. Read `AGENTS.md` (especially §1, §4, §5) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
+1. Read `AGENTS.md` (especially §1, §4) and `AGENTS-REFERENCE.md` §5 (handoff artifacts) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
 2. Find the task by ID/path in `$ARGUMENTS`: Glob `projects/*/tasks/<ID>-*.md` if the User gave an ID (e.g. `PMI-001`), or by the full path if the User specified it directly.
 3. Read the frontmatter, check the task's current `status:`:
    - If `status: dispatched` → valid, continue.
@@ -70,7 +70,7 @@ Sau khi review xong, báo lại cho control-tower bằng lệnh:
 
 ### Step 5 — Close out
 
-1. Write 1 entry to `log.md` (`operation: review-order`, format in `AGENTS.md` §7) — stating the path of the review sheet just generated.
+1. Write 1 entry to `log.md` (`operation: review-order`, format in `AGENTS-REFERENCE.md` §7) — stating the path of the review sheet just generated.
 2. Tell the User: the sheet is ready at `projects/<name>/reviews/<ID>-review.md`, hand it to an independent reviewer (**must differ from** the task's `executor:` — restate the four-eyes rule).
 
 ### Common mistakes to avoid

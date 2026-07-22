@@ -11,7 +11,7 @@ The user invokes: `/pm $ARGUMENTS`. You're running inside the `control-tower` re
 
 ### Step 0 — Locate the project
 
-1. Read `AGENTS.md` (roles, DoD, gates, task syntax, graph rules) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
+1. Read `AGENTS.md` (roles, DoD, gates, task syntax) and `AGENTS-REFERENCE.md` §6 (graph rules) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
 2. Determine the target project:
    - If `$ARGUMENTS` includes `--project <name>`, use that exact name to look up the registry.
    - Otherwise, infer it from the description (e.g. "variant"/"PMI" → `topvnsport-pmi`; "order"/"OMS" → `topvnsport-oms`). If unsure, ask the User.

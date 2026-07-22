@@ -11,7 +11,7 @@ Read and report only — **never edit/delete a task yourself** (this is RESTRICT
 
 ### Process
 
-1. Read `AGENTS.md` and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
+1. Read `AGENTS.md` (core rules), `AGENTS-PLAYBOOK.md` (knowledge management), and `AGENTS-EXPERIMENTAL.md` §13 (patterns), §16.4 (calibration) if not already read this session. Also read `index.md` §2 (PROJECT REGISTRY).
 2. Determine scope: if `$ARGUMENTS` has `--project <name>`, only scan `projects/<name>/tasks/*.md` (+ `projects/<name>/docs/*.md`); otherwise scan all of `projects/*/tasks/*.md` + `knowledge/**/*.md` + `projects/*/docs/*.md`.
 3. For each task file in scope, read the frontmatter, run the following checklist, and collect **Findings**:
 
@@ -26,11 +26,11 @@ Read and report only — **never edit/delete a task yourself** (this is RESTRICT
    9. **Stuck in `in-review`** (reviewer hasn't reviewed): `status: in-review` and `in_review:` is more than 3 days ago, no verdict yet in `log.md` → flag "reviewer hasn't returned a result, consider pinging `reviewer:`".
    10. **Orphan knowledge**: a file under `knowledge/` or `projects/*/docs/` with no inbound link (doesn't appear in another file's `related:`, no `[[wikilink]]` from any task) → flag "orphan knowledge, consider linking it or archiving".
    11. **Stale knowledge**: `updated:` more than 180 days ago and 0 inbound links (per item 10) → flag "stale knowledge, consider reviewing the content".
-   12. **Pattern recurrence** (`AGENTS.md` §13, once per `/lint` run, not per task): Glob `knowledge/patterns/*.md` (skip `_index.md`). For each pattern, read its `## Detection` heuristic and cross-reference it against the codebase in scope via `semantic_search_nodes_tool`/`query_graph_tool` (read-only — never write/refactor). If the pattern's signature appears to recur in a file/symbol NOT already listed in that pattern's `## Past Instances` and NOT covered by an existing open task → flag "pattern `<pattern_id>` may recur at `<file/symbol>`, consider a preventive task" (suggestion only — `/lint` never creates the task itself). If a tool errors out or the match is uncertain, write "could not verify" rather than guessing.
-   13. **Calibration drift** (`AGENTS.md` §16.4, once per run): read `knowledge/metrics/prediction-accuracy.md`'s log history. Among the last 5+ closed tasks that had a `confidence_interval:`, compute the actual-in-interval rate; if it's below 70% → flag "confidence calibration drifting (`<rate>`% in-interval on last `<N>`), consider widening intervals or reviewing the scoring formula". Skip this check (no finding, not an error) if fewer than 5 calibrated tasks exist yet.
+   12. **Pattern recurrence** (`AGENTS-EXPERIMENTAL.md` §13, once per `/lint` run, not per task): Glob `knowledge/patterns/*.md` (skip `_index.md`). For each pattern, read its `## Detection` heuristic and cross-reference it against the codebase in scope via `semantic_search_nodes_tool`/`query_graph_tool` (read-only — never write/refactor). If the pattern's signature appears to recur in a file/symbol NOT already listed in that pattern's `## Past Instances` and NOT covered by an existing open task → flag "pattern `<pattern_id>` may recur at `<file/symbol>`, consider a preventive task" (suggestion only — `/lint` never creates the task itself). If a tool errors out or the match is uncertain, write "could not verify" rather than guessing.
+   13. **Calibration drift** (`AGENTS-EXPERIMENTAL.md` §16.4, once per run): read `knowledge/metrics/prediction-accuracy.md`'s log history. Among the last 5+ closed tasks that had a `confidence_interval:`, compute the actual-in-interval rate; if it's below 70% → flag "confidence calibration drifting (`<rate>`% in-interval on last `<N>`), consider widening intervals or reviewing the scoring formula". Skip this check (no finding, not an error) if fewer than 5 calibrated tasks exist yet.
 
 4. Output the findings as a table in chat: columns Severity (🔴/🟡/🟢), Task/Knowledge (short description + file), Issue, Suggested action.
-5. Write 1 `lint` entry to `log.md` following the format in `AGENTS.md` §7 — summarizing the finding count by severity, no need to list everything in the log (the detail is already in chat).
+5. Write 1 `lint` entry to `log.md` following the format in `AGENTS-REFERENCE.md` §7 — summarizing the finding count by severity, no need to list everything in the log (the detail is already in chat).
 
 ### Notes
 - If the backlog is clean (no findings), report briefly "Backlog is clean, no issues found" — still log it so there's a trace that `/lint` ran.
