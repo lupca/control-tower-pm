@@ -469,3 +469,11 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (mới, status: todo), control-tower.md (task list + next_task_id)
 - Trạng thái: Chờ duyệt — đang ở Spec Gate, chờ User duyệt scope & AC trước khi vào Plan Gate.
 - Commit: f383a95
+
+## [2026-07-22 21:30:00] plan | CT-012 Plan Gate — điền kế hoạch thiết kế Model A
+- Dự án: `control-tower`
+- Mô tả: User đã duyệt Spec Gate của CT-012. Điền `## Plan` (6 bước thiết kế: khảo sát CLI headless → ADR-003 → orchestration+four-eyes → ranh giới an toàn → điểm tích hợp → đóng gói review). Mỗi bước map tới 1 AC. Deliverable là design doc + ADR, KHÔNG phải code sản phẩm.
+- Giải trình: Theo `AGENTS.md` §4, sau khi Spec được duyệt thì viết Plan rồi DỪNG chờ User duyệt Plan trước khi chuyển `ready`/chọn `executor`/`dispatched`. control-tower không tự duyệt Plan của mình. Task vẫn `status: todo` cho tới khi Plan được duyệt.
+- Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (## Plan)
+- Trạng thái: Chờ duyệt — đang ở Plan Gate, chờ User duyệt Plan + chỉ định executor.
+- Commit: (pending)

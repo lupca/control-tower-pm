@@ -55,7 +55,25 @@ paradigm_source: "Model A — control-tower as active CLI-agent orchestrator (đ
 
 ## Plan
 
-*(Chưa điền — chờ Plan Gate. Task này mới ở Spec Gate: `status: todo`, đang chờ User duyệt scope & AC. Sau khi duyệt Spec sẽ điền `## Plan` cụ thể rồi mới chuyển `ready`/`dispatched`.)*
+> Spec Gate đã được User duyệt (2026-07-22). Đây là kế hoạch **thiết kế** (deliverable = bản design + ADR-003), KHÔNG phải viết code sản phẩm. Sau khi User duyệt Plan này → `status: ready` → chọn `executor:` → `dispatched`.
+
+### Step 1 — Khảo sát chế độ headless của các CLI (→ AC2)
+Với từng CLI (`agy` cli, `claude` cli, `github copilot` cli), xác định: lệnh chạy non-interactive (print/headless mode), cách truyền prompt (AC + Plan của task), cách set cwd = `repo_root` (lấy từ PROJECT REGISTRY `index.md`), exit code, và cách đọc `result_ref` trả về (branch/commit/PR). Ghi thành bảng so sánh trong design doc. Không cần chạy thật ở bước này — chỉ tra tài liệu/`--help`.
+
+### Step 2 — Viết ADR-003 (→ AC1)
+`knowledge/decisions/ADR-003-model-a-cli-agent-orchestration.md`: nêu Context (Model B invariant "control-tower NEVER writes code"), Decision (Model A là nhánh **opt-in song song**, Model B vẫn mặc định), Consequences, và tiêu chí "khi nào chọn Model A vs Model B". Bắt buộc theo Project Gate của control-tower.
+
+### Step 3 — Thiết kế cơ chế orchestration + four-eyes (→ AC3)
+Mô tả luồng: từ `status: dispatched`, control-tower spawn executor CLI trong `repo_root` với AC/Plan làm prompt → nhận `result_ref` → spawn **reviewer CLI khác** chạy `/code-review` của repo đích → map kết quả vào `/verdict`. Khẳng định `executor:`/`reviewer:` luôn là 2 CLI khác nhau; `/verdict pass` vẫn refuse khi `reviewer == executor`.
+
+### Step 4 — Thiết kế ranh giới an toàn + audit (→ AC4)
+Chốt các bất biến giữ nguyên: 2 Gate (§4) vẫn mandatory **trước** khi spawn executor; không auto-commit/auto-merge khi chưa `/verdict pass` + xác nhận người (nhất quán §19.2); mỗi lần spawn agent ghi 1 entry `log.md` (§7). Liệt kê các failure mode (CLI treo, sửa ngoài scope, tự commit) + cách chặn.
+
+### Step 5 — Liệt kê điểm tích hợp & thay đổi cần có (→ AC5)
+Chỉ ra (design-only, chưa code): dùng Reputation (CT-002) để chọn CLI-agent; đặt trong khung CT-007/CT-009; và danh sách thay đổi `AGENTS.md` §1/§4 + `CLAUDE.md` + skill điều phối mới sẽ phải làm ở các task kế tiếp.
+
+### Step 6 — Đóng gói để review
+Gom Step 1–5 thành design doc + ADR-003, đối chiếu đủ 5 AC, rồi handoff cho reviewer độc lập qua `/review-order` (reviewer ≠ executor). control-tower KHÔNG tự duyệt design của mình.
 
 ## Sub-tasks
 
