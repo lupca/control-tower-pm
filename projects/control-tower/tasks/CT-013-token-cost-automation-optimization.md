@@ -60,8 +60,8 @@ Viết `knowledge/research/token-baseline-manual-flow.md`, báo done kèm result
 
 ## Sub-tasks
 
-- [ ] Đo baseline token: bảng chi phí đọc theo macro + đường tăng trưởng (AC1)
-- [ ] Viết research doc `knowledge/research/token-baseline-manual-flow.md`
+- [x] Đo baseline token: bảng chi phí đọc theo macro + đường tăng trưởng (AC1)
+- [x] Viết research doc `knowledge/research/token-baseline-manual-flow.md`
 
 ## Research References
 

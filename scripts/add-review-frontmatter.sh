@@ -19,8 +19,10 @@ for file in $REVIEW_FILES; do
     TASK_ID=$(basename "$file" | sed 's/-review\.md$//')
     PROJECT=$(echo "$file" | sed 's|.*/projects/\([^/]*\)/reviews/.*|\1|')
 
-    # Simple grep + sed extraction
-    TASK_PATH=$(grep -i "task" "$file" | head -1 | grep -oE 'projects/[^`\]]+' | head -1)
+    # Simple grep + sed extraction - get full path including slug
+    TASK_PATH=$(grep -i "task" "$file" | head -1 | grep -oE 'projects/[^`\]]+\.md' | head -1)
+    # Fallback: construct from ID if not found
+    [[ -z "$TASK_PATH" ]] && TASK_PATH=$(find /home/lupca/projects/control-tower -path "*/tasks/${TASK_ID}-*.md" -type f 2>/dev/null | head -1 | sed 's|.*/projects/|projects/|')
 
     # Result ref: try backtick format first, then parenthesis format
     RESULT_REF=$(grep -i "result" "$file" | head -1 | sed 's/.*`\([^`]*\)`.*/\1/')
@@ -32,8 +34,8 @@ for file in $REVIEW_FILES; do
     EXECUTOR=$(grep -i "executor" "$file" | head -1 | grep -oE '@[a-zA-Z0-9._-]+' | head -1)
     ISSUED_DATE=$(grep -iE "ngày|issued|date" "$file" | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
 
-    # Defaults
-    [[ -z "$TASK_PATH" ]] && TASK_PATH="projects/${PROJECT}/tasks/${TASK_ID}.md"
+    # Defaults (only if all extraction failed)
+    [[ -z "$TASK_PATH" ]] && TASK_PATH="projects/${PROJECT}/tasks/${TASK_ID}-unknown.md"
     [[ -z "$RESULT_REF" ]] && RESULT_REF="null"
     [[ -z "$EXECUTOR" ]] && EXECUTOR="null"
     [[ -z "$ISSUED_DATE" ]] && ISSUED_DATE=$(date +%Y-%m-%d)
