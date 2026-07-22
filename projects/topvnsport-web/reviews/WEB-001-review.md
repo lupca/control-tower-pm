@@ -1,3 +1,16 @@
+---
+id: WEB-001
+task_path: projects/topvnsport-web/tasks/WEB-001.md
+project: topvnsport-web
+result_ref: topvnsport@feature/promotion-module
+executor: @antigravity-3.6
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: WEB-001 — Implement Promotion Module cho Marketing Team
 
 - Dự án: topvnsport-web (`/home/lupca/projects/topvnsport`)

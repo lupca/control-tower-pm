@@ -1,3 +1,16 @@
+---
+id: WEB-002
+task_path: projects/topvnsport-web/tasks/WEB-002.md
+project: topvnsport-web
+result_ref: topvnsport@main (commit 3380533)
+executor: @gpt-5.6-luna
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: WEB-002 — Xóa code OMS coupon thừa từ WEB-001 lần 1
 
 - Dự án: topvnsport-web (`/home/lupca/projects/topvnsport`)

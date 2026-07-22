@@ -1,3 +1,16 @@
+---
+id: CT-003
+task_path: projects/control-tower/tasks/CT-003.md
+project: control-tower
+result_ref: 43caa5a
+executor: @sonnet-5
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: CT-003 Causal Analysis
 
 > **Task:** [[projects/control-tower/tasks/CT-003-causal-analysis]]

@@ -1,3 +1,16 @@
+---
+id: WMS-002
+task_path: projects/topvnsport-wms/tasks/WMS-002.md
+project: topvnsport-wms
+result_ref: feature/WMS-002-fix-414-stock-api
+executor: @antigravity
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: WMS-002 — Fix 414 Request-URI Too Large when fetching stock for many SKUs
 
 - Dự án: topvnsport-wms (`/home/lupca/projects/topvnsport`)

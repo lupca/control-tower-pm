@@ -1,3 +1,16 @@
+---
+id: WMS-003
+task_path: projects/topvnsport-wms/tasks/WMS-003.md
+project: topvnsport-wms
+result_ref: feature/WMS-003-fix-ci-docker-network-label-mismatch
+executor: @antigravity
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: WMS-003 — Fix CI Docker Compose network label mismatch for oms_default
 
 - Dự án: topvnsport-wms (`/home/lupca/projects/topvnsport`)

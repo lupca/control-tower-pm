@@ -1,3 +1,16 @@
+---
+id: WMS-001
+task_path: projects/topvnsport-wms/tasks/WMS-001.md
+project: topvnsport-wms
+result_ref: git diff
+executor: @antigravity
+reviewer: null
+status: pending
+issued: 2026-07-21
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: WMS-001 — Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS
 
 - **Dự án:** topvnsport-wms (`/home/lupca/projects/topvnsport`)

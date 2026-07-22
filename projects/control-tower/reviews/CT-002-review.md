@@ -1,3 +1,16 @@
+---
+id: CT-002
+task_path: projects/control-tower/tasks/CT-002.md
+project: control-tower
+result_ref: 9183f6a
+executor: @antigravity
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: CT-002 Reputation System
 
 > **Task:** [[projects/control-tower/tasks/CT-002-reputation-system]]

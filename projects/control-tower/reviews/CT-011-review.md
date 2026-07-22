@@ -1,3 +1,16 @@
+---
+id: CT-011
+task_path: projects/control-tower/tasks/CT-011.md
+project: control-tower
+result_ref: log.md
+executor: @sonnet-5
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: CT-011 Independent Review — Paradigm Shift Batch (CT-004–CT-010)
 
 > **Task:** [[projects/control-tower/tasks/CT-011-review-paradigm-shift-batch]]

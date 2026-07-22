@@ -37,6 +37,19 @@ If the graph returns nothing useful or errors out, skip this step — the review
 Write the file `projects/<name>/reviews/<ID>-review.md` (e.g. `projects/topvnsport-pmi/reviews/PMI-001-review.md`) — `<name>` comes from the task path found in Step 1. Create the `reviews/` directory if that project doesn't have one yet.
 
 ```markdown
+---
+id: <ID>
+task_path: projects/<name>/tasks/<ID>-<slug>.md
+project: <name>
+result_ref: <branch/commit/PR từ --ref>
+executor: <executor: của task>
+reviewer: null
+status: pending
+issued: <hôm nay YYYY-MM-DD>
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: <ID> — <title>
 
 - Dự án: <tên dự án> (`<repo_root>`)

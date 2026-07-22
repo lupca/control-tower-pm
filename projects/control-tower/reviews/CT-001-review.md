@@ -1,3 +1,16 @@
+---
+id: CT-001
+task_path: projects/control-tower/tasks/CT-001.md
+project: control-tower
+result_ref: 7477570
+executor: @antigravity
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: CT-001 Pre-Execution Prediction
 
 > **Task:** [[projects/control-tower/tasks/CT-001-pre-execution-prediction]]

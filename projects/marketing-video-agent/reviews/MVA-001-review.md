@@ -1,10 +1,23 @@
+---
+id: MVA-001
+task_path: projects/marketing-video-agent/tasks/MVA-001.md
+project: marketing-video-agent
+result_ref: e337a5e79a4f
+executor: @gpt-5.6-luna-high
+reviewer: null
+status: pending
+issued: 2026-07-22
+verdict: null
+verdict_date: null
+---
+
 # Phiếu Review: MVA-001 — Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent
 
 - Dự án: marketing-video-agent (`/data/projects/marketing-video-agent`)
 - Task gốc: `projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md`
-- Result-ref: `marketing-video-agent@main (commit 77bc43b)`
-- Executor: @gpt-5.6-luna
-- Ngày phát phiếu: 2026-07-22
+- Result-ref: `e337a5e79a4f` (Rework: nullable fixes + legacy test cleanup)
+- Executor: @gpt-5.6-luna-high
+- Ngày phát phiếu: 2026-07-22 (updated)
 
 ## Acceptance Criteria cần verify
 
@@ -25,7 +38,7 @@
   - `tests/test_translify_graph.py`
   - `tests/test_simplified.py` (mới, nếu có)
 - [ ] Không regression (test khác trong module vẫn xanh)
-- [ ] Reviewer khác executor (bạn đang review, hãy xác nhận bạn ≠ @gpt-5.6-luna)
+- [ ] Reviewer khác executor (bạn đang review, hãy xác nhận bạn ≠ @gpt-5.6-luna-high)
 
 ## Test gợi ý chạy trong repo code
 
@@ -90,7 +103,7 @@ Repo code đích có thể có sẵn skill `/code-review` — khuyến khích d�
 Sau khi review xong, báo lại cho control-tower bằng lệnh:
 
 ```
-/verdict MVA-001 pass --reviewer @<tên bạn> --commit 77bc43b
+/verdict MVA-001 pass --reviewer @<tên bạn> --commit cfdd8f68aea0
 ```
 
 hoặc nếu cần sửa:
