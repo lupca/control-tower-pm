@@ -36,7 +36,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | **TopVNSport - OMS** | `projects/topvnsport-oms/` (`topvnsport-oms.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
 | **TopVNSport - WMS** | `projects/topvnsport-wms/` (`topvnsport-wms.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
 | **TopVNSport - Web** | `projects/topvnsport-web/` (`topvnsport-web.md`, `tasks/`) | 🔄 Đang chạy | 0/0 | — | Frontend application (Vue/React) |
-| **Control Tower** | `projects/control-tower/` (`control-tower.md`, `tasks/`) | 🔄 Đang chạy | 10/11 | @sonnet-5 (exec) / @claude-4.5 (review CT-011) | Meta-project: paradigm shifts, self-improvement. ⚠️ CT-004–CT-010 self-reviewed (four-eyes waived by explicit User instruction) — CT-011 is the pending independent check. |
+| **Control Tower** | `projects/control-tower/` (`control-tower.md`, `tasks/`) | ✅ Hoàn thành | 11/11 | — | Meta-project: paradigm shifts, self-improvement. All 10 paradigm shifts implemented + CT-011 independent review passed. |
 
 ---
 

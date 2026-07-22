@@ -40,4 +40,4 @@ updated: 2026-07-22
 - [[CT-008-stigmergic-coordination]] ✅ POC (self-reviewed, waived — see CT-011)
 - [[CT-009-auto-remediation-tnr]] ✅ POC (self-reviewed, waived — see CT-011)
 - [[CT-010-vericoding-formal-proofs]] ✅ (self-reviewed, waived — see CT-011)
-- [[CT-011-review-paradigm-shift-batch]] 🔍 in-review (reviewer: @claude-4.5, independent — compensating control for the waiver above)
+- [[CT-011-review-paradigm-shift-batch]] ✅ (reviewer: @claude-4.5, independent — compensating control confirmed batch)

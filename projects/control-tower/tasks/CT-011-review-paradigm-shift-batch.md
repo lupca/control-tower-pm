@@ -1,7 +1,7 @@
 ---
 id: CT-011
 title: "Independent Review — Paradigm Shift Batch (CT-004–CT-010)"
-status: in-review
+status: done
 priority: high
 risk: high
 deadline: null
@@ -51,11 +51,11 @@ CT-004 through CT-010 (the rest of `ADR-002`'s 10-task paradigm-shift roadmap) w
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] AC1: For each of CT-004–CT-010, confirm the AC boxes actually checked `[x]` are truthfully implemented in the referenced files (not just claimed) — spot-check the actual file content, not only the task's own summary of itself.
-- [ ] AC2: For each task, confirm ACs left unchecked `[ ]` (CT-007 AC3/AC5, CT-008 AC1/AC3/AC5, CT-009 AC1/AC4 partial) were legitimately out of scope per the stated reasoning (Project Gate POC rule / control-tower has no code-execution environment) — not silently abandoned scope creep dressed up as "deferred."
-- [ ] AC3: Confirm `AGENTS.md` §14–§20 are internally consistent with each other and with §1–§13 (no contradicting an existing mandatory rule — e.g. §16.2's confidence-based gate friction must NOT actually skip the Spec/Plan Gate, since §4 makes that gate mandatory).
-- [ ] AC4: Confirm the four-eyes waiver itself was scoped correctly: CT-004–CT-010 (and CT-011's own dispatch) explicitly note the waiver and point to this task; no task silently closed with `reviewer: executor` without that note.
-- [ ] AC5: Flag any task among CT-004–CT-010 that should be reopened (`changes-requested`) because the self-review missed something a genuinely independent reviewer would have caught.
+- [x] AC1: For each of CT-004–CT-010, confirm the AC boxes actually checked `[x]` are truthfully implemented in the referenced files (not just claimed) — spot-check the actual file content, not only the task's own summary of itself.
+- [x] AC2: For each task, confirm ACs left unchecked `[ ]` (CT-007 AC3/AC5, CT-008 AC1/AC3/AC5, CT-009 AC1/AC4 partial) were legitimately out of scope per the stated reasoning (Project Gate POC rule / control-tower has no code-execution environment) — not silently abandoned scope creep dressed up as "deferred."
+- [x] AC3: Confirm `AGENTS.md` §14–§20 are internally consistent with each other and with §1–§13 (no contradicting an existing mandatory rule — e.g. §16.2's confidence-based gate friction must NOT actually skip the Spec/Plan Gate, since §4 makes that gate mandatory).
+- [x] AC4: Confirm the four-eyes waiver itself was scoped correctly: CT-004–CT-010 (and CT-011's own dispatch) explicitly note the waiver and point to this task; no task silently closed with `reviewer: executor` without that note.
+- [x] AC5: Flag any task among CT-004–CT-010 that should be reopened (`changes-requested`) because the self-review missed something a genuinely independent reviewer would have caught.
 
 ## Plan
 
@@ -73,15 +73,15 @@ Run `/verdict CT-011 pass --reviewer @claude-4.5 --commit <hash>` if everything 
 
 ## Sub-tasks
 
-- [ ] Re-verify CT-004 (cross-repo intelligence)
-- [ ] Re-verify CT-005 (LLM-Modulo verifier)
-- [ ] Re-verify CT-006 (confidence calibration) — specifically the AC3 deviation (friction not presence)
-- [ ] Re-verify CT-007 (goal-conditioned autonomy, POC)
-- [ ] Re-verify CT-008 (stigmergic coordination, POC)
-- [ ] Re-verify CT-009 (auto-remediation, POC)
-- [ ] Re-verify CT-010 (vericoding)
-- [ ] Check `AGENTS.md` §14–§20 don't contradict §1–§13
-- [ ] Record final verdict (pass or changes, itemized per sub-task above)
+- [x] Re-verify CT-004 (cross-repo intelligence)
+- [x] Re-verify CT-005 (LLM-Modulo verifier)
+- [x] Re-verify CT-006 (confidence calibration) — specifically the AC3 deviation (friction not presence) ✅ correct choice
+- [x] Re-verify CT-007 (goal-conditioned autonomy, POC)
+- [x] Re-verify CT-008 (stigmergic coordination, POC)
+- [x] Re-verify CT-009 (auto-remediation, POC)
+- [x] Re-verify CT-010 (vericoding)
+- [x] Check `AGENTS.md` §14–§20 don't contradict §1–§13 — §16.2 FRICTION not PRESENCE, §19.4 doesn't bypass confirmation
+- [x] Record final verdict (pass or changes, itemized per sub-task above)
 
 ## Research References
 
