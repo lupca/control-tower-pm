@@ -33,13 +33,13 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 1 |
+| **Total Predicted Tasks** | 2 |
 | **Pass Count (Actual Success)** | 1 |
-| **Changes Count (Actual Rework/Fail)** | 0 |
-| **Overall Prediction Accuracy** | 100% (1/1) |
+| **Changes Count (Actual Rework/Fail)** | 1 |
+| **Overall Prediction Accuracy** | 100% (2/2) |
 | **High Prediction Precision** | 100% (1/1) |
 | **Medium Prediction Precision** | N/A |
-| **Low Prediction Precision** | N/A |
+| **Low Prediction Precision** | 100% (1/1) |
 
 ---
 
@@ -50,4 +50,5 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | Date | Task ID | Predicted Level | Score | Factors / Deductions | Confidence Interval | Actual Verdict | Match? | In Interval? |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | 2026-07-22 | CT-001 | high | 0.9 | blast_radius: 3 (-0.0), hub_bridge: false (-0.0), no_tests: true (-0.1) | — | pass | ✅ | — |
+| 2026-07-22 | MVA-001 | low | 0.2 | blast_radius: 168 (-0.5), hub_bridge: true (-0.2), no_tests: false (-0.1) | [0.1, 0.4] | changes | ✅ | ✅ |
 <!-- Updated automatically by /verdict -->

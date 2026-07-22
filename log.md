@@ -711,3 +711,27 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 ## [2026-07-23 00:25:00] verdict | CT-016 pass
 - **Reviewer:** @gpt-5.6-sol (8,877 tokens)
 - **Four-eyes:** ✅
+
+## [2026-07-22 22:53:00] review-order | MVA-001 Phase 4 review sheet updated
+- Dự án: marketing-video-agent
+- Mô tả: Updated review sheet for Phase 4 cleanup (commit cfdd8f68aea0). Executor @gpt-5.6-luna-high completed removal of 17 worker folders + shared_core/ + dev-stop.sh.
+- Giải trình: Previous review (commit 77bc43b) requested changes for Phase 4 cleanup. Executor completed cleanup, new commit issued for re-review.
+- Files touched: projects/marketing-video-agent/reviews/MVA-001-review.md
+- Trạng thái: Thành công
+- Commit: n/a (control-tower)
+
+## [2026-07-22 22:55:00] verdict | MVA-001 changes-requested
+- Dự án: marketing-video-agent
+- Mô tả: Review verdict recorded — CHANGES REQUESTED. AC1/AC4/AC7 fail: TTSTool and DownloadTool violate smolagents nullable schema validation, tests still import deleted shared_core.
+- Giải trình: Reviewer @gpt-5.6-sol ≠ executor @gpt-5.6-luna-high (four-eyes ✓). Prediction accuracy: predicted low (0.2), got changes — correct prediction.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md, knowledge/agents/@gpt-5.6-luna-high.md, knowledge/agents/@gpt-5.6-sol.md, knowledge/metrics/prediction-accuracy.md
+- Trạng thái: Chờ rework
+- Commit: cfdd8f68aea0
+
+## [2026-07-22 23:00:00] verdict | MVA-001 changes-requested (round 3)
+- Dự án: marketing-video-agent
+- Mô tả: Review round 3 — CHANGES REQUESTED. AC2 fails: engines/tts.py passes rate='default' to edge_tts causing ValueError. AC4/AC7 fixed from round 2.
+- Giải trình: Reviewer @gpt-5.6-sol (effort=high) ≠ executor @gpt-5.6-luna-high (four-eyes ✓). 2nd consecutive rework — escalation warning triggered.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md
+- Trạng thái: Chờ rework
+- Commit: e337a5e79a4f

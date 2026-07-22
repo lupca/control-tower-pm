@@ -5,9 +5,9 @@ status: changes-requested
 priority: high
 risk: high
 deadline: null
-executor: "@gpt-5.6-luna"
-reviewer: "@claude-opus"
-result_ref: "marketing-video-agent@main (commit 77bc43b)"
+executor: "@gpt-5.6-luna-high"
+reviewer: "@gpt-5.6-sol"
+result_ref: "marketing-video-agent@main (commit e337a5e79a4f)"
 depends_on: []
 files:
   - worker_agent/agent_runner.py
@@ -40,6 +40,7 @@ prediction_factors:
 confidence_interval: [0.1, 0.4]
 created: 2026-07-22
 updated: 2026-07-22
+review_rounds: 3
 plan_approved: true
 ---
 
@@ -165,6 +166,45 @@ pytest tests/test_simplified.py -v
 - [ ] `shared_core/` đã xử lý (xóa hoặc move files còn dùng)
 - [ ] Không còn `from shared_core` import trong code mới
 - [ ] Tests vẫn pass
+
+## Findings từ reviewer (Lần 2)
+
+**Status: CHANGES REQUESTED** — AC1/AC4/AC7 fail. Reviewer: @gpt-5.6-sol
+
+### AC Status
+
+| AC | Status | Issue |
+|:---|:---|:---|
+| AC1 | ❌ | CLI fails before generation — smolagents tool validation error |
+| AC2 | ✅ | Standalone TTS import succeeds |
+| AC3 | ✅ | SQLite tracks success/failure correctly |
+| AC4 | ❌ | TTSTool/DownloadTool fail smolagents validation — optional args lack `nullable: true` |
+| AC5 | ✅ | Legacy paths removed |
+| AC6 | ✅ | No Celery/Redis/psycopg2/minio deps |
+| AC7 | ❌ | Tests not fully adapted |
+
+### Rework Tasks
+
+- [ ] Fix `tools/tts_tool.py:13` — add `nullable: true` to optional arguments
+- [ ] Fix `tools/download_tool.py:11` — add `nullable: true` to optional arguments
+- [ ] Fix `tests/conftest.py:33` — remove import of deleted `shared_core`
+- [ ] Remove/adapt legacy tests that import `worker_translify`, `shared_core`, PostgreSQL, admin API
+- [x] Verify `run.py "brief"` produces video output after tool fixes
+
+## Findings từ reviewer (Lần 3)
+
+**Status: CHANGES REQUESTED** — AC2 fails. Reviewer: @gpt-5.6-sol (effort=high)
+
+### Fixed from Lần 2
+- [x] AC4: nullable fixes — all 4 smolagents tools instantiate successfully
+- [x] AC7: legacy cleanup — no shared_core imports, pytest 2/2 pass
+- [x] AC3, AC5, AC6: pass
+
+### Blocking Issue
+- [ ] **AC2 fails**: `engines/tts.py:10` passes `rate="default"` to edge_tts → `ValueError: Invalid rate 'default'`
+
+### Notes
+- AC1: CLI passes validation but no video output (local LLM/ComfyUI unavailable — environment issue, not code)
 
 ## Plan
 
