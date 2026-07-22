@@ -1,13 +1,13 @@
 ---
 id: CT-013
 title: "Đo baseline token cost của luồng manual"
-status: todo
+status: done
 priority: normal
 risk: low
 deadline: null
-executor: null
-reviewer: null
-result_ref: null
+executor: "@claude-opus-4.5"
+reviewer: "@lupca"
+result_ref: "control-tower@main (knowledge/research/token-baseline-manual-flow.md)"
 depends_on: [CT-012]
 files:
   - .claude/skills/ (chuỗi file mỗi macro phải đọc — baseline token đo tại đây)
@@ -46,7 +46,7 @@ Task này thu hẹp scope: chỉ **đo baseline token** để có data point so 
 
 > Deliverable là **research doc**: `knowledge/research/token-baseline-manual-flow.md`
 
-- [ ] AC1 — **Baseline chi phí token của luồng manual**: bảng "mỗi macro đọc gì / bao nhiêu dòng / lặp lại bao nhiêu lần trong 1 chu kỳ task trọn vẹn" (chuỗi `/pm` → dispatch → `/review-order` → `/verdict` → `/report`). Vẽ đường tăng trưởng chi phí theo thời gian. Data point này dùng để so sánh sau khi CT-012 (headless dispatch) được implement.
+- [x] AC1 — **Baseline chi phí token của luồng manual**: bảng "mỗi macro đọc gì / bao nhiêu dòng / lặp lại bao nhiêu lần trong 1 chu kỳ task trọn vẹn" (chuỗi `/pm` → dispatch → `/review-order` → `/verdict` → `/report`). Vẽ đường tăng trưởng chi phí theo thời gian. Data point này dùng để so sánh sau khi CT-012 (headless dispatch) được implement.
 
 ## Plan
 

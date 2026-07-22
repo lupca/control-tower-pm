@@ -1,13 +1,13 @@
 ---
 id: CT-012
 title: "Mô hình A — Điều phối agent EXECUTE + REVIEW qua CLI (agy / claude / codex / copilot)"
-status: ready
+status: done
 priority: high
 risk: high
 deadline: null
-executor: "@gemini-3.1-pro"
-reviewer: null
-result_ref: null
+executor: "@claude-opus-4.5"
+reviewer: "@agy-cli"
+result_ref: "control-tower@main (ADR-003 + design doc)"
 depends_on: [CT-002, CT-007, CT-009]
 files:
   - AGENTS.md §1 (bảng phân quyền PLAN/EXECUTE/REVIEW/COORDINATE)
@@ -17,8 +17,8 @@ files:
   - .claude/skills/ (skill điều phối CLI mới, nếu chốt design)
 flows: []
 tests: []
-dispatched: null
-in_review: null
+dispatched: 2026-07-22
+in_review: 2026-07-22
 created: 2026-07-22
 updated: 2026-07-22T19:55
 tier: 3

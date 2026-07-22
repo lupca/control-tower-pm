@@ -41,5 +41,5 @@ updated: 2026-07-22
 - [[CT-009-auto-remediation-tnr]] ✅ POC (self-reviewed, waived — see CT-011)
 - [[CT-010-vericoding-formal-proofs]] ✅ (self-reviewed, waived — see CT-011)
 - [[CT-011-review-paradigm-shift-batch]] ✅ (reviewer: @claude-4.5, independent — compensating control confirmed batch)
-- [[CT-012-model-a-cli-agent-orchestration]] 🟢 ready (executor: @gemini-3.1-pro — thiết kế Mô hình A: điều phối EXECUTE/REVIEW qua CLI, cần ADR-003)
-- [[CT-013-token-cost-automation-optimization]] 📋 todo (re-scoped: chỉ đo baseline token, depends_on CT-012)
+- [[CT-012-model-a-cli-agent-orchestration]] ✅ (executor: @claude-opus-4.5, reviewer: @agy-cli — Model A design + ADR-003)
+- [[CT-013-token-cost-automation-optimization]] ✅ (executor: @claude-opus-4.5, reviewer: @lupca — baseline token measurement)

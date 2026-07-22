@@ -638,3 +638,30 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (status: ready, executor), projects/control-tower/tasks/CT-013-token-cost-automation-optimization.md (re-scope), projects/control-tower/control-tower.md
 - Trạng thái: Thành công
 - Commit: pending
+
+## [2026-07-22 22:30:00] spawn | CT-012 executor=@claude-opus-4.5 repo=control-tower
+- **Task:** CT-012 — Model A CLI Agent Orchestration
+- **Action:** Executor wrote ADR-003 + design doc (headless-cli-orchestration.md)
+- **Rationale:** Model A test — control-tower orchestrating design task via headless mode
+- **Result:** ADR-003 accepted, design doc complete
+
+## [2026-07-22 22:35:00] spawn | CT-012 reviewer=@agy-cli repo=control-tower
+- **Task:** CT-012 — Model A CLI Agent Orchestration
+- **Action:** Spawned `agy -p` to review design doc against 5 ACs
+- **Rationale:** Testing Model A four-eyes: executor=@claude-opus-4.5, reviewer=@agy-cli (different CLIs)
+- **Result:** PASS all 5 ACs (JSON output verified)
+
+## [2026-07-22 22:40:00] verdict | CT-012 pass
+- **Task:** CT-012
+- **Reviewer:** @agy-cli (headless, spawned by control-tower)
+- **Executor:** @claude-opus-4.5
+- **Four-eyes:** ✅ (agy ≠ claude)
+- **AC Results:** AC1-5 all PASS
+- **Status:** done
+
+## [2026-07-22 22:45:00] done | CT-013 baseline token measurement
+- **Task:** CT-013 — Đo baseline token cost của luồng manual
+- **Executor:** @claude-opus-4.5
+- **Reviewer:** @lupca (human)
+- **Deliverable:** knowledge/research/token-baseline-manual-flow.md
+- **Key findings:** ~3575 input tokens/cycle (reading only), log.md growing ~30 lines/task
