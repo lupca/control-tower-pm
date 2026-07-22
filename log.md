@@ -566,3 +566,27 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md (status: dispatched, executor: @gpt-5.6-luna, dispatched: 2026-07-22)
 - Trạng thái: Thành công — chờ executor hoàn thành và báo result_ref
 - Commit: n/a
+
+## [2026-07-22 19:33:19] pm-create | CT-013 Nghiên cứu bottleneck horizontal scaling
+- Dự án: `control-tower` (meta-project)
+- Mô tả: Tạo task CT-013 (status: todo, Spec Gate) — nghiên cứu các vấn đề còn lại cản trở horizontal scaling + tối ưu hệ thống, sau khi vấn đề AGENTS.md context bloat đã xử lý (commit cf9886f).
+- Giải trình: Khảo sát thật repo (không có code graph — meta-project): log.md 568 dòng append-only shared-write, next_task_id là shared mutable counter (race khi 2 phiên /pm song song), events.jsonl (§18.1) định nghĩa nhưng chưa implement, 24/27 task done không archive (scan O(n) mãi), tiến độ duplicate 3 nơi, inbox.md + prediction-accuracy.md cùng mô hình single-file shared-write. 6 ứng viên này thành AC1; AC2 buộc quét thêm ≥2 góc mới; AC4 ra roadmap task follow-up. Research-only (AC5) — không sửa AGENTS*.md/skill trong task này.
+- Files touched: projects/control-tower/tasks/CT-013-horizontal-scaling-bottlenecks.md (mới), projects/control-tower/control-tower.md (next_task_id 13→14, thêm dòng ## Tasks)
+- Trạng thái: Chờ duyệt — Spec Gate, đợi User duyệt scope & AC
+- Commit: n/a
+
+## [2026-07-22 19:35:00] plan | CT-013 Nghiên cứu bottleneck horizontal scaling
+- Dự án: `control-tower` (meta-project)
+- Mô tả: Điền Plan Gate cho CT-013 — kế hoạch nghiên cứu 5 bước: (1) xác nhận 6 bottleneck bằng số liệu đo được, (2) quét ≥2 góc mới, (3) bảng chấm impact/complexity/hướng khắc phục, (4) roadmap task follow-up có cờ "cần ADR", (5) đóng gói research doc vào knowledge/research/.
+- Giải trình: Plan buộc executor thu bằng chứng đo được (grep/đếm/ngoại suy) thay vì khẳng định suông, cho phép bác bỏ ứng viên nếu số liệu không ủng hộ (tránh confirmation bias). Roadmap chỉ là đề xuất — tạo task thật vẫn qua /pm từng cái. Không sửa AGENTS*.md/skill trong task này (AC5).
+- Files touched: projects/control-tower/tasks/CT-013-horizontal-scaling-bottlenecks.md (điền ## Plan)
+- Trạng thái: Chờ duyệt — Plan Gate, đợi User duyệt kế hoạch
+- Commit: n/a
+
+## [2026-07-22 19:50:00] report | Bỏ hoàn toàn Obsidian khỏi hệ thống (ADR-004)
+- Dự án: Toàn bộ hệ thống Control Tower
+- Mô tả: Xóa `.obsidian/` + `control-tower-map.canvas`, ignore `.obsidian/` trong `.gitignore`, gỡ bước 6 (Obsidian visualization) khỏi AGENTS-PLAYBOOK.md §10, gỡ bullet canvas trong index.md §4, gỡ 2 câu giải thích wikilink-vì-Obsidian trong task-creation.md + report/SKILL.md. Viết ADR-004-drop-obsidian.md.
+- Giải trình: User ra lệnh trực tiếp "Bỏ obsidian, xóa hoàn toàn, không quan tâm nữa" (2026-07-22). Bước cập nhật visualization thủ công từng bị bỏ sót (WMS) và không phục vụ vận hành. Dòng backlink `> Dự án: [[...]]` + wikilink trong ## Tasks GIỮ NGUYÊN (quy ước điều hướng thuần, tồn tại trong 40+ file task cũ). Project Gate yêu cầu ADR khi sửa playbook/skill → ADR-004 (ADR-003 đã đặt chỗ cho CT-012).
+- Files touched: .obsidian/ (xóa), control-tower-map.canvas (xóa), .gitignore, AGENTS-PLAYBOOK.md, index.md, .claude/skills/pm/references/task-creation.md, .claude/skills/report/SKILL.md, knowledge/decisions/ADR-004-drop-obsidian.md (mới)
+- Trạng thái: Thành công
+- Commit: (điền sau khi commit)

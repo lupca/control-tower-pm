@@ -34,9 +34,8 @@ When adding a new project to Control Tower:
    ```
 4. Register a daemon watch so the graph updates itself (§6.6): `daemon add <repo_root> --alias <name>`.
 5. (Optional) `code-review-graph register <repo_root> --alias <name>` if you need `cross_repo_search_tool` to query across multiple projects at once.
-6. **Update the Obsidian visualization** (mandatory — don't skip this the way it was skipped for WMS):
-   - `.obsidian/graph.json`: add 1 entry to `colorGroups` — `{"query": "path:projects/<project-name>", "color": {"a": 1, "rgb": <a decimal rgb not already used by another entry>}}`.
-   - `control-tower-map.canvas`: add 1 file node pointing to `projects/<project-name>/<project-name>.md` + 5 edges (dispatch→node, node→`g-exe` "dispatched", node→`n-review-order`, `n-verdict`→node "changes-requested loop", node→`n-lint` "scan backlog"). Copy the `n-proj-wms` node and edges `e15`-`e19` as a template (just change the id/path). `x`/`y` coordinates only need to land in empty space, no need for precision — this is purely a visual diagram.
+
+> Obsidian visualization (graph.json colorGroups, control-tower-map.canvas) was **removed** per ADR-004 (2026-07-22) — no visualization step is needed when onboarding.
 
 ---
 

@@ -48,7 +48,6 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 *   **`projects/<tên>/reviews/`:** Phiếu review do `/review-order` sinh cho reviewer độc lập, nằm ngay trong từng project (không còn thư mục `reviews/` chung ở root).
 *   **[`knowledge/`](knowledge/):** Domain knowledge, ADR, quy ước dùng chung nhiều dự án — xem `knowledge/_index.md` và mục 6 dưới đây.
 *   **[`log.md`](log.md):** Nhật ký kiểm toán (Audit Trail) ghi lại mọi hành động tự trị hoặc được duyệt của Agent. Đảm bảo tính minh bạch và an toàn hệ thống.
-*   **[`control-tower-map.canvas`](control-tower-map.canvas):** Sơ đồ Obsidian Canvas trực quan hoá luồng Mô hình B (PLAN/COORDINATE ↔ EXECUTE ↔ REVIEW), có link nhấn được tới `AGENTS.md`, `projects/<tên>/<tên>.md`, `log.md` (phiếu review nay nằm trong `projects/<tên>/reviews/`, không còn 1 node file chung). Mở repo này bằng Obsidian để xem — Graph view cũng đã được tô màu theo nhóm (Core/PMI/OMS/WMS/knowledge/skills).
 
 ---
 
