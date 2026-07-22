@@ -597,4 +597,12 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: User chỉ đạo trực tiếp "CT12 thêm codex cli" (2026-07-22). Sửa spec nhỏ, không đổi status (CT-012 vẫn todo, chờ duyệt Plan Gate).
 - Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md
 - Trạng thái: Thành công
+- Commit: 19a9489
+
+## [2026-07-22 20:00:00] pm-create | CT-013 re-scope: Tối ưu chi phí token + luồng tự động đa agent
+- Dự án: `control-tower` (meta-project)
+- Mô tả: Re-scope CT-013 theo mục đích thật User chốt: tối ưu token cho đa agent + luồng tự động mượt, ràng buộc cứng không giảm độ chính xác so với manual (gates + four-eyes + human confirm giữ 100%). Rename file horizontal-scaling-bottlenecks → token-cost-automation-optimization. Thêm AC3 đánh giá OSS (Beads, gnap, swarm-protocol, Claude native, headless CLI — đã search sơ bộ) và AC4 so sánh 2-3 phương án kiến trúc kèm ước lượng saving. Được phép thay đổi storage.
+- Giải trình: User phản hồi tại Plan Gate cũ rằng mục tiêu thật là token + automation, không phải scaling chung chung; đồng thời chốt CT-013 sẽ dispatch ra ngoài theo Model B (control-tower không tự viết research doc). Task quay về Spec Gate với AC mới, chờ User duyệt.
+- Files touched: projects/control-tower/tasks/CT-013-token-cost-automation-optimization.md (rename + rewrite), projects/control-tower/control-tower.md (## Tasks)
+- Trạng thái: Chờ duyệt — Spec Gate (AC mới), đợi User duyệt
 - Commit: (điền sau)

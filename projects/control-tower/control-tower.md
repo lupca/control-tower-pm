@@ -42,4 +42,4 @@ updated: 2026-07-22
 - [[CT-010-vericoding-formal-proofs]] ✅ (self-reviewed, waived — see CT-011)
 - [[CT-011-review-paradigm-shift-batch]] ✅ (reviewer: @claude-4.5, independent — compensating control confirmed batch)
 - [[CT-012-model-a-cli-agent-orchestration]] 📋 todo (Spec Gate — TODO thiết kế Mô hình A: điều phối EXECUTE/REVIEW qua CLI, cần ADR-003)
-- [[CT-013-horizontal-scaling-bottlenecks]] 📋 todo (Spec Gate — nghiên cứu bottleneck horizontal scaling: log.md shared-write, next_task_id race, events.jsonl gap, archive, state duplication)
+- [[CT-013-token-cost-automation-optimization]] 📋 todo (Spec Gate — tối ưu chi phí token + luồng tự động đa agent, không giảm độ chính xác; đánh giá OSS: Beads/gnap/swarm-protocol/headless CLI)
