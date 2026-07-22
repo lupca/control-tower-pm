@@ -89,6 +89,11 @@ Followed by the standard body:
 ## Tiêu chí nghiệm thu (AC)
 - [ ] <verifiable condition>
 
+## Verification
+*(commands executor runs to verify AC — model nhỏ chỉ cần chạy, không cần nghĩ)*
+- `pytest tests/unit/test_*.py` → 100% pass
+- `grep -r "hardcoded" src/` → 0 matches
+
 ## Plan
 *(filled in at Plan Gate)*
 
@@ -96,7 +101,7 @@ Followed by the standard body:
 - [ ] <small step, one file/concern per step>
 ```
 
-**Rule:** `/pm` MUST NOT write a task missing `files:`, `## Tiêu chí nghiệm thu (AC)`, or `tests:` — all three must come from a real code-review-graph query (see `AGENTS-REFERENCE.md` §6).
+**Rule:** `/pm` MUST NOT write a task missing `files:`, `## Tiêu chí nghiệm thu (AC)`, `## Verification`, or `tests:` — `files:`/`tests:` must come from a real code-review-graph query (see `AGENTS-REFERENCE.md` §6). `## Verification` contains concrete commands (pytest, curl, grep) so executor chỉ cần chạy theo, không cần tự nghĩ cách verify.
 
 ### 2.2. Task Decomposition Rule
 

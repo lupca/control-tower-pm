@@ -1,7 +1,7 @@
 ---
 agent_id: "@gpt-5.6-sol"
 type: ai
-model: gpt-5.6
+model: gpt-5.6-sol
 effort: high
 total_tasks_executed: 0
 total_tasks_reviewed: 0

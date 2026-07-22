@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 17
+next_task_id: 19
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -46,3 +46,5 @@ updated: 2026-07-22
 - [[CT-014-fix-spawn-pattern-design]] ✅ (executor: @sonnet-5, reviewer: @claude-opus — spawn pattern: task file + reputation + tiering)
 - [[CT-015-reorganize-agent-profiles]] ✅ (executor: @sonnet-5, reviewer: @antigravity — agent tiering: claude/antigravity/human)
 - [[CT-016-terse-coordinator-mode]] ✅ (executor: @gpt-5.6-luna, reviewer: @gpt-5.6-sol — terse coordinator style)
+- [[CT-017-agent-roster-memory]] ✅ (memory: agent roster + spawn patterns)
+- [[CT-018-dispatch-skill]] ✅ (skill: /dispatch auto spawn)
