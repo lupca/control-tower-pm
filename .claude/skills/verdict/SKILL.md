@@ -51,12 +51,12 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 7. If the task declares `depends_on:` (see `AGENTS.md` §2.2): tell the User which tasks might now be unblocked, since there's no automatic parsing/unblocking mechanism yet — don't infer it yourself.
 8. Write 1 entry to `log.md` (`operation: verdict`, format in `AGENTS-REFERENCE.md` §7), with the `Commit:` field = the real hash just received.
 9. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `pass` (Success), update accuracy metrics. If the task has `confidence_interval:` (`AGENTS-EXPERIMENTAL.md` §16.4), also record whether the actual outcome fell inside the interval, in a `confidence_interval` column alongside the existing ones.
-10. **Update Agent Reputation Profiles via script** (zero token overhead):
+10. **Update Agent Reputation Profiles via script** (zero token overhead) — **MUST execute via Bash, do not skip**:
     ```bash
     ./scripts/update-agent-stats.sh <executor> executor pass
     ./scripts/update-agent-stats.sh <reviewer> reviewer pass
     ```
-    Script auto-updates: `total_tasks_executed/reviewed`, `success_rate`, `recent_trend`, `last_active`. Creates profile if missing.
+    Run both commands. Script auto-updates: `total_tasks_executed/reviewed`, `success_rate`, `recent_trend`, `last_active`. Creates profile if missing. If script fails, report the error but continue to step 11.
 11. Give the User a summary: which task closed, who reviewed it, which commit, causal analysis captured (and pattern matched/created, if any), updated prediction/confidence accuracy, and updated agent profile stats.
 
 ### Step 3b — Verdict `changes`
@@ -72,11 +72,12 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 3. Update the frontmatter: `status: changes-requested`, `updated: <today>`. Keep `executor:` unchanged (by default the same executor will fix it) unless the User says to reassign.
 4. Write 1 entry to `log.md` (`operation: verdict`, `Trạng thái: Chờ duyệt` or a description of the rework, `Commit: n/a`).
 5. Record prediction outcome into `knowledge/metrics/prediction-accuracy.md`: read `predicted_success` from the task's frontmatter, log entry with outcome `changes` (Rework/Fail), update accuracy metrics.
-6. **Update Agent Reputation Profiles via script** (zero token overhead):
+6. **Update Agent Reputation Profiles via script** (zero token overhead) — **MUST execute via Bash, do not skip**:
    ```bash
    ./scripts/update-agent-stats.sh <executor> executor changes
    ./scripts/update-agent-stats.sh <reviewer> reviewer changes
    ```
+   Run both commands. If script fails, report the error but continue to step 7.
 7. **Goal escalation** (`AGENTS-EXPERIMENTAL.md` §17.4, POC): Glob `projects/*/goals/GOAL-*.md`, check whether this task's ID appears in any `spawned_tasks:`. If so and this is the 2nd consecutive `changes-requested` verdict for a task spawned by that Goal (check `log.md` for the prior verdict on the same Goal's most recent spawned task), tell the User the Goal (`GOAL-<NNN>`) needs a human look rather than letting the User re-dispatch a third attempt unprompted.
 8. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
 

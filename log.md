@@ -743,3 +743,99 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md (mới), projects/control-tower-web/control-tower-web.md (next_task_id 1→3)
 - Trạng thái: Chờ duyệt — Spec Gate.
 - Commit: n/a
+
+## [2026-07-23 01:00:00] plan | CTW-002 Setup npm environment
+- Dự án: control-tower-web
+- Mô tả: Plan Gate cho CTW-002. Chọn Option A (bypass wrapper) — tìm/cài real npm binary, tạo local wrapper script, test install + build.
+- Giải trình: Option A đơn giản nhất, không cần setup Docker container mới. Chỉ cần extract npm từ node image hoặc cài nvm.
+- Files touched: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md
+- Trạng thái: Chờ duyệt — Plan Gate.
+- Commit: n/a
+
+## [2026-07-23 01:05:00] dispatch | CTW-002 Setup npm environment
+- Dự án: control-tower-web
+- Mô tả: Dispatch CTW-002 cho executor @gpt-5.6-luna-high. Reviewer sẽ là @gpt-5.6-sol (high effort).
+- Giải trình: Task file là work order tự đủ (AC + files + Plan + DoD). Executor chỉ cần đọc `projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md`.
+- Files touched: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md
+- Trạng thái: Thành công — `status: dispatched`.
+- Commit: n/a
+
+## [2026-07-23 01:10:00] review-order | CTW-002 review sheet issued
+- Dự án: control-tower-web
+- Mô tả: Phát phiếu review cho CTW-002 "Setup npm environment". Result-ref: 03a7776. Executor: @claude-opus-4.5.
+- Giải trình: Task hoàn thành 4/4 AC. Phiếu review tại `projects/control-tower-web/reviews/CTW-002-review.md`. Reviewer phải khác executor.
+- Files touched: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md, projects/control-tower-web/reviews/CTW-002-review.md
+- Trạng thái: Thành công — `status: in-review`.
+- Commit: n/a
+
+## [2026-07-23 01:15:00] verdict | CTW-002 pass
+- Dự án: control-tower-web
+- Mô tả: Verdict PASS cho CTW-002 "Setup npm environment". Reviewer: @claude-reviewer ≠ Executor: @claude-opus-4.5 (four-eyes ✓).
+- Giải trình: All 4 ACs verified: npm works (v10.9.0), node_modules/ created, build succeeds (52 pages), CSS has Tailwind utilities. Prediction accuracy: predicted high, got pass — correct.
+- Files touched: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md, projects/control-tower-web/reviews/CTW-002-review.md
+- Trạng thái: Thành công — `status: done`.
+- Commit: 03a7776
+
+## [2026-07-23 01:12:00] pm-create | CTW-003 Fix dev server ERR_CONNECTION_REFUSED
+- Dự án: control-tower-web
+- Mô tả: Tạo task CTW-003 "Fix dev server startup - ERR_CONNECTION_REFUSED on port 3004". User báo lỗi khi truy cập localhost:3004.
+- Giải trình: Graph query cho config files (astro.config.mjs, package.json). Devops/config task, không có unit tests. predicted_success: high (score 0.9).
+- Files touched: projects/control-tower-web/tasks/CTW-003-fix-dev-server-connection-refused.md, projects/control-tower-web/control-tower-web.md
+- Trạng thái: Thành công — Spec Gate approved.
+- Commit: n/a
+
+## [2026-07-23 01:13:00] dispatch | CTW-003 → @gpt-5.6-luna-high
+- Dự án: control-tower-web
+- Mô tả: Dispatch CTW-003 "Fix dev server ERR_CONNECTION_REFUSED" to @gpt-5.6-luna-high. Reviewer: @gpt-5.6-sol.
+- Giải trình: Task file là work order tự đủ (AC + files + Plan + DoD). Executor chỉ cần đọc task file.
+- Files touched: projects/control-tower-web/tasks/CTW-003-fix-dev-server-connection-refused.md
+- Trạng thái: Thành công — `status: dispatched`.
+- Commit: n/a
+
+## [2026-07-23 01:26:00] review-order | CTW-003 review sheet issued
+- Dự án: control-tower-web
+- Mô tả: Phát phiếu review cho CTW-003. Result-ref: 7317699. Executor: @gpt-5.6-luna-high.
+- Giải trình: Fix thêm server.port=3004 vào astro.config.mjs. Phiếu tại `projects/control-tower-web/reviews/CTW-003-review.md`.
+- Files touched: projects/control-tower-web/tasks/CTW-003-fix-dev-server-connection-refused.md, projects/control-tower-web/reviews/CTW-003-review.md
+- Trạng thái: Thành công — `status: in-review`.
+- Commit: n/a
+
+## [2026-07-23 01:28:00] verdict | CTW-003 pass
+- Dự án: control-tower-web
+- Mô tả: Verdict PASS cho CTW-003 "Fix dev server ERR_CONNECTION_REFUSED". Reviewer: @gpt-5.6-sol ≠ Executor: @gpt-5.6-luna-high (four-eyes ✓).
+- Giải trình: All 3 ACs verified: npm run dev starts on port 3004, curl returns HTML, no connection refused. Prediction: high → pass (correct).
+- Files touched: projects/control-tower-web/tasks/CTW-003-fix-dev-server-connection-refused.md, projects/control-tower-web/reviews/CTW-003-review.md
+- Trạng thái: Thành công — `status: done`.
+- Commit: 7317699
+
+## [2026-07-23 02:05:00] pm-create | CTW-004,005,006,007 UI fix batch
+- Dự án: control-tower-web
+- Mô tả: Tạo 4 tasks fix UI issues: (1) CTW-004 Gantt Timeline, (2) CTW-005 Knowledge Base links, (3) CTW-006 Task Completion data, (4) CTW-007 Kanban Board layout.
+- Giải trình: Blast radius 75 files → split thành 4 tasks độc lập để dispatch song song. predicted_success: high (0.85) cho mỗi task.
+- Files touched: projects/control-tower-web/tasks/CTW-004,005,006,007-*.md
+- Trạng thái: Thành công — Spec Gate approved, dispatched.
+- Commit: n/a
+
+## [2026-07-23 02:08:00] dispatch | CTW-004,005,006,007 → @gpt-5.6-luna-high (parallel)
+- Dự án: control-tower-web
+- Mô tả: Dispatch 4 tasks song song: CTW-004 (Gantt), CTW-005 (Knowledge), CTW-006 (StatusChart), CTW-007 (Kanban). Executor: @gpt-5.6-luna-high. Reviewer: @gpt-5.6-sol.
+- Giải trình: 4 codex processes spawned in background, mỗi task độc lập file khác nhau.
+- Files touched: projects/control-tower-web/tasks/CTW-004,005,006,007-*.md
+- Trạng thái: Thành công — `status: dispatched` (4 tasks).
+- Commit: n/a
+
+## [2026-07-23 02:15:00] review-order | CTW-004,005,006,007 batch review
+- Dự án: control-tower-web
+- Mô tả: Phát phiếu review cho 4 tasks (shared commit 0ea54ae). Reviewer: @gpt-5.6-sol.
+- Giải trình: 4 UI fixes trong 1 commit: Gantt, Knowledge, StatusChart, Kanban. Build passed (56 pages).
+- Files touched: projects/control-tower-web/tasks/CTW-004,005,006,007-*.md
+- Trạng thái: Thành công — `status: in-review` (4 tasks).
+- Commit: 0ea54ae
+
+## [2026-07-23 02:20:00] verdict | CTW-004,005,006,007 batch verdict
+- Dự án: control-tower-web
+- Mô tả: Verdict cho 4 tasks. CTW-006: PASS. CTW-004,005,007: CHANGES REQUESTED.
+- Giải trình: CTW-006 StatusChart đúng data (85%). CTW-004 thiếu click action + not responsive. CTW-005 detail pages empty. CTW-007 not responsive.
+- Files touched: projects/control-tower-web/tasks/CTW-004,005,006,007-*.md
+- Trạng thái: 1 pass, 3 changes-requested.
+- Commit: 0ea54ae
