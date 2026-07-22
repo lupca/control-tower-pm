@@ -605,4 +605,36 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Giải trình: User phản hồi tại Plan Gate cũ rằng mục tiêu thật là token + automation, không phải scaling chung chung; đồng thời chốt CT-013 sẽ dispatch ra ngoài theo Model B (control-tower không tự viết research doc). Task quay về Spec Gate với AC mới, chờ User duyệt.
 - Files touched: projects/control-tower/tasks/CT-013-token-cost-automation-optimization.md (rename + rewrite), projects/control-tower/control-tower.md (## Tasks)
 - Trạng thái: Chờ duyệt — Spec Gate (AC mới), đợi User duyệt
-- Commit: (điền sau)
+- Commit: b0fb93b
+
+## [2026-07-22 20:05:00] plan | CT-013 điền Plan Gate (executor chọn trước: @gpt-5.6-luna medium)
+- Dự án: `control-tower` (meta-project)
+- Mô tả: User duyệt Spec Gate CT-013 kèm chọn trước executor @gpt-5.6-luna (effort medium). Điền ## Plan 5 bước: đo baseline token bằng wc -l theo chuỗi đọc của từng skill, xác nhận 6 blocker với kịch bản tái hiện, thẩm định OSS theo ma trận 4 trục (phá gates/four-eyes = loại), thiết kế 2-3 phương án kiến trúc kèm ước lượng saving, roadmap + research doc.
+- Giải trình: Plan chỉ ĐỌC + viết 1 research doc, không đụng AGENTS*/skill/storage. Executor được phép thử cài Beads trong thư mục thử nghiệm riêng. Lưu ý @gpt-5.6-luna đang giữ MVA-001 (dispatched) — khác project, không conflict files.
+- Files touched: projects/control-tower/tasks/CT-013-token-cost-automation-optimization.md (điền ## Plan)
+- Trạng thái: Chờ duyệt — Plan Gate, đợi User duyệt lần cuối trước dispatch
+- Commit: n/a
+
+## [2026-07-22 20:35:00] review-order | MVA-001 Đơn giản hóa kiến trúc
+- Dự án: `marketing-video-agent`
+- Mô tả: Phát phiếu review cho MVA-001 "Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent". Result-ref: `77bc43b`. Executor: @gpt-5.6-luna.
+- Giải trình: Executor báo hoàn thành refactor. Graph đã cập nhật tới commit 77bc43b. Query `get_suggested_questions_tool` trả về 13 risk questions (6 HIGH: bridge nodes, hub nodes untested; 5 MEDIUM: surprising coupling, untested hotspots; 2 LOW: thin communities). Phiếu review kèm test commands và lưu ý đặc biệt về risk HIGH + predicted_success LOW.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md (status: in-review, result_ref, in_review: 2026-07-22), projects/marketing-video-agent/reviews/MVA-001-review.md (mới)
+- Trạng thái: Thành công — chờ reviewer độc lập (≠ @gpt-5.6-luna)
+- Commit: n/a
+
+## [2026-07-22 20:45:00] verdict | MVA-001 — CHANGES REQUESTED
+- Dự án: `marketing-video-agent`
+- Mô tả: Ghi nhận verdict CHANGES cho MVA-001. Reviewer: @claude-opus. Executor: @gpt-5.6-luna. Four-eyes: ✓ (@claude-opus ≠ @gpt-5.6-luna).
+- Giải trình: Phase 1-3 hoàn thành đúng (engines/, tools/, root files, tests/test_simplified.py). Phase 4 (Cleanup) CHƯA làm: 17 worker_* folders còn nguyên, dev-stop.sh chưa xóa, shared_core/ (12 files) chưa xử lý. Đã thêm `## Findings từ reviewer` với action plan chi tiết: lệnh rm -rf cho từng folder, bảng review shared_core/ files, checklist trước khi báo lại.
+- Files touched: projects/marketing-video-agent/tasks/MVA-001-simplify-architecture.md (status: changes-requested, reviewer: @claude-opus, thêm Findings)
+- Trạng thái: Chờ executor hoàn thành cleanup và báo lại
+- Commit: n/a
+
+## [2026-07-22 21:15:00] plan | CT-012 ready + CT-013 re-scope (lần 2)
+- Dự án: `control-tower` (meta-project)
+- Mô tả: (1) CT-012 dependencies (CT-002, CT-007, CT-009) đã done → chuyển status: ready, executor: @gemini-3.1-pro. (2) CT-013 re-scope sau discussion: kết luận script-orchestrator ROI thấp (~25-30%), không cần DB/Beads, MD + script đủ, headless dispatch là key (CT-012 cover). Thu hẹp CT-013 còn 1 AC duy nhất: đo baseline token. depends_on: [CT-012].
+- Giải trình: Discussion 2026-07-22 phân tích kỹ: token cost chính ở headless dispatch (tách context), không phải storage format. Script-orchestrator giảm ít, effort nhiều. CT-013 scope cũ (5 ACs, OSS evaluation, architecture proposals) không còn cần thiết sau khi chốt hướng.
+- Files touched: projects/control-tower/tasks/CT-012-model-a-cli-agent-orchestration.md (status: ready, executor), projects/control-tower/tasks/CT-013-token-cost-automation-optimization.md (re-scope), projects/control-tower/control-tower.md
+- Trạng thái: Thành công
+- Commit: pending

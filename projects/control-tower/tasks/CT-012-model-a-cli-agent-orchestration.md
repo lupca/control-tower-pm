@@ -1,11 +1,11 @@
 ---
 id: CT-012
 title: "Mô hình A — Điều phối agent EXECUTE + REVIEW qua CLI (agy / claude / codex / copilot)"
-status: todo
+status: ready
 priority: high
 risk: high
 deadline: null
-executor: null
+executor: "@gemini-3.1-pro"
 reviewer: null
 result_ref: null
 depends_on: [CT-002, CT-007, CT-009]
