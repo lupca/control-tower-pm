@@ -32,7 +32,7 @@ updated: 2026-07-22
 
 - [[CT-001-pre-execution-prediction]] ✅
 - [[CT-002-reputation-system]] ✅
-- [[CT-003-causal-analysis]]
+- [[CT-003-causal-analysis]] ✅
 - [[CT-004-cross-repo-intelligence]]
 - [[CT-005-llm-modulo-verifier]]
 - [[CT-006-confidence-calibration]]

@@ -1,13 +1,13 @@
 ---
 id: CT-003
 title: "Causal Analysis — Hiểu WHY fix works, không chỉ THAT it works"
-status: dispatched
+status: done
 priority: medium
 risk: normal
 deadline: null
 executor: "@sonnet-5"
-reviewer: null
-result_ref: null
+reviewer: "@claude"
+result_ref: "control-tower@main (commit 43caa5a)"
 depends_on: []
 files:
   - .claude/skills/verdict/SKILL.md
@@ -15,7 +15,7 @@ files:
 flows: [verdict]
 tests: []
 dispatched: 2026-07-22
-in_review: null
+in_review: 2026-07-22
 created: 2026-07-22
 updated: 2026-07-22
 tier: 2
@@ -34,8 +34,8 @@ Research: "Re-frames SE as intervention-centric decision-making. Treats changes 
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] AC1: Thêm `## Causal Analysis` section vào task template (sau verdict pass)
-- [ ] AC2: Format:
+- [x] AC1: Thêm `## Causal Analysis` section vào task template (sau verdict pass)
+- [x] AC2: Format:
   ```yaml
   causal_analysis:
     root_cause: "N+1 query in ProductService.get_all()"
@@ -43,13 +43,13 @@ Research: "Re-frames SE as intervention-centric decision-making. Treats changes 
     counterfactual: "Without fix, latency would remain 450ms under 100 concurrent users"
     pattern_id: "n-plus-one-query"  # reusable pattern identifier
   ```
-- [ ] AC3: `/verdict pass` prompts reviewer để fill causal analysis (required for high-risk tasks)
-- [ ] AC4: Tạo `knowledge/patterns/` directory — mỗi pattern_id có file mô tả:
+- [x] AC3: `/verdict pass` prompts reviewer để fill causal analysis (required for high-risk tasks)
+- [x] AC4: Tạo `knowledge/patterns/` directory — mỗi pattern_id có file mô tả:
   - Problem signature (how to detect)
   - Solution template
   - Past instances (links to tasks)
-- [ ] AC5: `/pm` auto-suggests "This looks like pattern X, see how PMI-003 was fixed"
-- [ ] AC6: `/lint` detects "same pattern exists elsewhere" — flags preventive tasks
+- [x] AC5: `/pm` auto-suggests "This looks like pattern X, see how PMI-003 was fixed"
+- [x] AC6: `/lint` detects "same pattern exists elsewhere" — flags preventive tasks
 
 ## Plan
 
@@ -79,11 +79,11 @@ Research: "Re-frames SE as intervention-centric decision-making. Treats changes 
 
 ## Sub-tasks
 
-- [ ] Add `## Causal Analysis` to task template in AGENTS.md §2.1
-- [ ] Update verdict skill to collect causal info
-- [ ] Create `knowledge/patterns/` with initial patterns (n-plus-one, missing-index, etc.)
-- [ ] Pattern matching logic in `/pm` for suggestions
-- [ ] Cross-reference detection in `/lint`
+- [x] Add `## Causal Analysis` to task template in AGENTS.md §2.1
+- [x] Update verdict skill to collect causal info
+- [x] Create `knowledge/patterns/` with initial patterns (n-plus-one, missing-index, etc.)
+- [x] Pattern matching logic in `/pm` for suggestions
+- [x] Cross-reference detection in `/lint`
 
 ## Research References
 
