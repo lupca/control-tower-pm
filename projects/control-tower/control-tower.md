@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 11
+next_task_id: 12
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -33,10 +33,11 @@ updated: 2026-07-22
 - [[CT-001-pre-execution-prediction]] ✅
 - [[CT-002-reputation-system]] ✅
 - [[CT-003-causal-analysis]] ✅
-- [[CT-004-cross-repo-intelligence]]
-- [[CT-005-llm-modulo-verifier]]
-- [[CT-006-confidence-calibration]]
-- [[CT-007-goal-conditioned-autonomy]]
-- [[CT-008-stigmergic-coordination]]
-- [[CT-009-auto-remediation-tnr]]
-- [[CT-010-vericoding-formal-proofs]]
+- [[CT-004-cross-repo-intelligence]] ✅ (self-reviewed, waived — see CT-011)
+- [[CT-005-llm-modulo-verifier]] ✅ (self-reviewed, waived — see CT-011)
+- [[CT-006-confidence-calibration]] ✅ (self-reviewed, waived — see CT-011)
+- [[CT-007-goal-conditioned-autonomy]] ✅ POC (self-reviewed, waived — see CT-011)
+- [[CT-008-stigmergic-coordination]] ✅ POC (self-reviewed, waived — see CT-011)
+- [[CT-009-auto-remediation-tnr]] ✅ POC (self-reviewed, waived — see CT-011)
+- [[CT-010-vericoding-formal-proofs]] ✅ (self-reviewed, waived — see CT-011)
+- [[CT-011-review-paradigm-shift-batch]] 🔍 in-review (reviewer: @claude-4.5, independent — compensating control for the waiver above)

@@ -56,7 +56,8 @@ Compare `--reviewer` against the `executor:` recorded in the frontmatter:
 6. Update Agent Reputation Profiles (`knowledge/agents/@<id>.md` per `AGENTS.md` §12):
    - **Executor**: Read `knowledge/agents/@<executor>.md`. Increment `total_tasks_executed`, recalculate `success_rate` (decreases on rework), increment `avg_review_rounds`, set `recent_trend: declining` if recent reviews failed. Update `last_active: <today>`.
    - **Reviewer**: Read `knowledge/agents/@<reviewer>.md`. Increment `total_tasks_reviewed`. Update `last_active: <today>`.
-7. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
+7. **Goal escalation** (`AGENTS.md` §17.4, POC): Glob `projects/*/goals/GOAL-*.md`, check whether this task's ID appears in any `spawned_tasks:`. If so and this is the 2nd consecutive `changes-requested` verdict for a task spawned by that Goal (check `log.md` for the prior verdict on the same Goal's most recent spawned task), tell the User the Goal (`GOAL-<NNN>`) needs a human look rather than letting the User re-dispatch a third attempt unprompted.
+8. Tell the User: the task has been reopened with findings; once the executor fixes it and reports back, `status: dispatched` needs to be updated (keeping or changing `executor:`), then `/review-order` run again with a new `--ref`.
 
 ### Common mistakes to avoid
 - Recording a `pass` verdict when `reviewer:` == `executor:` — always refuse, no exceptions.
