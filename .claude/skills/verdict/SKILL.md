@@ -2,7 +2,7 @@
 name: verdict
 description: Record an independent reviewer's verdict into control-tower — pass closes the task (needs human confirmation), changes reopens it with findings. Checks four-eyes (reviewer must differ from executor). Only updates Markdown, never touches code, never runs tests itself. Activate when the user types /verdict.
 argument-hint: "<task path/ID> <pass|changes> --reviewer @id [--commit <hash>] [--notes ...]"
-allowed-tools: Read, Edit, Write, Glob
+allowed-tools: Read, Edit, Write, Glob, Bash
 ---
 
 ## Verdict — record the review outcome, enforce four-eyes
