@@ -1,13 +1,13 @@
 ---
 id: MVA-001
 title: "Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent"
-status: changes-requested
+status: done
 priority: high
 risk: high
 deadline: null
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-result_ref: "marketing-video-agent@main (commit e337a5e79a4f)"
+result_ref: "marketing-video-agent@main (commit 46a19e1a)"
 depends_on: []
 files:
   - worker_agent/agent_runner.py
@@ -30,6 +30,7 @@ tests:
   - tests/test_translify_graph.py
 dispatched: 2026-07-22
 in_review: 2026-07-22
+done: 2026-07-22
 predicted_success: low
 prediction_factors:
   score: 0.2
@@ -39,9 +40,14 @@ prediction_factors:
     - "no_tests: false — existing e2e tests need adaptation (-0.1)"
 confidence_interval: [0.1, 0.4]
 created: 2026-07-22
-updated: 2026-07-22
-review_rounds: 3
+updated: 2026-07-23
+review_rounds: 4
 plan_approved: true
+causal_analysis:
+  root_cause: "Legacy code patterns không tương thích với smolagents API mới"
+  mechanism: "nullable schema validation, edge_tts rate format"
+  counterfactual: "Nếu có integration tests từ đầu thì phát hiện sớm hơn"
+  pattern_id: null
 ---
 
 # MVA-001: Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent
