@@ -44,10 +44,22 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
 - Create the file `projects/<name>/tasks/<ID>-<slug>.md` with standard frontmatter (`AGENTS.md` §2.1 including `predicted_success` & `prediction_factors`) + body, `status: todo`. The body MUST have the backlink line `> Dự án: [[projects/<name>/<name>]]` right below the H1 title (navigation convention linking task → project file). Do NOT fill in `executor:`/`reviewer:`/`result_ref:` — those fields only get filled in later (Plan Gate/dispatch, review-order, verdict).
 - Increment `next_task_id` in `<name>.md` by 1 once the file is created.
 - Add 1 line to the `## Tasks` section of `<name>.md`: `- [[<ID>-<slug>]] — <title> (todo)`. If `<name>.md` doesn't have a `## Tasks` section yet, create one (placed before the "Quy tắc phê duyệt riêng" section). This doesn't need to be perfect — `/report` regenerates this whole section on every run, so small mistakes self-heal.
-- If the task touches `schemas/`, `models.py`, or a migration directory → automatic RESTRICTED (`AGENTS.md` §1 & §4), flag `risk: high` and call it out explicitly in the task.
+- If the task touches `schemas/`, `models.py`, or a migration directory, flag
+  `risk: high` and call it out explicitly. Apply the risk-sensitive Spec/Plan
+  Gate behavior in `AGENTS.md` §4.
 - Leave the `## Plan` section of the body empty — it gets filled in at the Plan Gate (see `task-execution.md`), don't pre-fill it.
 
 ## Closing the Spec Gate
 
-1. Write 1 entry to `log.md` (`operation: pm-create`, format in `AGENTS-REFERENCE.md` §7).
-2. Show the User the task you just wrote, stop and wait for approval of the scope & AC. **Do not** automatically move on to the Plan Gate — you need explicit User confirmation.
+1. Read `state/mode.md` fresh; a missing/invalid value means `supervised`.
+2. Write 1 entry to `log.md` (`operation: pm-create`, format in
+   `AGENTS-REFERENCE.md` §7). In `bypass`, include `auto-approved: spec`.
+3. Apply the Spec Gate:
+   - `supervised` or `plan-only`: show the scope + AC, stop, and wait for
+     explicit User approval.
+   - `bypass`: show a terse stage result and continue immediately to
+     `task-execution.md` in this invocation.
+
+Creation, prediction, verifier output, project counter updates, and audit
+logging all happen before this checkpoint and must never be skipped because of
+mode.

@@ -2,7 +2,7 @@
 task_prefix: CT
 next_task_id: 23
 created: 2026-07-22
-updated: 2026-07-22
+updated: 2026-07-23
 ---
 
 # Control Tower (Meta-Project)
@@ -24,6 +24,7 @@ updated: 2026-07-22
 
 - [AGENTS.md](../../AGENTS.md) — Rules of engagement
 - [ADR-001-file-over-api](../../knowledge/decisions/ADR-001-file-over-api.md) — Founding decision
+- [ADR-006-coordination-modes-and-task-states](../../knowledge/decisions/ADR-006-coordination-modes-and-task-states.md) — Coordination modes, Gates, and simplified task states
 - [LLM-Modulo Framework (ICML 2024)](https://proceedings.mlr.press/v235/kambhampati24a.html)
 - [STRATUS (NeurIPS 2025)](https://neurips.cc/virtual/2025/poster/116834)
 - [Vericoding (Tegmark 2025)](https://arxiv.org/pdf/2509.22908)

@@ -21,7 +21,9 @@ Welcome, Agent, to Control Tower. This is the top-level control file defining th
 | **COORDINATE** (issue review order, record verdict, audit) | control-tower                                                                   | NO — Markdown only                                 |
 | **FINAL acceptance decision**                            | A human (four-eyes principle)                                                   | —                                                  |
 
-**Separation-of-duties principle (mandatory): reviewer ≠ executor.** If `reviewer:` matches the `executor:` of the same task → refuse to record a `pass` verdict, and require a second, independent signature (human or AI).
+**Separation-of-duties principle (mandatory): reviewer ≠ executor.** If
+`reviewer:` matches the `executor:` of the same task, refuse to record any
+verdict and require a different, independent reviewer (human or AI).
 
 **"Outside the system" means a SEPARATE CLI process, NOT a subagent:**
 - ✅ `Bash("cd <repo> && claude -p '...' --dangerously-skip-permissions")` — spawns a new Claude Code process in the target repo
@@ -34,8 +36,12 @@ Because roles are cleanly separated as above, the AUTONOMOUS/COLLABORATIVE/RESTR
 | Permission Level | Action (all Markdown, never code) | Process |
 | :--- | :--- | :--- |
 | **AUTONOMOUS** *(Free rein)* | - Read and analyze `projects/` (including `projects/<name>/reviews/`), `knowledge/`, `inbox.md`. <br>- Use `code-review-graph` (read-only) to check blast radius/test gaps/flows. <br>- Run `/lint` (read + report only). | Execute automatically, no need to ask the User. |
-| **COLLABORATIVE** *(Needs approval)* | - Write a new task into `projects/<name>/tasks/*.md` (Spec Gate). <br>- Write the plan into `## Plan` (Plan Gate). <br>- Mark `dispatched`, record `executor:`. <br>- Issue a review order (`/review-order`). <br>- Route knowledge into `knowledge/`/`docs/` (§11). | Log the rationale in `log.md` **and** stop at the correct Gate (§4) awaiting confirmation (Y/N). |
-| **RESTRICTED** *(Never act unilaterally)* | - Record a `pass` verdict (closing a task as `status: done`) — always needs human confirmation. <br>- Bulk update (>3 tasks). <br>- Delete a task/project file. <br>- Record a verdict when `reviewer:` == `executor:`. | Must stop and ask for explicit written/chat approval — never silently assume "approved". |
+| **COLLABORATIVE** *(Mode-controlled)* | - Write a new task into `projects/<name>/tasks/*.md` (Spec Gate). <br>- Write the plan into `## Plan` (Plan Gate). <br>- Mark `dispatched`, record `executor:`. <br>- Issue a review order (`/review-order`). <br>- Record a reviewer verdict. <br>- Route knowledge into `knowledge/`/`docs/` (§11). | Log the rationale in `log.md`, then use the coordination-mode behavior at the matching Gate (§4). |
+| **RESTRICTED** *(Protected actions)* | - Bulk update (>3 tasks). <br>- Delete a task/project file. | Always stop and ask for explicit written/chat approval, including in `bypass` mode. |
+
+The four-eyes rule is harder than either permission level: when `reviewer:` equals
+`executor:`, refuse the verdict immediately. Do not prompt for an override and do
+not let coordination mode weaken this rule.
 
 ---
 
@@ -60,7 +66,7 @@ Every file in `tasks/` starts with frontmatter:
 ---
 id: PMI-001                          # <PREFIX>-<NNN>, NNN zero-padded to 3 digits
 title: "Thêm validation cost/tax cho variant"
-status: done                         # todo | ready | dispatched | in-review | done | changes-requested
+status: done                         # todo | dispatched | in-review | done | changes-requested
 priority: high                       # urgent | high | medium | low
 risk: high                           # high | normal (default normal)
 deadline: 2026-08-01                 # YYYY-MM-DD, optional
@@ -118,16 +124,17 @@ Followed by the standard body:
 ### 2.3. Task Lifecycle (state machine)
 
 ```
-📋 todo → ✅ ready → 📤 dispatched → 🔍 in-review → ✔️ done
-                                          ↓
-                                  🔁 changes-requested → (handed back) → 📤 dispatched
+📋 todo → 📤 dispatched → 🔍 in-review → ✔️ done
+                                ↓
+                        🔁 changes-requested → (handed back) → 📤 dispatched
 ```
 
 - `todo`: task just written at Spec Gate, awaiting approval of the AC.
-- `ready`: Spec + Plan Gate both approved, `## Plan` filled in, ready to hand off.
-- `dispatched`: `executor:` + `dispatched: <date>` recorded — executor is working on it.
+- `dispatched`: Spec + Plan are approved, `## Plan`, `executor:`, and
+  `dispatched: <date>` are recorded — executor is working on it.
 - `in-review`: executor reported done, `/review-order` issued — reviewer is checking it.
-- `done`: `/verdict pass` recorded with human confirmation.
+- `done`: `/verdict pass` recorded after an independent review and a permitted
+  Verdict Gate (explicit confirmation or human-selected `bypass`).
 - `changes-requested`: `/verdict changes` recorded — goes back to `dispatched`.
 
 ---
@@ -146,18 +153,74 @@ A project may declare additional project-specific DoD in `projects/<project>/<pr
 
 ---
 
-## 4. THE TWO GATES INSIDE CONTROL-TOWER + HANDOFF OUTSIDE
+## 4. TASK STATES, COORDINATION MODES, AND GATES
 
-Control-tower is only responsible for the first two gates (PLAN); everything after is handed off outside.
+### 4.1. States are durable task lifecycle data
 
-1. **Spec Gate** — `/pm` creates a new task file with `files:`/AC/`tests:`/`flows:` (`status: todo`) → stops, shows the User the **scope & AC** for approval.
-2. **Plan Gate** — once Spec is approved, write the implementation plan into `## Plan` → stop, wait for User approval. Once approved: `status: ready`, ask who the `executor:` will be → record `status: dispatched`. **control-tower stops here.**
+Task states are the frontmatter values in §2.3:
+`todo → dispatched → in-review → done`, with `changes-requested` looping back
+to `dispatched`. A Gate is not a state and must never be encoded as a temporary
+frontmatter status.
 
-After the Plan Gate, the task's lifecycle continues **outside the system**:
+### 4.2. Coordination mode
 
-3. **Execution handoff** — the executor does the work, creates a branch/commit/PR, reports back `result_ref:`.
-4. **`/review-order`** — control-tower issues a review sheet → hands to an independent reviewer. `status: in-review`.
-5. **Review outside the system** — the reviewer reads the diff, runs tests, checks AC/DoD in the target repo.
-6. **`/verdict`** — the reviewer reports the outcome: `pass` → close (`status: done`, needs human confirmation); `changes` → `status: changes-requested`.
+The active mode is stored in `state/mode.md`. If the file is missing or invalid,
+fail safely to `supervised`.
 
-**Automatic escalation to RESTRICTED:** if `risk: high` or touches `schemas/`/`models.py`/migrations → both gates require explicit confirmation. Closing a task (`/verdict pass`) ALWAYS needs human confirmation.
+| Mode | Gate behavior | Dispatch/verdict | Protected actions |
+| :--- | :--- | :--- | :--- |
+| `plan-only` | Spec, Plan, and Review-order still require confirmation. | Block; explain that the mode must change before continuing. | n/a because these actions are already blocked or still prompt. |
+| `supervised` *(default)* | Stop at every Gate and wait for explicit User confirmation. | Prompt at the matching Gate. | Prompt. |
+| `bypass` | Auto-approve each Gate, record `auto-approved: <gate>` in the action's audit entry, and continue in the same invocation. | Continue without stopping. | **Prompt; bypass never auto-approves them.** |
+
+Use `/mode` to display the current level and `/mode <plan-only|supervised|bypass>`
+to change it. Mode changes are themselves recorded in `log.md`.
+
+Protected actions are always interactive:
+
+- deleting a task or project;
+- bulk-updating more than three tasks.
+
+The four-eyes equality check is a hard refusal, not a protected prompt:
+`reviewer == executor` must always stop without offering an override.
+
+### 4.3. Gates are stop-or-continue checkpoints
+
+Every gate-bearing skill reads `state/mode.md` at each Gate; it must not cache
+the value from an earlier Gate. A Gate decides whether the flow stops, continues,
+or is blocked. It does not omit the action before or after it. Audit entries,
+task updates, prediction records, agent-stat updates, and all other specified
+side effects still run exactly once when their corresponding action executes.
+
+| Gate | `plan-only` | `supervised` | `bypass` |
+| :--- | :--- | :--- | :--- |
+| Spec (`/pm`) | Prompt | Prompt | Auto-approve + continue |
+| Plan (`/pm`) | Prompt | Prompt | Auto-approve + continue |
+| Dispatch (`/pm` → `/dispatch`, or direct `/dispatch`) | Block | Prompt | Auto-approve + continue |
+| Review-order (`/review-order`) | Prompt | Prompt | Auto-approve + continue |
+| Verdict (`/verdict`) | Block | Prompt | Auto-approve + continue |
+
+If `risk: high` or a task touches `schemas/`, `models.py`, or migrations,
+Spec and Plan remain explicit-confirmation Gates in `plan-only` and
+`supervised`. Only an explicitly selected `bypass` mode auto-approves them;
+protected actions and the four-eyes hard rule remain unchanged.
+
+### 4.4. Flow and outside handoff
+
+1. **Spec Gate** — `/pm` creates a `todo` task with
+   `files:`/AC/`tests:`/`flows:`, performs its required logging and prediction
+   side effects, then checks the Gate.
+2. **Plan Gate** — after Spec approval, `/pm` writes `## Plan`, performs its
+   required side effects, then checks the Gate.
+3. **Dispatch Gate** — select/confirm an executor and run `/dispatch`. On
+   approval it records `status: dispatched` and hands execution outside the
+   system. In `bypass`, `/pm` proceeds through all three Gates in one invocation.
+4. **Execution handoff** — the outside executor writes code, runs tests, and
+   reports a real `result_ref:`.
+5. **Review-order Gate** — `/review-order` records the result reference, creates
+   the review sheet, and moves the task to `in-review` after the Gate permits it.
+6. **Review outside the system** — an independent reviewer reads the diff, runs
+   tests, and checks AC/DoD in the target repo.
+7. **Verdict Gate** — `/verdict` records `pass` as `done` or `changes` as
+   `changes-requested` after the Gate permits it and the hard four-eyes check
+   passes.

@@ -8,6 +8,7 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 |:---|:---|:---|:---|
 | decision | [[ADR-001-file-over-api]] | architecture, control-tower | 2026-07-21 |
 | decision | [[ADR-002-paradigm-shifts-roadmap]] | architecture, control-tower, paradigm-shift, research | 2026-07-22 |
+| decision | [[ADR-006-coordination-modes-and-task-states]] | control-tower, coordination, gates, workflow | 2026-07-23 |
 | research | [[discount-promotion-architecture]] | pricing, discount, promotion, e-commerce | 2026-07-22 |
 | metric | [[prediction-accuracy]] | metrics, prediction, control-tower, accuracy | 2026-07-22 |
 | agent | [[@antigravity]] | agent, profile, execution, ai | 2026-07-22 |

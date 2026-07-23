@@ -6,12 +6,13 @@ Runbooks for macros, reconciliation, project onboarding, and knowledge managemen
 
 ## 8. MACROS AND CONTROL COMMANDS
 
-*   `/pm <task_description> [--project <name>]`: Spec Gate → Plan Gate → `ready` → `dispatched`. Creates a dedicated task file under `projects/<name>/tasks/` complete with `files:`/AC/`tests:`/`flows:` from the graph. **Never writes code itself, never self-verifies.**
+*   `/mode [plan-only|supervised|bypass]`: Shows or changes the coordination mode in `state/mode.md`; every change is logged.
+*   `/pm <task_description> [--project <name>]`: Spec Gate → Plan Gate → Dispatch Gate → `dispatched`. Creates a dedicated task file under `projects/<name>/tasks/` complete with `files:`/AC/`tests:`/`flows:` from the graph. In `bypass`, all three stages complete in one invocation; in `supervised`, each Gate stops for confirmation. **Never writes code itself, never self-verifies.**
 *   `/ingest`: Reads `inbox.md`, **reconciles into an existing similar task** rather than creating a duplicate (§9), or routes it into a knowledge file (`knowledge/`/`docs/`, §11) if it isn't actionable, enriches it via the graph, removes the processed item from the inbox.
 *   `/report`: Scans `projects/*/tasks/*.md`, aggregates Done/Total by `status:`, updates `<project-name>.md` + `index.md`; scans `knowledge/**/*.md` + `projects/*/docs/*.md`, updates `knowledge/_index.md`.
 *   `/lint [--project <name>]`: Backlog health-check — overdue tasks, missing AC, dead file links, orphan tasks, contradictions, stuck too long in `dispatched`/`in-review`, orphan/stale knowledge (§6, §11, `.claude/skills/lint/SKILL.md`).
 *   `/review-order <task ID/path> --ref <branch|commit|PR>`: Issues a review sheet for an independent reviewer, moves to `status: in-review`. Doesn't review itself, doesn't run tests.
-*   `/verdict <task ID/path> <pass|changes> --reviewer @id [--commit <hash>] [--notes ...]`: Records the review outcome in the system. Checks four-eyes (`reviewer` ≠ `executor`). `pass` → closes the task (needs human confirmation); `changes` → reopens it with findings.
+*   `/verdict <task ID/path> <pass|changes> --reviewer @id [--commit <hash>] [--notes ...]`: Records the review outcome in the system. Checks four-eyes (`reviewer` ≠ `executor`) before applying the mode-controlled Verdict Gate. `pass` closes the task; `changes` reopens it with findings.
 
 ---
 

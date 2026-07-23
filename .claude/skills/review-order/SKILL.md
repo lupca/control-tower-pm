@@ -15,7 +15,7 @@ You're in control-tower, NOT the target code repo. This skill **never reads the 
 2. Find the task by ID/path in `$ARGUMENTS`: Glob `projects/*/tasks/<ID>-*.md` if the User gave an ID (e.g. `PMI-001`), or by the full path if the User specified it directly.
 3. Read the frontmatter, check the task's current `status:`:
    - If `status: dispatched` → valid, continue.
-   - If `status` is anything else (`todo`, `ready`, `in-review`, `done`, `changes-requested`) → stop, tell the User: the task isn't ready for a review sheet (e.g. not dispatched yet, or already in review) — don't change the state yourself.
+   - If `status` is anything else (`todo`, `in-review`, `done`, `changes-requested`) → stop, tell the User: the task isn't ready for a review sheet (e.g. not dispatched yet, or already in review) — don't change the state yourself.
 4. Get `--ref <branch|commit|PR>` from `$ARGUMENTS`. If missing, ask the User (never invent a result-ref).
 
 ### Step 2 — Validate reviewer rotation (if re-review)
@@ -25,12 +25,29 @@ If task has `rejections: >= 2` in frontmatter:
 2. If `--reviewer` argument matches previous reviewer → **REFUSE**: "Task đã bị reject 2+ lần bởi cùng reviewer. Cần chỉ định reviewer khác để có góc nhìn thứ 3."
 3. If `--reviewer` differs OR no `--reviewer` given yet → continue (will be assigned later by User).
 
-### Step 3 — Record the result-ref, change state
+For every review order, if a supplied `--reviewer` equals the task's
+`executor:`, **REFUSE immediately without prompting**. Coordination mode never
+overrides four-eyes.
+
+### Step 3 — Review-order Gate
+
+Read `state/mode.md` fresh; a missing/invalid value means `supervised`.
+
+- `supervised` or `plan-only`: show the task, result-ref, and intended review
+  sheet path; stop for explicit confirmation.
+- `bypass`: continue immediately and include `auto-approved: review-order` in
+  the review-order audit entry.
+
+The Gate occurs after validation and before mutation. Once permitted, every
+state update, graph enrichment attempt, review-sheet write, and audit side
+effect below still runs exactly once.
+
+### Step 4 — Record the result-ref, change state
 
 1. Write `result_ref: "<the --ref value>"` into the frontmatter.
 2. Update `status: in-review`, `in_review: <today's date>`, `updated: <today's date>`.
 
-### Step 4 — Enrich with risk questions (read-only, optional)
+### Step 5 — Enrich with risk questions (read-only, optional)
 
 Look up the project's `repo_root` in the PROJECT REGISTRY, then (if the graph is available):
 
@@ -39,7 +56,7 @@ Look up the project's `repo_root` in the PROJECT REGISTRY, then (if the graph is
 
 If the graph returns nothing useful or errors out, skip this step — the review sheet is still valid with just the task's AC/DoD/tests.
 
-### Step 5 — Generate the review sheet
+### Step 6 — Generate the review sheet
 
 Write the file `projects/<name>/reviews/<ID>-review.md` (e.g. `projects/topvnsport-pmi/reviews/PMI-001-review.md`) — `<name>` comes from the task path found in Step 1. Create the `reviews/` directory if that project doesn't have one yet.
 
@@ -88,9 +105,9 @@ Sau khi review xong, báo lại cho control-tower bằng lệnh:
 `/verdict <ID> <pass|changes> --reviewer @<tên bạn> [--commit <hash>] [--notes "..."]`
 ```
 
-### Step 6 — Close out
+### Step 7 — Close out
 
-1. Write 1 entry to `log.md` (`operation: review-order`, format in `AGENTS-REFERENCE.md` §7) — stating the path of the review sheet just generated.
+1. Write 1 entry to `log.md` (`operation: review-order`, format in `AGENTS-REFERENCE.md` §7) — stating the path of the review sheet just generated. In `bypass`, include `auto-approved: review-order`.
 2. Tell the User: the sheet is ready at `projects/<name>/reviews/<ID>-review.md`, hand it to an independent reviewer (**must differ from** the task's `executor:` — restate the four-eyes rule).
 
 ### Common mistakes to avoid

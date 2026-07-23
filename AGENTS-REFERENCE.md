@@ -41,7 +41,7 @@ If the impacted area contains a hotspot **not covered by tests** (per `get_knowl
 
 ### 6.3. Risk flags from hub/bridge nodes
 
-`get_hub_nodes_tool`/`get_bridge_nodes_tool` return the **repo-wide global top**, not scoped to the task — so you must call them with a large enough `top_n` (use **50**, not the tool's default of 10). If any file/symbol in `files:` matches the returned list → flag `risk: high` and apply the RESTRICTED escalation (§4).
+`get_hub_nodes_tool`/`get_bridge_nodes_tool` return the **repo-wide global top**, not scoped to the task — so you must call them with a large enough `top_n` (use **50**, not the tool's default of 10). If any file/symbol in `files:` matches the returned list → flag `risk: high` and apply the risk-sensitive Gate behavior in §4.
 
 ### 6.4. Read-only tools used by `/review-order` (enriching the review sheet, NOT verification)
 
@@ -81,4 +81,4 @@ Append-only format, with a consistent prefix so `grep`/`awk` can parse it:
 - Trạng thái: [Thành công | Chờ duyệt | Đã hủy]
 - Commit: <hash | n/a>
 ```
-`<operation>` ∈ `{ingest, pm-create, plan, dispatch, review-order, verdict, report, lint}`. Write one entry for every COLLABORATIVE or RESTRICTED action.
+`<operation>` ∈ `{ingest, pm-create, plan, dispatch, review-order, verdict, report, lint, mode}`. Write one entry for every COLLABORATIVE or RESTRICTED action. For a Gate auto-approved in `bypass` mode, include `auto-approved: <gate-name>` in the corresponding action entry rather than omitting or duplicating that action's audit record.

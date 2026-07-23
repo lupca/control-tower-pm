@@ -56,7 +56,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 ## 5. QUY TRÌNH VẬN HÀNH NHANH (Runbook) — Mô hình B
 
 1.  **Giao task mới:** Thêm ý tưởng vào `inbox.md` hoặc gõ thẳng `/pm <yêu cầu_của_bạn>` trong chat — task sinh ra sẽ có Acceptance Criteria + test + rủi ro (xem `AGENTS.md` mục 2, 6).
-2.  **Duyệt 2 cổng trong hệ:** Spec Gate (duyệt AC) → Plan Gate (duyệt kế hoạch trong `## Plan`) → task chuyển `ready` rồi `dispatched` kèm `executor:`. Xem `AGENTS.md` mục 4.
+2.  **Đi qua các checkpoint:** Spec Gate (duyệt AC) → Plan Gate (duyệt kế hoạch trong `## Plan`) → Dispatch Gate → task chuyển thẳng từ `todo` sang `dispatched` kèm `executor:`. `/mode` quyết định dừng hay tiếp tục tại từng Gate; xem `AGENTS.md` mục 4.
 3.  **Giao việc ra ngoài:** executor (người/AI khác, ngoài hệ) tự viết code + chạy test trong repo code đích, rồi báo lại result-ref (branch/commit/PR).
 4.  **Phát phiếu review:** Gõ `/review-order <task> --ref <result-ref>` → sinh phiếu tại `projects/<tên>/reviews/`, giao reviewer độc lập (≠ executor).
 5.  **Review ngoài hệ:** reviewer đọc diff + chạy test trong repo code đích (khuyến khích dùng `/code-review` của repo đó) — hoàn toàn ngoài control-tower.
@@ -74,6 +74,6 @@ Domain knowledge, quyết định kiến trúc (ADR), quy ước — xem `AGENTS
 | Type | Số file (cross-project, `knowledge/`) | Số file (per-project, `projects/*/docs/`) |
 | :--- | ---: | ---: |
 | domains | 0 | 0 |
-| decisions | 1 | 0 |
+| decisions | 6 | 0 |
 | conventions | 0 | 0 |
 | research | 0 | 0 |

@@ -33,8 +33,37 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ## [2026-07-23 21:35:00] dispatch: OMS-002
 - **Dự án:** topvnsport-oms
-- **Mô tả hành động:** Dispatch OMS-002 cho `@gpt-5.6-sol` (executor), `@claude-opus-4.5` (reviewer).
-- **Trạng thái:** Dispatched — executor running.
+- **Mô tả hành động:** Dispatch OMS-002 cho `@gpt-5.6-sol` (executor), `@claude-opus` (reviewer).
+- **Trạng thái:** Dispatched — executor done.
+
+## [2026-07-23 21:47:00] review-order: OMS-001
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Phát phiếu review cho OMS-001 tại `projects/topvnsport-oms/reviews/OMS-001-review.md`.
+- **Result-ref:** topvnsport@main
+- **Reviewer:** @claude-opus (≠ executor @gpt-5.6-sol)
+- **Trạng thái:** in-review.
+
+## [2026-07-23 21:48:00] review-order: OMS-002
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Phát phiếu review cho OMS-002 tại `projects/topvnsport-oms/reviews/OMS-002-review.md`.
+- **Result-ref:** topvnsport@main
+- **Reviewer:** @claude-opus (≠ executor @gpt-5.6-sol)
+- **Trạng thái:** in-review.
+
+## [2026-07-23 21:56:00] pm-create + dispatch: OMS-003
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Tạo + dispatch OMS-003 — xóa BYPASS_OTP_TOKEN backdoor, update E2E tests dùng OTP thật.
+- **Files:** main.py, test_full_flow.py, test_storefront_otp_flow.py
+- **Executor:** @gpt-5.6-sol
+- **Trạng thái:** dispatched.
+
+## [2026-07-23 21:55:00] verdict: OMS-001 + OMS-002 pass
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Close OMS-001 + OMS-002 với verdict pass.
+- **Commit:** 0906aea287f2cffb7e68424e77e4d37adddd512c
+- **Executor:** @gpt-5.6-sol | **Reviewer:** @claude-opus
+- **Prediction accuracy:** predicted=high, actual=pass ✅
+- **Trạng thái:** done.
 
 ---
 
