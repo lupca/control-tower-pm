@@ -3,7 +3,7 @@ project: topvnsport-oms
 full_name: "TopVNSport - OMS (Order Management System)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: OMS
-next_task_id: 5
+next_task_id: 6
 created: 2026-07-21
 updated: 2026-07-21
 ---
@@ -27,6 +27,7 @@ Chưa có task nào được sinh chi tiết qua `/pm`. Xem `inbox.md` mục 1 (
 - [[OMS-002-frontend-zalo-otp]] — Frontend Zalo OTP - Chặn luồng khi SĐT không có Zalo (done)
 - [[OMS-003-remove-bypass-otp-backdoor]] — Xóa BYPASS_OTP_TOKEN backdoor (done)
 - [[OMS-004-zalo-admin-config]] — Cập nhật trang cấu hình Admin: SMS → Zalo OTP (done)
+- [[OMS-005-refactor-main-py]] — Refactor OMS/backend/main.py - tách file 1557 dòng thành modules (done)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc DB hoặc luồng thanh toán/hóa đơn bắt buộc phải có sự xác nhận của User trước khi executor (ngoài hệ) chạy migrate hoặc đụng tới logic tiền.

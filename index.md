@@ -6,7 +6,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 ## 1. THỐNG KÊ TỔNG QUAN (System Status)
 
-*   **Thời gian cập nhật cuối:** 2026-07-22
+*   **Thời gian cập nhật cuối:** 2026-07-24
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
 *   **Tổng số dự án:** 7 dự án đang hoạt động
 
@@ -34,13 +34,13 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 
 | Dự án | Thư mục quản lý | Trạng thái | Tiến độ (Done/Total) | Executor/Reviewer hiện tại | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TopVNSport - PMI** | `projects/topvnsport-pmi/` (`topvnsport-pmi.md`, `tasks/`) | 🔄 Đang chạy | 8/9 | Chưa có task nào ở `dispatched`/`in-review` | Quản lý quy trình, nghiệp vụ PMI |
-| **TopVNSport - OMS** | `projects/topvnsport-oms/` (`topvnsport-oms.md`, `tasks/`) | ⏳ Tạm dừng | 0/0 | Chưa gán | Quản lý đơn hàng & hoàn tất đơn |
-| **TopVNSport - WMS** | `projects/topvnsport-wms/` (`topvnsport-wms.md`, `tasks/`) | 🔄 Đang chạy | 1/1 | — | Quản lý kho hàng, tồn kho, barcode |
-| **TopVNSport - Web** | `projects/topvnsport-web/` (`topvnsport-web.md`, `tasks/`) | 🔄 Đang chạy | 0/0 | — | Frontend application (Vue/React) |
-| **Control Tower** | `projects/control-tower/` (`control-tower.md`, `tasks/`) | ✅ Hoàn thành | 11/11 | — | Meta-project: paradigm shifts, self-improvement. All 10 paradigm shifts implemented + CT-011 independent review passed. |
-| **Marketing Video Agent** | `projects/marketing-video-agent/` (`marketing-video-agent.md`, `tasks/`) | 🆕 Mới onboard | 0/0 | — | AI video creation pipeline với workers: leader, capcut, slideshow, tts, delivery... |
-| **Control Tower Web** | `projects/control-tower-web/` (`control-tower-web.md`, `tasks/`) | 🆕 Mới onboard | 0/0 | — | Web dashboard cho control-tower (Astro + Tailwind) |
+| **TopVNSport - PMI** | `projects/topvnsport-pmi/` | 🔄 Đang chạy | 9/10 | — | 1 todo: PMI-002 |
+| **TopVNSport - OMS** | `projects/topvnsport-oms/` | ✅ Hoàn thành | 4/4 | — | Zalo OTP integration complete |
+| **TopVNSport - WMS** | `projects/topvnsport-wms/` | ✅ Hoàn thành | 3/3 | — | Table, 414 fix, CI fix done |
+| **TopVNSport - Web** | `projects/topvnsport-web/` | ✅ Hoàn thành | 4/4 | — | Promotion, cleanup, vitest, CORS done |
+| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 21/22 | CT-019: @antigravity | 1 dispatched: CT-019 slim verdict |
+| **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 4/9 | — | 5 todo: engines restoration |
+| **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 12/12 | — | Dashboard fixes complete |
 
 ---
 

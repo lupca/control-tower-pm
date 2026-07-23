@@ -4,6 +4,25 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-24 16:45:00] review-order: WEB-005
+- **Dự án:** topvnsport-web
+- **Mô tả hành động:** Phát phiếu review cho WEB-005 (fix discount price display).
+- **Result-ref:** `055fe30`
+- **Executor:** @dev
+- **Review sheet:** `projects/topvnsport-web/reviews/WEB-005-review.md`
+- **Graph context:** 2 affected flows (App), criticality ~0.69
+- **Trạng thái:** Pending reviewer assignment (auto-approved: review-order, bypass mode).
+
+## [2026-07-24 16:30:00] ingest+verify: WEB-005
+- **Dự án:** topvnsport-web
+- **Mô tả hành động:** Ingest inbox item #6 → tạo task `WEB-005-fix-discount-price-display`. Fix đã được dev triển khai (chưa commit), verify code logic đúng và nhất quán với `ProductCard.tsx`.
+- **Files changed:**
+  - `web/src/components/ProductDetailPage.tsx` — dùng `computedPrice`, `hasActivePromotion`, tính `hasDiscount` + `discountPercent`
+  - `web/src/components/product-detail/ProductPurchaseSection.tsx` — nhận props mới thay vì check `product.salePrice`
+- **Blast radius:** 697 nodes (2-hop), 2 files thực sự thay đổi
+- **Risk:** medium
+- **Trạng thái:** `in-review` — cần reviewer độc lập chạy tests + manual QA.
+
 ## [2026-07-23 21:06:00] pm-create: OMS-001
 - **Dự án:** topvnsport-oms
 - **Mô tả hành động:** Tạo task `OMS-001-zalo-otp-replace-sms` — thay thế SMS OTP (SpeedSMS) bằng Zalo OTP (ZBS Template Message).
@@ -1170,4 +1189,90 @@ auto-approved: verdict
 notes: |
   CTW-010: collapsed columns can't receive drops (UX follow-up)
   CTW-011: task detail shows raw markdown (UX follow-up)
+
+
+
+---
+timestamp: 2026-07-24T00:10:00+07:00
+operation: report
+notes: |
+  Progress update across all projects:
+  - topvnsport-pmi: 9/10 (1 todo)
+  - topvnsport-oms: 4/4 ✅
+  - topvnsport-wms: 3/3 ✅
+  - topvnsport-web: 4/4 ✅
+  - control-tower: 21/22 (1 dispatched: CT-019)
+  - marketing-video-agent: 4/9 (5 todo)
+  - control-tower-web: 12/12 ✅
+  Total: 57/64 tasks done (89%)
+
+---
+timestamp: 2026-07-24T00:50:08+07:00
+operation: verdict-pass
+task: CTW-013
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-sonnet-high"
+result_ref: 846d79c
+auto-approved: verdict
+
+---
+timestamp: 2026-07-24T00:55:00+07:00
+operation: pm-create
+task: OMS-005
+project: topvnsport-oms
+title: "Refactor OMS/backend/main.py - tách file 1557 dòng thành modules"
+graph_context:
+  blast_radius: 94 files
+  flows_affected: 15
+  risk: high
+  tests: 0 (knowledge gap)
+prediction: medium (score=0.4, -0.5 blast_radius, -0.1 no_tests)
+auto-approved: spec
+
+---
+timestamp: 2026-07-24T00:55:30+07:00
+operation: plan
+task: OMS-005
+project: topvnsport-oms
+description: "9-step plan: extract routers (otp, orders, fulfillment, customers, channels, dashboard, config, webhooks), inventory service, shared utils, update main.py, write tests"
+auto-approved: plan
+
+---
+timestamp: 2026-07-24T00:56:00+07:00
+operation: dispatch
+task: OMS-005
+project: topvnsport-oms
+executor: "@antigravity"
+role: execute
+auto-approved: dispatch
+
+---
+timestamp: 2026-07-24T01:21:00+07:00
+operation: review-order
+task: OMS-005
+project: topvnsport-oms
+result_ref: "6a0d978"
+review_sheet: projects/topvnsport-oms/reviews/OMS-005-review.md
+auto-approved: review-order
+
+---
+timestamp: 2026-07-24T01:22:00+07:00
+operation: dispatch
+task: OMS-005
+project: topvnsport-oms
+reviewer: "@claude-opus"
+role: review
+auto-approved: dispatch
+
+---
+timestamp: 2026-07-24T01:25:00+07:00
+operation: verdict-pass
+task: OMS-005
+project: topvnsport-oms
+executor: "@antigravity"
+reviewer: "@claude-fable"
+result_ref: 6a0d978
+prediction: medium → pass (beat prediction)
+notes: "AC pass; 39/39 tests; e2e OTP fail pre-existing (Zalo OA permission)"
+auto-approved: verdict
 

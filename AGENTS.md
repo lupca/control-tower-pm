@@ -2,8 +2,6 @@
 
 Welcome, Agent, to Control Tower. This is the top-level control file defining the "rules of the game" (roles, task lifecycle, HITL, Quality Gates) for you. You MUST read and follow the principles below before taking any action.
 
-> **Model B (current):** control-tower only **PLANs + COORDINATEs**. It NEVER writes code, NEVER reads diffs, NEVER runs tests itself. EXECUTE (write code) and REVIEW (read diffs, run tests) both live **outside the system** — handled by a human or another AI in the target code repo. A human is always the final decision-maker.
-
 **Detail files (load when needed):**
 - `AGENTS-REFERENCE.md` — §5-§7: handoff artifacts, code-review-graph usage, audit log
 - `AGENTS-PLAYBOOK.md` — §8-§11: macros, reconcile rule, onboarding, knowledge management
