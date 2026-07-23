@@ -1148,3 +1148,26 @@ auto-approved: verdict
 predicted: high
 actual: pass
 
+
+---
+timestamp: 2026-07-23T23:56:12+07:00
+operation: pm-batch-create
+tasks: [CTW-009, CTW-010, CTW-011, CTW-012]
+project: control-tower-web
+auto-approved: spec, plan, dispatch
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-sonnet-high"
+
+
+---
+timestamp: 2026-07-24T00:10:22+07:00
+operation: verdict-batch-pass
+tasks: [CTW-009, CTW-010, CTW-011, CTW-012]
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-sonnet-high"
+commits: [07dd19c, 9b5205a, 59aab72, 79fae6e]
+auto-approved: verdict
+notes: |
+  CTW-010: collapsed columns can't receive drops (UX follow-up)
+  CTW-011: task detail shows raw markdown (UX follow-up)
+
