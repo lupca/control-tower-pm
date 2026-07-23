@@ -3,7 +3,7 @@ project: topvnsport-pmi
 full_name: "TopVNSport - PMI (Product Information Management)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: PMI
-next_task_id: 10
+next_task_id: 11
 created: 2026-07-21
 updated: 2026-07-21
 ---
@@ -30,6 +30,7 @@ Dự án này tập trung vào việc tích hợp các quy trình nghiệp vụ 
 - [[PMI-007-product-form-ux]] — Refactor Product Form UX (done)
 - [[PMI-008-cost-tax-sync-wms]] — Implement Cost/Tax sync flow giữa PMI và WMS (done)
 - [[PMI-009-stock-management-wms]] — Di chuyển Stock Management từ PMI sang WMS (done)
+- [[PMI-010-fix-promotionlist-type-error]] — Fix TypeScript type error in PromotionList renderStatusBadge (done)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc DB (schema Pydantic trong `PMI/backend/schemas/`, model trong `PMI/backend/models.py`) bắt buộc phải có sự xác nhận của User bằng văn bản/chat trước khi executor (ngoài hệ) chạy lệnh `alembic revision --autogenerate` / `alembic upgrade head`.

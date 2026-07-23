@@ -3,7 +3,7 @@ project: topvnsport-web
 full_name: "TopVNSport - Web (Frontend Application)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: WEB
-next_task_id: 3
+next_task_id: 4
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -23,6 +23,7 @@ Dự án quản lý frontend application (Vue/React) của hệ thống TopVNSpo
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
 - [[WEB-001-promotion-module]] — Implement Promotion Module cho Marketing Team (done)
 - [[WEB-002-cleanup-oms-coupon-code]] — Xóa code OMS coupon thừa từ WEB-001 lần 1 (done)
+- [[WEB-003-fix-vitest-dependency-conflict]] — Fix vitest dependency version conflict in Web Storefront (done)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến routing, state management hoặc API integration cần có test coverage.

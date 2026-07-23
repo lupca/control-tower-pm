@@ -839,3 +839,43 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/control-tower-web/tasks/CTW-004,005,006,007-*.md
 - Trạng thái: 1 pass, 3 changes-requested.
 - Commit: 0ea54ae
+
+## [2026-07-23 09:00:00] pm-create | PMI-010 Fix TypeScript type error in PromotionList
+- Dự án: topvnsport-pmi
+- Mô tả: Tạo task PMI-010 "Fix TypeScript type error in PromotionList renderStatusBadge". CI fail do config object trong `renderStatusBadge` (line 195-200) thiếu `text` property mà type yêu cầu.
+- Giải trình: `PromotionList.tsx` là hub node (84 degree) + bridge node (betweenness 0.00474) → `risk: high`. Lỗi xuất hiện sau commit WEB-002 "remove obsolete OMS coupon code". Fix đơn giản: thêm `text` property vào từng status config object. `predicted_success: high` (0.8, -0.2 do hub node).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-010-fix-promotionlist-type-error.md (mới), projects/topvnsport-pmi/topvnsport-pmi.md
+- Trạng thái: Chờ duyệt — Spec Gate.
+- Commit: n/a
+
+## [2026-07-23 09:00:00] pm-create | WEB-003 Fix vitest dependency version conflict
+- Dự án: topvnsport-web
+- Mô tả: Tạo task WEB-003 "Fix vitest dependency version conflict in Web Storefront". CI fail do `@vitest/coverage-v8@3.2.7` yêu cầu `vitest@3.2.7` nhưng package.json có `vitest@4.1.10`.
+- Giải trình: Dependency version mismatch trong `web/package.json`. Fix: upgrade `@vitest/coverage-v8` lên 4.x hoặc downgrade `vitest` xuống 3.x. Recommend option (a) — upgrade coverage-v8. `predicted_success: high` (1.0, không có deductions).
+- Files touched: projects/topvnsport-web/tasks/WEB-003-fix-vitest-dependency-conflict.md (mới), projects/topvnsport-web/topvnsport-web.md
+- Trạng thái: Chờ duyệt — Spec Gate.
+- Commit: n/a
+
+## [2026-07-23 09:05:00] dispatch | PMI-010 + WEB-003 → @gpt-5.6-luna-high
+- Dự án: topvnsport-pmi, topvnsport-web
+- Mô tả: Dispatch 2 tasks song song: PMI-010 (PromotionList type error), WEB-003 (vitest dependency). Executor: @gpt-5.6-luna-high.
+- Giải trình: User ủy quyền toàn bộ quyết định. Spec+Plan approved. 2 codex processes spawned.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-010-*.md, projects/topvnsport-web/tasks/WEB-003-*.md
+- Trạng thái: Thành công — `status: dispatched`.
+- Commit: n/a
+
+## [2026-07-23 09:15:00] review-order | PMI-010 + WEB-003 batch review
+- Dự án: topvnsport-pmi, topvnsport-web
+- Mô tả: Phát review cho 2 tasks (shared commit c1dbb96). Reviewer: @gpt-5.6-sol-high.
+- Giải trình: PMI-010: thêm `text` property vào renderStatusBadge config. WEB-003: upgrade @vitest/coverage-v8 từ ^3.0.9 lên ^4.1.9.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-010-*.md, projects/topvnsport-web/tasks/WEB-003-*.md
+- Trạng thái: Thành công — `status: in-review`.
+- Commit: c1dbb96
+
+## [2026-07-23 09:20:00] verdict | PMI-010 + WEB-003 PASS
+- Dự án: topvnsport-pmi, topvnsport-web
+- Mô tả: Verdict PASS cho cả 2 tasks. Reviewer: @gpt-5.6-sol-high. Executor: @gpt-5.6-luna-high.
+- Giải trình: Targeted fixes correct. PMI PromotionList error fixed (161/161 tests pass). Web npm ci works, vitest aligned to 4.1.10. Reviewer noted 10 pre-existing TS errors + 1 pre-existing failing test — out of scope, không do commit này gây ra.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-010-*.md, projects/topvnsport-web/tasks/WEB-003-*.md
+- Trạng thái: Thành công — `status: done`. Merged to main, pushed.
+- Commit: c1dbb96 (main)

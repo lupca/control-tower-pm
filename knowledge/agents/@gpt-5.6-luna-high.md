@@ -3,10 +3,10 @@ agent_id: "@gpt-5.6-luna-high"
 type: ai
 model: gpt-5.6-luna
 effort: high
-total_tasks_executed: 9
+total_tasks_executed: 11
 total_tasks_reviewed: 0
-success_rate: .66
-avg_review_rounds: 4.0
+success_rate: 0.73
+avg_review_rounds: 3.5
 strengths: [backend, frontend, cleanup, complex-refactor]
 weaknesses: []
 recent_trend: improving
@@ -18,10 +18,10 @@ last_active: 2026-07-23
 > GPT-5.6 Luna with high effort — for complex execution tasks.
 
 ## Performance Summary
-- **Tasks Executed**: 0
+- **Tasks Executed**: 11
 - **Tasks Reviewed**: 0
-- **Success Rate**: 100%
-- **Average Review Rounds**: 1.0
+- **Success Rate**: 73%
+- **Average Review Rounds**: 3.5
 
 ## Notes
 - High-effort variant of @gpt-5.6-luna for tasks requiring deeper analysis

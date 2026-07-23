@@ -4,7 +4,7 @@ type: ai
 model: gpt-5.6-sol
 effort: high
 total_tasks_executed: 0
-total_tasks_reviewed: 6
+total_tasks_reviewed: 8
 success_rate: 1.0
 avg_review_rounds: 4.0
 strengths: [review, complex-analysis, reasoning, code-review]
@@ -19,7 +19,7 @@ last_active: 2026-07-23
 
 ## Performance Summary
 - **Tasks Executed**: 0
-- **Tasks Reviewed**: 0
+- **Tasks Reviewed**: 8
 - **Success Rate**: 100%
 - **Average Review Rounds**: 1.0
 
