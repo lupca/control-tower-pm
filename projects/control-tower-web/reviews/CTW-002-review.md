@@ -3,7 +3,7 @@ id: CTW-002
 task_path: projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md
 project: control-tower-web
 result_ref: "03a7776"
-executor: "@claude-opus-4.5"
+executor: "@claude-opus"
 reviewer: "@claude-reviewer"
 status: passed
 issued: 2026-07-23
@@ -16,7 +16,7 @@ verdict_date: 2026-07-23
 - Dự án: control-tower-web (`/home/lupca/projects/control-tower-web`)
 - Task gốc: `projects/control-tower-web/tasks/CTW-002-setup-npm-environment.md`
 - Result-ref: `03a7776`
-- Executor: @claude-opus-4.5
+- Executor: @claude-opus
 - Ngày phát phiếu: 2026-07-23
 
 ## Acceptance Criteria cần verify
@@ -31,7 +31,7 @@ verdict_date: 2026-07-23
 - [ ] Toàn bộ AC pass
 - [ ] Test liên quan xanh 100%: (no tests - devops task)
 - [ ] Không regression (build vẫn hoạt động)
-- [ ] Reviewer khác executor (bạn đang review, hãy xác nhận bạn ≠ @claude-opus-4.5)
+- [ ] Reviewer khác executor (bạn đang review, hãy xác nhận bạn ≠ @claude-opus)
 
 ## Test gợi ý chạy trong repo code
 

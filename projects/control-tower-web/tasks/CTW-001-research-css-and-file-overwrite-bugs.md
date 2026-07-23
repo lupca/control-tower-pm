@@ -7,7 +7,7 @@ priority: high
 created: 2026-07-23
 deadline: 2026-07-24
 updated: 2026-07-23
-executor: "@claude-opus-4.5"
+executor: "@claude-opus"
 reviewer: "@lupca"
 files:
   - src/styles/global.css

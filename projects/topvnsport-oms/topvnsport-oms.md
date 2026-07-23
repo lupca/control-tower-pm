@@ -3,7 +3,7 @@ project: topvnsport-oms
 full_name: "TopVNSport - OMS (Order Management System)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: OMS
-next_task_id: 1
+next_task_id: 3
 created: 2026-07-21
 updated: 2026-07-21
 ---
@@ -23,7 +23,8 @@ Chưa có task nào được sinh chi tiết qua `/pm`. Xem `inbox.md` mục 1 (
 
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
-*(chưa có task nào)*
+- [[OMS-001-zalo-otp-replace-sms]] — Thay thế SMS OTP bằng Zalo OTP (ZBS Template Message) (dispatched → @gpt-5.6-sol)
+- [[OMS-002-frontend-zalo-otp]] — Frontend Zalo OTP - Chặn luồng khi SĐT không có Zalo (dispatched → @gpt-5.6-sol)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc DB hoặc luồng thanh toán/hóa đơn bắt buộc phải có sự xác nhận của User trước khi executor (ngoài hệ) chạy migrate hoặc đụng tới logic tiền.

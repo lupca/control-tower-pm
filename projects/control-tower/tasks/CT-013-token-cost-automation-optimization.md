@@ -5,7 +5,7 @@ status: done
 priority: normal
 risk: low
 deadline: null
-executor: "@claude-opus-4.5"
+executor: "@claude-opus"
 reviewer: "@lupca"
 result_ref: "control-tower@main (knowledge/research/token-baseline-manual-flow.md)"
 depends_on: [CT-012]

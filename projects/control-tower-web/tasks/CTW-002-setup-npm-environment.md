@@ -2,7 +2,7 @@
 id: CTW-002
 title: "Setup npm environment cho control-tower-web"
 status: done
-executor: "@claude-opus-4.5"
+executor: "@claude-opus"
 reviewer: "@claude-reviewer"
 dispatched: 2026-07-23
 result_ref: "03a7776"

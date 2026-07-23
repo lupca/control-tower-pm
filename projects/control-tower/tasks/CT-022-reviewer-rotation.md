@@ -5,7 +5,7 @@ status: done
 priority: medium
 risk: normal
 deadline: null
-executor: "@claude-opus-4.5"
+executor: "@claude-opus"
 reviewer: "@lupca"
 result_ref: "inline-session-2026-07-23"
 depends_on: []

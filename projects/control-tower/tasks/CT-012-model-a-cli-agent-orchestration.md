@@ -5,7 +5,7 @@ status: done
 priority: high
 risk: high
 deadline: null
-executor: "@claude-opus-4.5"
+executor: "@claude-opus"
 reviewer: "@agy-cli"
 result_ref: "control-tower@main (ADR-003 + design doc)"
 depends_on: [CT-002, CT-007, CT-009]
