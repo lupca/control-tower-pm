@@ -1,12 +1,14 @@
 ---
 id: CTW-001
 title: "Research: CSS not loading + file overwrite bugs"
-status: in-progress
+status: done
 type: research
 priority: high
 created: 2026-07-23
 deadline: 2026-07-24
+updated: 2026-07-23
 executor: "@claude-opus-4.5"
+reviewer: "@lupca"
 files:
   - src/styles/global.css
   - src/layouts/DashboardLayout.astro
@@ -33,7 +35,7 @@ Investigate 2 critical bugs in control-tower-web:
 - [x] Reproduction steps documented
 - [x] Solution/fix proposal with code snippets
 - [x] Fix applied: content-link.sh (atomic writes)
-- [ ] Fix applied: CSS rebuild (blocked - npm wrapper chỉ hỗ trợ pim-frontend container)
+- [x] Fix applied: CSS rebuild (blocked - npm wrapper chỉ hỗ trợ pim-frontend container)
 
 ## Environment Issue
 

@@ -879,3 +879,41 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: projects/topvnsport-pmi/tasks/PMI-010-*.md, projects/topvnsport-web/tasks/WEB-003-*.md
 - Trạng thái: Thành công — `status: done`. Merged to main, pushed.
 - Commit: c1dbb96 (main)
+
+## [2026-07-23 18:00:00] verdict | CTW-001 PASS (bypassed gates)
+- Dự án: control-tower-web
+- Mô tả: Verdict PASS cho CTW-001 (Research: CSS not loading + file overwrite bugs). Reviewer: @lupca. Executor: @claude-opus-4.5.
+- Giải trình: User bypass review-order gate — task research đã hoàn thành đầy đủ (root cause + fix proposal cho cả 2 bugs). CSS rebuild blocked do npm wrapper nhưng User chấp nhận đóng.
+- Files touched: projects/control-tower-web/tasks/CTW-001-research-css-and-file-overwrite-bugs.md
+- Trạng thái: Thành công — `status: done`.
+- Commit: n/a (research task, no code commit)
+
+## [2026-07-23 18:10:00] pm-create | WEB-004
+- Dự án: topvnsport-web
+- Mô tả: Tạo task research WEB-004 — CORS block + stock API vẫn fail trên production. Frontend gọi GET (không phải POST) tới api-wms.topvnsport.com bị CORS block. Nghi WMS-002 fix chưa deploy + nginx thiếu CORS headers.
+- Giải trình: User báo lỗi prod kèm screenshot DevTools. Graph context: 9 flows affected, blast radius 107 files. predicted_success: medium (0.5). Executor dự kiến: @antigravity-3.1-pro.
+- Files touched: projects/topvnsport-web/tasks/WEB-004-research-cors-stock-api-prod-failure.md, projects/topvnsport-web/topvnsport-web.md
+- Trạng thái: Thành công — `status: todo`, chờ Spec Gate approval.
+- Commit: n/a
+
+## [2026-07-23 18:12:00] plan + dispatch | WEB-004
+- Dự án: topvnsport-web
+- Mô tả: Plan Gate approved (batched with Spec Gate). Plan: SSH prod → check nginx CORS → check WMS container version → check frontend build → document root cause. Dispatched to @antigravity-3.1-pro.
+- Giải trình: User approved spec+plan+dispatch in one batch. Research task — executor cần SSH vào EC2 52.203.250.214 để investigate.
+- Files touched: projects/topvnsport-web/tasks/WEB-004-research-cors-stock-api-prod-failure.md
+- Trạng thái: Thành công — `status: dispatched`, executor: @antigravity-3.1-pro.
+- Commit: n/a
+
+## [2026-07-23 18:30:00] batch-update | MVA-001 done + MVA-002→006 created
+- Dự án: marketing-video-agent
+- Mô tả: MVA-001 (simplify architecture) closed as done. 5 new tasks created: MVA-002 (text2img, P0), MVA-003 (slideshow, P0), MVA-004 (engine bugs, P1), MVA-005 (TTS resilience), MVA-006 (CapCut parser). Changes from external session.
+- Files touched: projects/marketing-video-agent/marketing-video-agent.md, projects/marketing-video-agent/reviews/MVA-001-review.md, projects/marketing-video-agent/tasks/MVA-002→006-*.md
+- Trạng thái: Ghi nhận từ session khác.
+- Commit: n/a
+
+## [2026-07-23 18:35:00] inbox | 6 items added
+- Dự án: multi-project
+- Mô tả: Thêm 6 inbox items: (3) Zalo OA xác thực trước checkout [topvnsport-web], (4) CTW dashboard bugs — project detail + kanban data + scroll [control-tower-web], (5) Delegate task creation qua dispatch [control-tower], (6) Reviewer rotation khi 2x changes-requested [control-tower], (7) Handoff tracking cho dispatch agents [control-tower], (8→renumber) CD pipeline deploy fail [topvnsport].
+- Files touched: inbox.md
+- Trạng thái: Chờ `/ingest`.
+- Commit: n/a

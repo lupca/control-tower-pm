@@ -3,7 +3,7 @@ project: marketing-video-agent
 full_name: "Marketing Video Agent - AI Video Creation Pipeline"
 repo_root: /data/projects/marketing-video-agent
 task_prefix: MVA
-next_task_id: 2
+next_task_id: 7
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -15,13 +15,18 @@ Agent pipeline tự động tạo video marketing sử dụng AI. Hệ thống w
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
-| done | 0 |
-| todo | 0 |
+| done | 1 |
+| todo | 5 |
 *(Cập nhật bởi `/report`)*
 
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
-- [[MVA-001-simplify-architecture]] — Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent (changes-requested)
+- [[MVA-001-simplify-architecture]] — Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent (done)
+- [[MVA-002-restore-text2img-engine]] — Khôi phục engine text2img (todo) ⚡ P0
+- [[MVA-003-restore-slideshow-engine]] — Khôi phục engine slideshow (todo) ⚡ P0
+- [[MVA-004-fix-engine-bugs-stability]] — Fix bugs + ổn định engines hiện tại (todo) ⚡ P1
+- [[MVA-005-tts-resilience-cloud-fallback]] — Gia cố TTS + cloud video fallback (todo)
+- [[MVA-006-restore-capcut-parser]] — Khôi phục CapCut parser (todo)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc pipeline (worker orchestration, engine selection) cần User xác nhận trước khi executor thực hiện.
