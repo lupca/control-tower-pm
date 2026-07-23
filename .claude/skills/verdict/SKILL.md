@@ -37,11 +37,13 @@ Compare `--reviewer` vs `executor:` in frontmatter. If same → **REFUSE**. If d
 1. Update `projects/<name>/reviews/<ID>-review.md`: `reviewer`, `status: changes-requested`, `verdict: changes`, `verdict_date: <today>`.
 2. Require `--notes` (reject empty).
 3. Add `## Findings từ reviewer` section — each point as `- [ ]`.
-4. Update frontmatter: `status: changes-requested`, `updated: <today>`.
-5. Write 1 entry to `log.md`.
-6. Record prediction outcome in `knowledge/metrics/prediction-accuracy.md`.
-7. **Update agent stats** — MUST run: `./scripts/update-agent-stats.sh <executor> executor changes` and `./scripts/update-agent-stats.sh <reviewer> reviewer changes`.
-8. Tell User: task reopened; executor fixes → `/review-order` again.
+4. **Increment rejection counter**: Read `rejections:` from frontmatter (default 0), increment by 1, write back.
+5. Update frontmatter: `status: changes-requested`, `rejections: <N>`, `updated: <today>`.
+6. Write 1 entry to `log.md`.
+7. Record prediction outcome in `knowledge/metrics/prediction-accuracy.md`.
+8. **Update agent stats** — MUST run: `./scripts/update-agent-stats.sh <executor> executor changes` and `./scripts/update-agent-stats.sh <reviewer> reviewer changes`.
+9. **If `rejections >= 2`**: Alert User — "Task đã bị reject 2+ lần. Cần đổi Reviewer hoặc nâng cấp Executor ở lần review sau."
+10. Tell User: task reopened; executor fixes → `/review-order` again.
 
 ### Mistakes to avoid
 - `pass` when reviewer == executor — always refuse.

@@ -4,6 +4,40 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-23 21:06:00] pm-create: OMS-001
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Tạo task `OMS-001-zalo-otp-replace-sms` — thay thế SMS OTP (SpeedSMS) bằng Zalo OTP (ZBS Template Message).
+- **Graph context:**
+  - Blast radius: 7 files, 39 nodes trực tiếp, ~500 nodes impacted
+  - Flows affected: `send_otp` (0.60), `verify_otp` (0.61), `update_sms_config`, `get_sms_config`, `create_order`
+  - Risk: `high` — `test_storefront_otp_checkout_flow` là cả hub (#11) và bridge (#4)
+- **Prediction:** `high` (score=0.8, -0.2 do hits_bridge_node)
+- **Trạng thái:** Spec Gate approved.
+
+## [2026-07-23 21:08:00] plan: OMS-001
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Viết `## Plan` chi tiết cho OMS-001: 7 bước, order models→service→requirements→main→tests→verify→delete.
+- **Trạng thái:** Plan Gate approved.
+
+## [2026-07-23 21:10:00] dispatch: OMS-001
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Dispatch OMS-001 cho `@gpt-5.6-sol` (executor), `@claude-opus-4.5` (reviewer).
+- **Trạng thái:** Dispatched — executor running.
+
+## [2026-07-23 21:32:00] pm-create: OMS-002
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Tạo task `OMS-002-frontend-zalo-otp` — frontend changes cho Zalo OTP (CartModal, OtpModal, E2E tests).
+- **depends_on:** OMS-001
+- **Prediction:** `high` (score=0.9)
+- **Trạng thái:** Spec Gate approved → Plan Gate approved → Dispatched.
+
+## [2026-07-23 21:35:00] dispatch: OMS-002
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Dispatch OMS-002 cho `@gpt-5.6-sol` (executor), `@claude-opus-4.5` (reviewer).
+- **Trạng thái:** Dispatched — executor running.
+
+---
+
 ## LỊCH SỬ HOẠT ĐỘNG KHỞI TẠO:
 
 ### [2026-07-21 00:00:00] KHỞI TẠO HỆ THỐNG
@@ -932,4 +966,79 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: .claude/skills/verdict/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/lint/SKILL.md, .claude/skills/goal/SKILL.md, AGENTS.md
 - Trạng thái: Execution done. Chờ independent review.
 - Commit: n/a
+
+
+---
+timestamp: 2026-07-23T20:16:50+07:00
+operation: inbox-reject
+item: "Delegate task creation via /dispatch-pm"
+verdict: rejected
+reason: |
+  Research shows delegation only saves tokens when >=3 tasks created in same session.
+  Single-task (80% use case) is 68% MORE expensive due to subagent overhead (~7K tokens).
+  Additionally breaks Spec Gate interactivity and risks quality loss from context disconnect.
+  Recommendation: keep monolithic /pm, add optional --fresh flag for context-heavy batches.
+sources:
+  - https://youcanbuildthings.com/articles/claude-code-subagents-token-usage/
+  - https://ofox.ai/blog/claude-code-nested-subagents-2026/
+
+
+---
+timestamp: 2026-07-23T20:33:33+07:00
+operation: verdict-pass
+task: CT-020
+executor: "@gpt-5.6-sol"
+reviewer: "@claude-sonnet-high"
+result_ref: "83d437d"
+notes: |
+  Xóa AGENTS-EXPERIMENTAL.md, tạo docs/experimental-archive.md + ADR-005.
+  Reviewer note: CLAUDE.md:15 + CT-014 vẫn reference file cũ — cần follow-up.
+
+
+
+---
+timestamp: 2026-07-23T21:15:00+07:00
+operation: pm-create
+task: CT-021
+project: control-tower
+title: "Coordination mode + đơn giản hóa task flow"
+predicted_success: high (0.9)
+notes: |
+  Thêm coordination mode 4 levels (plan-only, supervised, coordinated, autonomous).
+  Đơn giản hóa state machine: bỏ `ready`, giữ 4 states (todo, dispatched, in-review, done).
+  Tách rõ States vs Gates trong AGENTS.md.
+  Design dựa trên research Claude Code permission modes (6 levels, classifier, escalation).
+  Quyết định: bỏ per-project rule override (phức tạp), bỏ escalation logic (1 CLI, không đa agent).
+
+
+---
+timestamp: 2026-07-23T21:45:00+07:00
+operation: dispatch
+task: CT-021
+project: control-tower
+executor: "@gpt-5.6-sol"
+assigned_reviewer: "@antigravity-3.1-pro"
+notes: |
+  Coordination mode (3 levels: plan-only, supervised, bypass) + đơn giản hóa state machine (bỏ ready).
+  Refactor skills để chạy single-turn trong bypass mode, side effects vẫn đầy đủ.
+
+---
+timestamp: 2026-07-23T21:30:09+07:00
+operation: inbox-done
+item: "Reviewer Rotation (Component 1)"
+changes:
+  - verdict/SKILL.md: added rejections counter + alert at >=2
+  - review-order/SKILL.md: added Step 2 reviewer rotation validation
+notes: |
+  Handoff Tracking (Component 2) deferred — optional flag approach if needed later.
+
+
+---
+timestamp: 2026-07-23T21:42:44+07:00
+operation: verdict-pass
+task: CT-022
+executor: "@claude-opus-4.5"
+reviewer: "@lupca"
+result_ref: inline-session-2026-07-23
+notes: Implemented inline by coordinator, approved in session.
 

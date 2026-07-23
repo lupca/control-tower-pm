@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 20
+next_task_id: 23
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -49,3 +49,6 @@ updated: 2026-07-22
 - [[CT-017-agent-roster-memory]] ✅ (memory: agent roster + spawn patterns)
 - [[CT-018-dispatch-skill]] ✅ (skill: /dispatch auto spawn)
 - [[CT-019-slim-verdict-experimental-deadweight]] 📋 (slim /verdict, tách experimental dead weight)
+- [[CT-020-remove-agents-experimental]] ✅ (xóa AGENTS-EXPERIMENTAL.md, archive dormant)
+- [[CT-021-coordination-mode-flow-simplify]] 📤 (coordination mode + bỏ `ready` state) — executor: @gpt-5.6-sol
+- [[CT-022-reviewer-rotation]] ✅ (track rejections, enforce reviewer change)
