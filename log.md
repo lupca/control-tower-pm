@@ -57,6 +57,14 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - **Executor:** @gpt-5.6-sol
 - **Trạng thái:** dispatched.
 
+## [2026-07-23 22:30:00] verdict: OMS-003 + OMS-004 pass
+- **Dự án:** topvnsport-oms
+- **Mô tả hành động:** Close OMS-003 (remove BYPASS_OTP backdoor) + OMS-004 (Zalo admin config page).
+- **Commit:** abc27d7
+- **Executor:** @gpt-5.6-sol (executed=6, success_rate=1.00)
+- **Reviewer:** @claude-opus (reviewed=9)
+- **Trạng thái:** done.
+
 ## [2026-07-23 21:55:00] verdict: OMS-001 + OMS-002 pass
 - **Dự án:** topvnsport-oms
 - **Mô tả hành động:** Close OMS-001 + OMS-002 với verdict pass.
@@ -1070,4 +1078,73 @@ executor: "@claude-opus-4.5"
 reviewer: "@lupca"
 result_ref: inline-session-2026-07-23
 notes: Implemented inline by coordinator, approved in session.
+
+
+
+---
+timestamp: 2026-07-23T22:50:00+07:00
+operation: review-order
+task: CT-021
+project: control-tower
+result_ref: ca2384b
+executor: "@gpt-5.6-sol"
+assigned_reviewer: "@antigravity-3.1-pro"
+review_sheet: projects/control-tower/reviews/CT-021-review.md
+notes: |
+  Coordination mode (3 levels) + simplify task flow (remove ready state).
+  Review sheet issued for independent reviewer.
+
+---
+timestamp: 2026-07-23T22:37:11+07:00
+operation: pm-create
+task: CTW-008
+project: control-tower-web
+title: Fix dashboard data loading bugs
+predicted_success: high
+
+
+---
+timestamp: 2026-07-23T22:40:44+07:00
+operation: dispatch
+task: CTW-008
+executor: "@gpt-5.6-luna-high"
+reviewer: "@antigravity"
+auto-approved: spec, plan, dispatch
+
+
+
+---
+timestamp: 2026-07-23T22:55:00+07:00
+operation: dispatch
+task: CT-021
+role: reviewer
+agent: "@antigravity-3.1-pro"
+auto-approved: dispatch
+notes: Bypass mode — reviewer dispatch for CT-021.
+
+
+---
+timestamp: 2026-07-23T23:00:00+07:00
+operation: verdict-pass
+task: CT-021
+executor: "@gpt-5.6-sol"
+reviewer: "@antigravity"
+result_ref: ca2384b
+auto-approved: verdict
+predicted_success: high
+actual_outcome: pass
+notes: |
+  All AC verified and passed cleanly.
+  Coordination mode (3 levels) + simplified state machine implemented.
+
+---
+timestamp: 2026-07-23T22:59:44+07:00
+operation: verdict-pass
+task: CTW-008
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-sonnet-high"
+result_ref: fcd6e04
+auto-approved: verdict
+predicted: high
+actual: pass
 

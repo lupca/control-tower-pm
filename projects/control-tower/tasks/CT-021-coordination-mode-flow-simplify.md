@@ -1,13 +1,13 @@
 ---
 id: CT-021
 title: "Coordination mode + đơn giản hóa task flow"
-status: dispatched
+status: done
 priority: medium
 risk: normal
 deadline: null
 executor: "@gpt-5.6-sol"
-reviewer: null
-result_ref: null
+reviewer: "@antigravity-3.1-pro"
+result_ref: "ca2384b"
 depends_on: []
 files:
   - AGENTS.md
@@ -20,7 +20,7 @@ files:
 flows: []
 tests: []
 dispatched: 2026-07-23
-in_review: null
+in_review: 2026-07-23
 predicted_success: high
 prediction_factors:
   score: 0.9
@@ -31,6 +31,7 @@ prediction_factors:
     - "touches core AGENTS.md rules (-0.1)"
 created: 2026-07-23
 updated: 2026-07-23
+closed: 2026-07-23
 assigned_reviewer: "@antigravity-3.1-pro"
 ---
 
@@ -41,24 +42,24 @@ assigned_reviewer: "@antigravity-3.1-pro"
 ## Tiêu chí nghiệm thu (AC)
 
 ### Phần 1 — Coordination Mode
-- [ ] 3 levels định nghĩa trong AGENTS.md §4: `plan-only`, `supervised` (default), `bypass`
-- [ ] Skill `/mode <level>` hoạt động: ghi state vào `state/mode.md`, log vào `log.md`
-- [ ] `/mode` không có arg → hiển thị mode hiện tại
-- [ ] Protected actions (luôn hỏi dù bypass): delete task/project, bulk update >3 tasks
-- [ ] Hard rule (refuse, không prompt): reviewer==executor
+- [x] 3 levels định nghĩa trong AGENTS.md §4: `plan-only`, `supervised` (default), `bypass`
+- [x] Skill `/mode <level>` hoạt động: ghi state vào `state/mode.md`, log vào `log.md`
+- [x] `/mode` không có arg → hiển thị mode hiện tại
+- [x] Protected actions (luôn hỏi dù bypass): delete task/project, bulk update >3 tasks
+- [x] Hard rule (refuse, không prompt): reviewer==executor
 
 ### Phần 2 — Skill chạy single-invocation trong auto mode
-- [ ] Skills có gate (`/pm`, `/dispatch`, `/review-order`, `/verdict`) check mode tại mỗi gate
-- [ ] Supervised mode: STOP tại gate, chờ user confirm (multi-turn như hiện tại)
-- [ ] Bypass mode: continue ngay, không STOP (single-turn chạy hết)
-- [ ] **Actions (side effects) luôn chạy đầy đủ dù mode nào**: log.md, update agent stats, record prediction, etc.
-- [ ] Gate = checkpoint quyết định stop/continue, không phải cắt flow
+- [x] Skills có gate (`/pm`, `/dispatch`, `/review-order`, `/verdict`) check mode tại mỗi gate
+- [x] Supervised mode: STOP tại gate, chờ user confirm (multi-turn như hiện tại)
+- [x] Bypass mode: continue ngay, không STOP (single-turn chạy hết)
+- [x] **Actions (side effects) luôn chạy đầy đủ dù mode nào**: log.md, update agent stats, record prediction, etc.
+- [x] Gate = checkpoint quyết định stop/continue, không phải cắt flow
 
 ### Phần 3 — Đơn giản hóa state machine
-- [ ] Bỏ state `ready` khỏi AGENTS.md §2.3
-- [ ] State machine mới: `todo → dispatched → in-review → done` (+ `changes-requested`)
-- [ ] Tách rõ trong §4: States (trạng thái task) vs Gates (checkpoints)
-- [ ] Bảng mode behavior cho từng gate trong §4
+- [x] Bỏ state `ready` khỏi AGENTS.md §2.3
+- [x] State machine mới: `todo → dispatched → in-review → done` (+ `changes-requested`)
+- [x] Tách rõ trong §4: States (trạng thái task) vs Gates (checkpoints)
+- [x] Bảng mode behavior cho từng gate trong §4
 
 ## Verification
 
@@ -126,11 +127,11 @@ Mỗi skill thêm helper function `check_gate(gate_name)`:
 
 ## Sub-tasks
 
-- [ ] Update AGENTS.md §2.3: bỏ `ready`, state machine 4 trạng thái
-- [ ] Update AGENTS.md §4: định nghĩa 3 modes (plan-only, supervised, bypass) + bảng behavior + protected actions + tách States vs Gates
-- [ ] Tạo `state/mode.md` với default `supervised`
-- [ ] Tạo skill `/mode` trong `.claude/skills/mode/`
-- [ ] Refactor `/pm`: internal loop qua stages, check mode tại mỗi gate, continue nếu bypass
-- [ ] Refactor `/dispatch`: check mode, continue nếu bypass
-- [ ] Refactor `/review-order`: check mode, continue nếu bypass
-- [ ] Refactor `/verdict`: check mode (trừ protected actions), ensure side effects luôn chạy
+- [x] Update AGENTS.md §2.3: bỏ `ready`, state machine 4 trạng thái
+- [x] Update AGENTS.md §4: định nghĩa 3 modes (plan-only, supervised, bypass) + bảng behavior + protected actions + tách States vs Gates
+- [x] Tạo `state/mode.md` với default `supervised`
+- [x] Tạo skill `/mode` trong `.claude/skills/mode/`
+- [x] Refactor `/pm`: internal loop qua stages, check mode tại mỗi gate, continue nếu bypass
+- [x] Refactor `/dispatch`: check mode, continue nếu bypass
+- [x] Refactor `/review-order`: check mode, continue nếu bypass
+- [x] Refactor `/verdict`: check mode (trừ protected actions), ensure side effects luôn chạy

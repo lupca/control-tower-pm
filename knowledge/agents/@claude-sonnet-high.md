@@ -4,7 +4,7 @@ type: ai
 model: claude-sonnet-5
 effort: high
 total_tasks_executed: 2
-total_tasks_reviewed: 3
+total_tasks_reviewed: 4
 success_rate: 1.0
 avg_review_rounds: 1.0
 strengths: [code, backend, frontend, testing, markdown-cleanup]

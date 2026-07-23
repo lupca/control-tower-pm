@@ -1,13 +1,13 @@
 ---
 id: OMS-001
 title: "Thay thế SMS OTP bằng Zalo OTP (ZBS Template Message)"
-status: in-review
+status: done
 priority: high
 risk: high
 deadline: null
 executor: "@gpt-5.6-sol"
 reviewer: "@claude-opus"
-result_ref: "topvnsport@main"
+result_ref: "topvnsport@main (commit 0906aea)"
 depends_on: []
 files:
   - OMS/backend/services/sms_service.py
@@ -48,15 +48,15 @@ plan_approved: null
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] **AC1**: `sms_service.py` bị xóa hoàn toàn, thay bằng `zalo_service.py` với hàm `send_zalo_otp(phone, otp, access_token, template_id)` gọi Zalo API `POST https://business.openapi.zalo.me/message/template`
-- [ ] **AC2**: Endpoint `/api/sms/send-otp` gọi `zalo_service.send_zalo_otp` thay vì `sms_service.send_speed_sms`; fetch `zalo_access_token` và `zalo_template_id` từ `SystemConfig`
-- [ ] **AC3**: Khi Zalo trả lỗi (`-118` SĐT không có Zalo, `-115` hết quota, `-108` format sai), API trả HTTP 400 với message tiếng Việt rõ ràng, không fallback SMS
-- [ ] **AC4**: Model `OtpVerification` có thêm field `zalo_message_id: Optional[str]` để map webhook
-- [ ] **AC5**: Endpoint webhook `/api/sms/zalo-webhook` lắng nghe event `user_received_message`, verify signature HMAC-SHA256 với `OA_SECRET_KEY`, update `provider_status = "DELIVERED"` vào record tương ứng
-- [ ] **AC6**: Token refresh tự động: `BackgroundScheduler` (apscheduler) chạy mỗi 20 giờ, gọi `POST https://oauth.zaloapp.com/v4/oa/access_token` với refresh_token, update cả `access_token` và `refresh_token` mới vào `SystemConfig`
-- [ ] **AC7**: `requirements.txt` có thêm `apscheduler==3.10.4`
-- [ ] **AC8**: Tất cả unit tests trong `test_main.py` liên quan OTP được update mock từ `sms_service` sang `zalo_service`, pass 100%
-- [ ] **AC9**: E2E test `test_storefront_otp_checkout_flow` vẫn pass (dùng test-endpoint bypass)
+- [x] **AC1**: `sms_service.py` bị xóa hoàn toàn, thay bằng `zalo_service.py` với hàm `send_zalo_otp(phone, otp, access_token, template_id)` gọi Zalo API `POST https://business.openapi.zalo.me/message/template`
+- [x] **AC2**: Endpoint `/api/sms/send-otp` gọi `zalo_service.send_zalo_otp` thay vì `sms_service.send_speed_sms`; fetch `zalo_access_token` và `zalo_template_id` từ `SystemConfig`
+- [x] **AC3**: Khi Zalo trả lỗi (`-118` SĐT không có Zalo, `-115` hết quota, `-108` format sai), API trả HTTP 400 với message tiếng Việt rõ ràng, không fallback SMS
+- [x] **AC4**: Model `OtpVerification` có thêm field `zalo_message_id: Optional[str]` để map webhook
+- [x] **AC5**: Endpoint webhook `/api/sms/zalo-webhook` lắng nghe event `user_received_message`, verify signature HMAC-SHA256 với `OA_SECRET_KEY`, update `provider_status = "DELIVERED"` vào record tương ứng
+- [x] **AC6**: Token refresh tự động: `BackgroundScheduler` (apscheduler) chạy mỗi 20 giờ, gọi `POST https://oauth.zaloapp.com/v4/oa/access_token` với refresh_token, update cả `access_token` và `refresh_token` mới vào `SystemConfig`
+- [x] **AC7**: `requirements.txt` có thêm `apscheduler==3.10.4`
+- [x] **AC8**: Tất cả unit tests trong `test_main.py` liên quan OTP được update mock từ `sms_service` sang `zalo_service`, pass 100%
+- [x] **AC9**: E2E test `test_storefront_otp_checkout_flow` vẫn pass (dùng test-endpoint bypass)
 
 ## Verification
 

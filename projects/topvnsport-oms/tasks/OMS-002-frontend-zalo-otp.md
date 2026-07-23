@@ -1,13 +1,13 @@
 ---
 id: OMS-002
 title: "Frontend Zalo OTP - Chặn luồng khi SĐT không có Zalo"
-status: dispatched
+status: done
 priority: high
 risk: normal
 deadline: null
 executor: "@gpt-5.6-sol"
 reviewer: "@claude-opus"
-result_ref: null
+result_ref: "topvnsport@main (commit 0906aea)"
 depends_on: [OMS-001]
 files:
   - web/src/components/CartModal.tsx
@@ -18,7 +18,7 @@ flows:
 tests:
   - e2e_tests/tests/test_storefront_otp_flow.py::test_storefront_otp_checkout_flow
 dispatched: 2026-07-23
-in_review: null
+in_review: 2026-07-23
 predicted_success: high
 prediction_factors:
   score: 0.9
@@ -34,14 +34,14 @@ updated: 2026-07-23
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] **AC1**: `CartModal.tsx` gọi `sportApi.sendOtp(phone)` TRƯỚC khi mở OtpModal
-- [ ] **AC2**: Nếu API sendOtp trả lỗi (400) → hiện `popupService.alert(err.message)` trực tiếp, KHÔNG mở OtpModal
-- [ ] **AC3**: `OtpModal.tsx` xóa auto-send `triggerSendOtp()` trong `useEffect` khi `isOpen` thay đổi
-- [ ] **AC4**: `OtpModal.tsx` xóa hoàn toàn bypass button `<button onClick={() => onSuccess('BYPASS_OTP_TOKEN')}>`
-- [ ] **AC5**: Khi modal mở, chỉ reset state (`setOtpCode('')`, `setCooldown(60)`)
-- [ ] **AC6**: E2E test `test_storefront_checkout_zalo_unregistered_block_ui` pass — modal KHÔNG hiện khi Zalo fail
-- [ ] **AC7**: E2E test `test_storefront_otp_resend_cooldown_ui` pass — cooldown hoạt động đúng
-- [ ] **AC8**: E2E test `test_storefront_otp_invalid_input` pass — nút xác nhận disabled khi OTP < 6 ký tự
+- [x] **AC1**: `CartModal.tsx` gọi `sportApi.sendOtp(phone)` TRƯỚC khi mở OtpModal
+- [x] **AC2**: Nếu API sendOtp trả lỗi (400) → hiện `popupService.alert(err.message)` trực tiếp, KHÔNG mở OtpModal
+- [x] **AC3**: `OtpModal.tsx` xóa auto-send `triggerSendOtp()` trong `useEffect` khi `isOpen` thay đổi
+- [x] **AC4**: `OtpModal.tsx` xóa hoàn toàn bypass button `<button onClick={() => onSuccess('BYPASS_OTP_TOKEN')}>`
+- [x] **AC5**: Khi modal mở, chỉ reset state (`setOtpCode('')`, `setCooldown(60)`)
+- [x] **AC6**: E2E test `test_storefront_checkout_zalo_unregistered_block_ui` pass — modal KHÔNG hiện khi Zalo fail
+- [x] **AC7**: E2E test `test_storefront_otp_resend_cooldown_ui` pass — cooldown hoạt động đúng
+- [x] **AC8**: E2E test `test_storefront_otp_invalid_input` pass — nút xác nhận disabled khi OTP < 6 ký tự
 
 ## Verification
 

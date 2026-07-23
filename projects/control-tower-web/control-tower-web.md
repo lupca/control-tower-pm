@@ -3,7 +3,7 @@ project: control-tower-web
 full_name: "Control Tower Web - Dashboard UI"
 repo_root: /home/lupca/projects/control-tower-web
 task_prefix: CTW
-next_task_id: 8
+next_task_id: 9
 created: 2026-07-23
 updated: 2026-07-23
 ---
