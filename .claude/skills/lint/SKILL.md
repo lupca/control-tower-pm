@@ -11,7 +11,7 @@ Read and report only — **never edit/delete a task yourself** (this is RESTRICT
 
 ### Process
 
-1. Read `AGENTS.md` (core rules), `AGENTS-PLAYBOOK.md` (knowledge management), and `AGENTS-EXPERIMENTAL.md` §13 (patterns), §16.4 (calibration) if not already read this session. Also read `index.md` §2 (PROJECT REGISTRY).
+1. Read `AGENTS.md` (core rules), `AGENTS-PLAYBOOK.md` (knowledge management) if not already read this session. Also read `index.md` §2 (PROJECT REGISTRY).
 2. Determine scope: if `$ARGUMENTS` has `--project <name>`, only scan `projects/<name>/tasks/*.md` (+ `projects/<name>/docs/*.md`); otherwise scan all of `projects/*/tasks/*.md` + `knowledge/**/*.md` + `projects/*/docs/*.md`.
 3. For each task file in scope, read the frontmatter, run the following checklist, and collect **Findings**:
 

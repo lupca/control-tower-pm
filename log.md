@@ -917,3 +917,19 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 - Files touched: inbox.md
 - Trạng thái: Chờ `/ingest`.
 - Commit: n/a
+
+## [2026-07-23 19:09:00] pm-create | CT-019 slim verdict experimental deadweight
+- Dự án: control-tower
+- Mô tả: Tạo task CT-019 từ inbox #9 — tách experimental dead weight (§13-§20) khỏi /verdict core flow. Hướng B: giữ AGENTS-EXPERIMENTAL.md nguyên làm archive, xóa dormant features khỏi SKILL.md, rút gọn verdict từ 91→52 dòng.
+- Executor: @antigravity
+- Files touched: projects/control-tower/tasks/CT-019-slim-verdict-experimental-deadweight.md, projects/control-tower/control-tower.md
+- Trạng thái: Dispatched + executed. Spec+Plan approved by User. Chờ review.
+- Commit: n/a
+
+## [2026-07-23 19:30:00] dispatch | CT-019 @antigravity (self-execute, meta-project)
+- Dự án: control-tower
+- Mô tả: Thực hiện CT-019. Kết quả: (1) verdict SKILL.md 91→52 dòng, xóa §14/§17/§18/§19/§20, rút gọn §13, xóa §16. (2) task-creation.md xóa §14 cross-repo + §20 formal spec. (3) lint SKILL.md xóa instruction đọc AGENTS-EXPERIMENTAL.md. (4) goal SKILL.md xóa 5 references §17. (5) AGENTS.md header đánh dấu ARCHIVE.
+- Files touched: .claude/skills/verdict/SKILL.md, .claude/skills/pm/references/task-creation.md, .claude/skills/lint/SKILL.md, .claude/skills/goal/SKILL.md, AGENTS.md
+- Trạng thái: Execution done. Chờ independent review.
+- Commit: n/a
+

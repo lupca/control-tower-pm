@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 19
+next_task_id: 20
 created: 2026-07-22
 updated: 2026-07-22
 ---
@@ -48,3 +48,4 @@ updated: 2026-07-22
 - [[CT-016-terse-coordinator-mode]] ✅ (executor: @gpt-5.6-luna, reviewer: @gpt-5.6-sol — terse coordinator style)
 - [[CT-017-agent-roster-memory]] ✅ (memory: agent roster + spawn patterns)
 - [[CT-018-dispatch-skill]] ✅ (skill: /dispatch auto spawn)
+- [[CT-019-slim-verdict-experimental-deadweight]] 📋 (slim /verdict, tách experimental dead weight)

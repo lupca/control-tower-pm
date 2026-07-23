@@ -7,7 +7,7 @@ Welcome, Agent, to Control Tower. This is the top-level control file defining th
 **Detail files (load when needed):**
 - `AGENTS-REFERENCE.md` — §5-§7: handoff artifacts, code-review-graph usage, audit log
 - `AGENTS-PLAYBOOK.md` — §8-§11: macros, reconcile rule, onboarding, knowledge management
-- `AGENTS-EXPERIMENTAL.md` — §12-§20: POC features (reputation, patterns, verifier, goals, etc.)
+- `AGENTS-EXPERIMENTAL.md` — **ARCHIVE** (§12-§20). Skills no longer read this file — active features (§12 reputation, §13 causal analysis, §15 verifier, §16 calibration) are inlined in relevant skills; dormant features (§14, §17-§20) are disabled until re-enabled manually.
 
 ---
 
