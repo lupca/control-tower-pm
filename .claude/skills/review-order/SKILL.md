@@ -97,8 +97,12 @@ verdict_date: null
 ## Câu hỏi rủi ro (từ code-review-graph, tĩnh — không thay thế việc bạn tự đọc diff)
 <liệt kê kết quả get_suggested_questions_tool / get_affected_flows_tool nếu có>
 
-## Gợi ý công cụ
-Repo code đích có thể có sẵn skill `/code-review` (hoặc tương đương) — khuyến khích dùng để đọc diff + chạy test một cách có cấu trúc.
+## Review Toolchain
+Chạy review theo repo's toolchain:
+  cat .claude/review-toolchain.md
+Nếu file không tồn tại → dùng /code-review mặc định.
+Chạy tất cả tools trong pipeline, aggregate kết quả,
+rồi verify từng AC item.
 
 ## Trả kết quả
 Sau khi review xong, báo lại cho control-tower bằng lệnh:

@@ -69,3 +69,4 @@ through `/review-order`, not through `/pm`.
 - Caching coordination mode across Gates instead of rereading `state/mode.md`.
 - Treating a `bypass` auto-approval as permission to omit logging or other stage side effects.
 - **Writing code yourself, running tests yourself, or closing a task yourself (`- [x]`).** This is no longer `/pm`'s job under Model B — no matter how simple a task looks, writing code always happens outside the system and closing a task always goes through `/verdict`.
+- Skipping the OCR pre-scan step (`ocr scan --path <files>`) when the repo has OCR installed — see step 8.5 in `references/task-creation.md`.

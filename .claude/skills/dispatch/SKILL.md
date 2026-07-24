@@ -56,12 +56,27 @@ logging, and process-spawn steps below are mandatory and run exactly once.
 ### 5. Construct spawn command
 
 ```bash
-cd <repo_root> && <cli> -m <model> -p "<role> task at <task_path>" <bypass_flag>
+cd <repo_root> && <cli> -m <model> -p "<prompt>" <bypass_flag>
 ```
 
 Where:
-- `<role>` = "Execute" (default) or "Review" (if --review)
 - `<bypass_flag>` = from spawn-patterns.md
+- `<prompt>` depends on role:
+
+**Executor (default):**
+```
+Execute task at <task_path>
+```
+
+**Reviewer (--review):**
+```
+Review task at <task_path>.
+Result ref: <result_ref>. Review sheet: <review_sheet_path>.
+1. Read .claude/review-toolchain.md — run each tool in pipeline.
+   If file missing, run /code-review as default.
+2. Verify each AC item in the review sheet.
+3. Report: tool findings + AC results + tests + verdict.
+```
 
 ### 6. Update task file and audit
 - Set `executor:` or `reviewer:` field

@@ -17,6 +17,10 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
    `- [ ] Write a test for <symbol/file> (currently no coverage — knowledge gap) — suggested test file: <suggested test file>`
 7. `get_hub_nodes_tool(top_n=50, repo_root=...)` and `get_bridge_nodes_tool(top_n=50, repo_root=...)` — if any node in `files:` matches the returned list → flag `risk: high` in the frontmatter.
 8. `get_affected_flows_tool(changed_files=[...], repo_root=...)` → fills in `flows:`.
+8.5. **Optional OCR pre-scan**: If the target repo has an `ocr` CLI:
+   - Run `cd <repo_root> && ocr scan --path <comma-separated files from step 4> --format json` via Bash.
+   - If `ocr` command not found or fails → skip silently, continue to step 9.
+   - If findings exist → record them in the task body under `## Pre-scan findings (OCR)` (below the Plan section placeholder). This surfaces potential bugs to the executor before they start.
 9. **Compute Pre-Execution Prediction Score (`predicted_success`)**:
     - Start with `Score = 1.0`.
     - `blast_radius > 8`: Score -= 0.3
