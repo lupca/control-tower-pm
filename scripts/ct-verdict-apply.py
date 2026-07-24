@@ -36,60 +36,21 @@ import sys
 from datetime import date
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-FM_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n", re.DOTALL)
+from ct_common import (
+    FM_RE,
+    REPO_ROOT,
+    fm_get,
+    fm_get_inline_list,
+    fm_set,
+    find_task_file,
+    rebuild,
+    split_frontmatter,
+)
 
 
 def fail(msg, **extra):
     print(json.dumps({"ok": False, "error": msg, **extra}, ensure_ascii=False, indent=2))
     sys.exit(1)
-
-
-def split_frontmatter(text, path):
-    text = text.replace("\r\n", "\n")
-    m = FM_RE.match(text)
-    if not m:
-        fail(f"{path}: no frontmatter block found")
-    return m.group(1).split("\n"), text[m.end():]
-
-
-def rebuild(lines, body):
-    return "---\n" + "\n".join(lines) + "\n---\n" + body
-
-
-def fm_get(lines, key):
-    for i, line in enumerate(lines):
-        mm = re.match(rf"^{re.escape(key)}:\s*(.*)$", line)
-        if mm:
-            v = mm.group(1).strip()
-            if v.startswith('"') and v.endswith('"') and len(v) >= 2:
-                v = v[1:-1]
-            return v, i
-    return None, -1
-
-
-def fm_set(lines, key, value, quote=False):
-    rendered = f'"{value}"' if quote else str(value)
-    newline = f"{key}: {rendered}"
-    _, idx = fm_get(lines, key)
-    if idx == -1:
-        lines.append(newline)
-    else:
-        lines[idx] = newline
-    return lines
-
-
-def fm_get_inline_list(lines, key):
-    v, _ = fm_get(lines, key)
-    if not v or v == "[]":
-        return []
-    inner = v.strip("[]")
-    return [x.strip() for x in inner.split(",") if x.strip()]
-
-
-def find_task_file(task_id):
-    matches = sorted((REPO_ROOT / "projects").glob(f"*/tasks/{task_id}-*.md"))
-    return matches[0] if matches else None
 
 
 def review_sheet_path(task_path, task_id):
@@ -331,7 +292,7 @@ def run_agent_stats(agent_id, role, verdict, dry_run=False, is_reverdict=False, 
     if profile_path.is_file():
         try:
             p_text = profile_path.read_text(encoding="utf-8").replace("\r\n", "\n")
-            p_lines, p_body = split_frontmatter(p_text, profile_path)
+            p_lines, p_body = split_frontmatter(p_text, profile_path, fail)
             today_str = date.today().isoformat()
 
             if role == "executor":
@@ -478,12 +439,12 @@ def main():
     if args.verdict == "changes" and not args.notes:
         fail("--notes is required for a changes verdict")
 
-    task_path = find_task_file(args.task_id)
+    task_path = find_task_file(args.task_id, REPO_ROOT)
     if not task_path:
         fail(f"no task file found for {args.task_id}")
 
     text = task_path.read_text(encoding="utf-8")
-    lines, body = split_frontmatter(text, task_path)
+    lines, body = split_frontmatter(text, task_path, fail)
 
     status, _ = fm_get(lines, "status")
     if status != "in-review":
@@ -515,7 +476,7 @@ def main():
     # --- Review sheet frontmatter ---
     if sheet_path.is_file():
         s_text = sheet_path.read_text(encoding="utf-8")
-        s_lines, s_body = split_frontmatter(s_text, sheet_path)
+        s_lines, s_body = split_frontmatter(s_text, sheet_path, fail)
         fm_set(s_lines, "reviewer", reviewer_arg, quote=True)
         fm_set(s_lines, "status", "passed" if args.verdict == "pass" else "changes-requested")
         fm_set(s_lines, "verdict", args.verdict)
@@ -599,4 +560,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

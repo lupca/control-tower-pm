@@ -16,6 +16,7 @@ import importlib.util
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 script_path = SCRIPTS_DIR / "ct-verdict-apply.py"
+import ct_common
 
 spec = importlib.util.spec_from_file_location("ct_verdict_apply", script_path)
 ct_verdict_apply = importlib.util.module_from_spec(spec)
@@ -536,6 +537,14 @@ last_active: 2026-07-24
             new_task_text = task_file.read_text(encoding="utf-8")
             self.assertIn("status: done", new_task_text)
             self.assertIn("- [x] **AC1:** CRLF item", new_task_text)
+
+            crlf_lines, crlf_body = ct_common.split_frontmatter(
+                "---\r\nstatus: in-review\r\n---\r\nbody\r\n", "sample.md"
+            )
+            self.assertEqual(crlf_body, "body\n")
+            self.assertEqual(ct_common.fm_get(crlf_lines, "status")[0], "in-review")
+            ct_common.fm_set(crlf_lines, "reviewer", "@reviewer1", quote=True)
+            self.assertEqual(ct_common.fm_get(crlf_lines, "reviewer")[0], "@reviewer1")
 
     def test_ct026_ac2_legacy_duplicate_rows_last_prev_verdict(self):
         """

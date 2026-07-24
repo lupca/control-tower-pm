@@ -21,27 +21,10 @@ import argparse
 import json
 import re
 import sys
-from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+from ct_common import REPO_ROOT, parse_frontmatter
+
 STATUS_ORDER = ["done", "dispatched", "in-review", "changes-requested", "todo"]
-
-
-def parse_frontmatter(text):
-    m = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
-    if not m:
-        return {}
-    fields = {}
-    for line in m.group(1).splitlines():
-        line = line.rstrip()
-        km = re.match(r"^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$", line)
-        if not km:
-            continue
-        key, val = km.group(1), km.group(2).strip()
-        if val.startswith('"') and val.endswith('"') and len(val) >= 2:
-            val = val[1:-1]
-        fields[key] = val
-    return fields
 
 
 def collect_tasks(project_dir):
