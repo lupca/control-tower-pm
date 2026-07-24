@@ -1,6 +1,7 @@
 .DS_Store
 *.swp
 .claude/settings.local.json
+.agents/settings.local.json
 
 # Obsidian: this repo doubles as a vault. Share plugin/graph/appearance config
 # (portable, useful to commit) but not personal window/session state.

@@ -24,7 +24,7 @@ Welcome, Agent, to Control Tower. This is the top-level control file defining th
 verdict and require a different, independent reviewer (human or AI).
 
 **"Outside the system" means a SEPARATE CLI process, NOT a subagent:**
-- ✅ `Bash("cd <repo> && claude -p '...' --dangerously-skip-permissions")` — spawns a new Claude Code process in the target repo
+- ✅ `Bash("cd <repo> && claude -p '...' --dangerously-skip-permissions")` or `Bash("cd <repo> && agy --prompt '...'")` — spawns a new AI process (Claude/Antigravity) in the target repo
 - ✅ `Bash("cd <repo> && codex exec ...")` — spawns a new Codex process
 - ❌ `Agent()` tool — this is a subagent WITHIN the same Claude Code session, still "inside" control-tower
 - See `spawn-patterns.md` (memory) and `/dispatch` skill for correct CLI commands.
