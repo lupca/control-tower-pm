@@ -1,6 +1,6 @@
 ---
 task_prefix: CT
-next_task_id: 23
+next_task_id: 24
 created: 2026-07-22
 updated: 2026-07-23
 ---
@@ -20,6 +20,13 @@ updated: 2026-07-23
 - Mọi thay đổi AGENTS.md hoặc skill phải có ADR đi kèm trong `knowledge/decisions/`
 - Paradigm shift lớn (Tier 3) cần POC trước khi implement full
 
+## Tiến độ
+| Trạng thái | Số task |
+|:---|---:|
+| done | 22 |
+| dispatched | 1 |
+*(Cập nhật bởi `/report`)*
+
 ## References
 
 - [AGENTS.md](../../AGENTS.md) — Rules of engagement
@@ -30,26 +37,27 @@ updated: 2026-07-23
 - [Vericoding (Tegmark 2025)](https://arxiv.org/pdf/2509.22908)
 
 ## Tasks
-
-- [[CT-001-pre-execution-prediction]] ✅
-- [[CT-002-reputation-system]] ✅
-- [[CT-003-causal-analysis]] ✅
-- [[CT-004-cross-repo-intelligence]] ✅ (self-reviewed, waived — see CT-011)
-- [[CT-005-llm-modulo-verifier]] ✅ (self-reviewed, waived — see CT-011)
-- [[CT-006-confidence-calibration]] ✅ (self-reviewed, waived — see CT-011)
-- [[CT-007-goal-conditioned-autonomy]] ✅ POC (self-reviewed, waived — see CT-011)
-- [[CT-008-stigmergic-coordination]] ✅ POC (self-reviewed, waived — see CT-011)
-- [[CT-009-auto-remediation-tnr]] ✅ POC (self-reviewed, waived — see CT-011)
-- [[CT-010-vericoding-formal-proofs]] ✅ (self-reviewed, waived — see CT-011)
-- [[CT-011-review-paradigm-shift-batch]] ✅ (reviewer: @claude-4.5, independent — compensating control confirmed batch)
-- [[CT-012-model-a-cli-agent-orchestration]] ✅ (executor: @claude-opus, reviewer: @agy-cli — Model A design + ADR-003)
-- [[CT-013-token-cost-automation-optimization]] ✅ (executor: @claude-opus, reviewer: @lupca — baseline token measurement)
-- [[CT-014-fix-spawn-pattern-design]] ✅ (executor: @sonnet-5, reviewer: @claude-opus — spawn pattern: task file + reputation + tiering)
-- [[CT-015-reorganize-agent-profiles]] ✅ (executor: @sonnet-5, reviewer: @antigravity — agent tiering: claude/antigravity/human)
-- [[CT-016-terse-coordinator-mode]] ✅ (executor: @gpt-5.6-luna, reviewer: @gpt-5.6-sol — terse coordinator style)
-- [[CT-017-agent-roster-memory]] ✅ (memory: agent roster + spawn patterns)
-- [[CT-018-dispatch-skill]] ✅ (skill: /dispatch auto spawn)
-- [[CT-019-slim-verdict-experimental-deadweight]] 📋 (slim /verdict, tách experimental dead weight)
-- [[CT-020-remove-agents-experimental]] ✅ (xóa AGENTS-EXPERIMENTAL.md, archive dormant)
-- [[CT-021-coordination-mode-flow-simplify]] ✅ (coordination mode + bỏ `ready` state) — executor: @gpt-5.6-sol, reviewer: @antigravity
-- [[CT-022-reviewer-rotation]] ✅ (track rejections, enforce reviewer change)
+*(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
+- [[CT-001-pre-execution-prediction]] — Pre-Execution Prediction — Dự đoán task fail trước khi execute (done)
+- [[CT-002-reputation-system]] — Reputation System — Track executor/reviewer performance (done)
+- [[CT-003-causal-analysis]] — Causal Analysis — Hiểu WHY fix works, không chỉ THAT it works (done)
+- [[CT-004-cross-repo-intelligence]] — Cross-Repository Intelligence — Learn patterns across repos (done)
+- [[CT-005-llm-modulo-verifier]] — LLM-Modulo — Symbolic verifier cho LLM-generated plans (done)
+- [[CT-006-confidence-calibration]] — Confidence Calibration — Know WHEN to escalate (done)
+- [[CT-007-goal-conditioned-autonomy]] — Goal-Conditioned Autonomy — Từ task list sang goal pursuit (done)
+- [[CT-008-stigmergic-coordination]] — Stigmergic Coordination — Agents coordinate qua shared artifacts (done)
+- [[CT-009-auto-remediation-tnr]] — Auto-Remediation với TNR Safety — Closed-loop tự động (done)
+- [[CT-010-vericoding-formal-proofs]] — Vericoding — Formal proofs thay vì testing (done)
+- [[CT-011-review-paradigm-shift-batch]] — Independent Review — Paradigm Shift Batch (CT-004–CT-010) (done)
+- [[CT-012-model-a-cli-agent-orchestration]] — Mô hình A — Điều phối agent EXECUTE + REVIEW qua CLI (agy / claude / codex / copilot) (done)
+- [[CT-013-token-cost-automation-optimization]] — Đo baseline token cost của luồng manual (done)
+- [[CT-014-fix-spawn-pattern-design]] — Sửa design doc spawn pattern: task file link + model tiering (done)
+- [[CT-015-reorganize-agent-profiles]] — Tái cấu trúc agent profiles: tiering rõ ràng cho claude/antigravity/human (done)
+- [[CT-016-terse-coordinator-mode]] — Coordinator terse mode: giảm output token, batch confirmations (done)
+- [[CT-017-agent-roster-memory]] — Save agent roster + spawn patterns vào memory (done)
+- [[CT-018-dispatch-skill]] — Tạo /dispatch skill — auto spawn CLI từ task + agent (done)
+- [[CT-019-slim-verdict-experimental-deadweight]] — Tách experimental dead weight khỏi /verdict core flow (dispatched)
+- [[CT-020-remove-agents-experimental]] — Xóa AGENTS-EXPERIMENTAL.md, archive dormant features (done)
+- [[CT-021-coordination-mode-flow-simplify]] — Coordination mode + đơn giản hóa task flow (done)
+- [[CT-022-reviewer-rotation]] — Reviewer Rotation — track rejections, enforce reviewer change (done)
+- [[CT-023-ocr-review-toolchain]] — Tích hợp OCR vào review layer — review toolchain architecture (done)

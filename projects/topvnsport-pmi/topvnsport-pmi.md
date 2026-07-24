@@ -15,7 +15,7 @@ Dự án này tập trung vào việc tích hợp các quy trình nghiệp vụ 
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
-| done | 8 |
+| done | 9 |
 | todo | 1 |
 *(Cập nhật bởi `/report`)*
 

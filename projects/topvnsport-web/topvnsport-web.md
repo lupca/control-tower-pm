@@ -24,7 +24,7 @@ Dự án quản lý frontend application (Vue/React) của hệ thống TopVNSpo
 - [[WEB-001-promotion-module]] — Implement Promotion Module cho Marketing Team (done)
 - [[WEB-002-cleanup-oms-coupon-code]] — Xóa code OMS coupon thừa từ WEB-001 lần 1 (done)
 - [[WEB-003-fix-vitest-dependency-conflict]] — Fix vitest dependency version conflict in Web Storefront (done)
-- [[WEB-004-research-cors-stock-api-prod-failure]] — Research: CORS block + stock API vẫn fail trên production (todo)
+- [[WEB-004-research-cors-stock-api-prod-failure]] — Research: CORS block + stock API vẫn fail trên production (done)
 - [[WEB-005-fix-discount-price-display]] — Fix discount price display on product detail page (in-review)
 
 ## Quy tắc phê duyệt riêng (Project Gates)

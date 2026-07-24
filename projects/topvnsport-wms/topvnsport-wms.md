@@ -15,13 +15,13 @@ Dự án quản lý kho hàng (Warehouse Management System) cho hệ thống Top
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
-| done | 1 |
-| todo | 0 |
+| done | 3 |
 *(Cập nhật bởi `/report`)*
 
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
-- [[WMS-001-table-stt-pagination]] — Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS (in-review)
+- [[WMS-001-table-stt-pagination]] — Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS (done)
+- [[WMS-002-fix-414-stock-api-uri-too-large]] — Fix 414 Request-URI Too Large when fetching stock for many SKUs (done)
 - [[WMS-003-fix-ci-docker-network-label-mismatch]] — Fix CI Docker Compose network label mismatch for oms_default (done)
 
 ## Quy tắc phê duyệt riêng (Project Gates)

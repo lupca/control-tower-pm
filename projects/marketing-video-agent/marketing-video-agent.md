@@ -22,15 +22,15 @@ Agent pipeline tự động tạo video marketing sử dụng AI. Hệ thống w
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
 - [[MVA-001-simplify-architecture]] — Đơn giản hóa kiến trúc: từ 17 workers + Celery xuống 1 VideoAgent (done)
-- [[MVA-002-restore-text2img-engine]] — Khôi phục engine text2img (done)
-- [[MVA-003-restore-slideshow-engine]] — Khôi phục engine slideshow (done)
+- [[MVA-002-restore-text2img-engine]] — Khôi phục engine text2img (gen ảnh từ prompt) (done)
+- [[MVA-003-restore-slideshow-engine]] — Khôi phục engine slideshow (video từ ảnh sản phẩm) (done)
 - [[MVA-004-fix-engine-bugs-stability]] — Fix bugs + ổn định engines hiện tại (done)
-- [[MVA-005-tts-resilience-cloud-fallback]] — Gia cố TTS + cloud video fallback (todo)
-- [[MVA-006-restore-capcut-parser]] — Khôi phục CapCut parser (todo)
-- [[MVA-007-verify-current-pipeline]] — Smoke test pipeline hiện tại (done)
-- [[MVA-008-fix-engines-standalone]] — Fix engines standalone (done)
-- [[MVA-009-fix-remaining-engine-issues]] — Fix 3 blocking issues từ review (done)
-- [[MVA-010-test-orchestration-siliconflow]] — Test orchestration pipeline với SiliconFlow API (done)
+- [[MVA-005-tts-resilience-cloud-fallback]] — Gia cố TTS (retry/fallback) + cloud video fallback (todo)
+- [[MVA-006-restore-capcut-parser]] — Khôi phục CapCut draft parser + skill agent (todo)
+- [[MVA-007-verify-current-pipeline]] — Xác nhận pipeline hiện tại hoạt động (smoke test) (done)
+- [[MVA-008-fix-engines-standalone]] — Fix engines hoạt động độc lập (bỏ qua Ollama) (done)
+- [[MVA-009-fix-remaining-engine-issues]] — Fix 3 blocking issues từ review MVA-008 (done)
+- [[MVA-010-test-orchestration-siliconflow]] — Test orchestration pipeline với SiliconFlow API (Qwen3-32B) (done)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc pipeline (worker orchestration, engine selection) cần User xác nhận trước khi executor thực hiện.

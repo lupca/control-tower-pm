@@ -55,3 +55,4 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | MVA-003 | medium (0.5) | pass (round 1) | ✅ under-estimated | slideshow restore — scope lớn nhưng plan rõ, executor mạnh |
 | MVA-002 | high (0.8) | pass (round 1) | ✅ accurate | text2img restore — scope nhỏ, plan rõ |
 | MVA-004 | high (0.75) | pass (round 1) | ✅ accurate | most ACs already done by MVA-008, only 1 remaining bug |
+| 2026-07-24 | CT-023 | high | 0.9 | no_tests: true (-0.1) | — | pass | ✅ | — |

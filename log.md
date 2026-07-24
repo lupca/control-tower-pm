@@ -4,6 +4,42 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-24 19:30:00] report | Chạy /report qua script (ct-report-stats.py) — không có thay đổi số liệu
+- Dự án: tất cả 7 dự án
+- Mô tả: Chạy `python3 scripts/ct-report-stats.py --apply` lần đầu sau khi script được đưa vào `/report` (ADR-007). `counts` khớp 100% `old_counts` ở cả 7 dự án — không có task nào đổi status kể từ lần `/report` thủ công trước đó, nên `index.md` §3 không đổi. Bổ sung ADR-007 vào `knowledge/_index.md` (bị bỏ sót lần trước vì ADR được viết sau khi index đã cập nhật) và tăng đếm `decisions` 6→7 ở `index.md` §6.
+- Giải trình: Xác nhận script hoạt động đúng trong luồng thật (không phải chỉ test) — 0 diff nghĩa là idempotent, an toàn chạy lại nhiều lần.
+- Files touched: knowledge/_index.md, index.md, log.md
+- Trạng thái: Thành công
+- auto-approved: report
+- Commit: n/a
+
+## [2026-07-24 19:15:00] skill-update | ADR-007: script hoá phần đếm/regenerate của /report
+- Dự án: control-tower
+- Mô tả: Thêm `scripts/ct-report-stats.py` (đếm task theo status per project + tự viết lại block `## Tiến độ`/`## Tasks` trong `<name>.md` qua `--apply`). Cập nhật `.claude/skills/report/SKILL.md` bước 1-4 để gọi script thay vì Glob/Read/Edit thủ công từng file. Test chạy trên toàn bộ 7 dự án — kết quả khớp 100% với số liệu đã cập nhật tay ở lần `/report` trước, không đổi nội dung task nào.
+- Giải trình: User hỏi vì sao `/report` tốn nhiều token, yêu cầu nghiên cứu điểm chung giữa các skill để giảm chi phí. Phần đếm/format là cơ khí thuần túy (không cần LLM), có tiền lệ script hoá (`scripts/update-agent-stats.sh`). Phạm vi chốt với User: chỉ `/report` trước, mở rộng sang `/lint` sau nếu cần.
+- Files touched: scripts/ct-report-stats.py, .claude/skills/report/SKILL.md, knowledge/decisions/ADR-007-report-stats-script.md
+- Trạng thái: Thành công
+- auto-approved: n/a (User đã chọn phạm vi qua câu hỏi trực tiếp)
+- Commit: n/a
+
+## [2026-07-24 19:00:00] report | Cập nhật tiến độ toàn bộ 7 dự án + knowledge index
+- Dự án: control-tower, control-tower-web, marketing-video-agent, topvnsport-oms, topvnsport-pmi, topvnsport-web, topvnsport-wms
+- Mô tả: Quét lại `projects/*/tasks/*.md`, sửa các bảng Tiến độ/Tasks bị lệch so với `status:` thực tế (control-tower 22/23 done, control-tower-web 13/13, marketing-video-agent 8/10, topvnsport-oms 5/5, topvnsport-pmi 9/10, topvnsport-web 4/5, topvnsport-wms 3/3 — trước đó vài file có số liệu cũ hoặc thiếu task WMS-002). Cập nhật bảng tiến độ + timestamp trong `index.md` §3.
+- Giải trình: Đây là aggregation thuần túy từ frontmatter `status:`, không đổi nội dung/status của task nào. Đồng thời regenerate `knowledge/_index.md`: thêm 3 ADR (003/004/005) và 12 agent profile file còn thiếu vào bảng cross-project; ghi chú các file thiếu `type:` frontmatter (2 file guides/, 2 file research/, 4 file per-project docs/) để không bị phân loại sai.
+- Files touched: projects/control-tower/control-tower.md, projects/control-tower-web/control-tower-web.md, projects/marketing-video-agent/marketing-video-agent.md, projects/topvnsport-oms/topvnsport-oms.md, projects/topvnsport-pmi/topvnsport-pmi.md, projects/topvnsport-web/topvnsport-web.md, projects/topvnsport-wms/topvnsport-wms.md, index.md, knowledge/_index.md
+- Trạng thái: Thành công
+- auto-approved: report
+- Commit: n/a
+
+## [2026-07-24 18:45:00] verdict | CT-023: OCR review toolchain architecture — PASS
+- Dự án: control-tower
+- Mô tả: Verdict pass — @antigravity reviewed, 5/5 AC verified, all verification commands pass.
+- Giải trình: Four-eyes OK (@antigravity ≠ @claude-opus). Reviewer ran fallback /code-review (no .claude/review-toolchain.md in CT repo — expected, CT is meta-project). All grep/test checks confirmed.
+- Files touched: projects/control-tower/tasks/CT-023-ocr-review-toolchain.md, projects/control-tower/reviews/CT-023-review.md
+- Trạng thái: Thành công
+- auto-approved: verdict
+- Commit: 0d0754c
+
 ## [2026-07-24 18:35:00] dispatch | CT-023 review: @antigravity
 - Dự án: control-tower
 - Mô tả: Dispatch reviewer @antigravity (agy, gemini-3.1-pro) cho CT-023. Four-eyes OK (@antigravity ≠ @claude-opus).

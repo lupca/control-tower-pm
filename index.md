@@ -35,12 +35,12 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | Dự án | Thư mục quản lý | Trạng thái | Tiến độ (Done/Total) | Executor/Reviewer hiện tại | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **TopVNSport - PMI** | `projects/topvnsport-pmi/` | 🔄 Đang chạy | 9/10 | — | 1 todo: PMI-002 |
-| **TopVNSport - OMS** | `projects/topvnsport-oms/` | ✅ Hoàn thành | 4/4 | — | Zalo OTP integration complete |
+| **TopVNSport - OMS** | `projects/topvnsport-oms/` | ✅ Hoàn thành | 5/5 | — | Zalo OTP integration + main.py refactor done |
 | **TopVNSport - WMS** | `projects/topvnsport-wms/` | ✅ Hoàn thành | 3/3 | — | Table, 414 fix, CI fix done |
-| **TopVNSport - Web** | `projects/topvnsport-web/` | ✅ Hoàn thành | 4/4 | — | Promotion, cleanup, vitest, CORS done |
-| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 21/22 | CT-019: @antigravity | 1 dispatched: CT-019 slim verdict |
-| **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 4/9 | — | 5 todo: engines restoration |
-| **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 12/12 | — | Dashboard fixes complete |
+| **TopVNSport - Web** | `projects/topvnsport-web/` | 🔄 Đang chạy | 4/5 | WEB-005: in-review | CORS research done; 1 in-review: WEB-005 discount price |
+| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 22/23 | CT-019: @antigravity | 1 dispatched: CT-019 slim verdict; CT-023 OCR toolchain passed review |
+| **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 8/10 | — | 2 todo: MVA-005 TTS resilience, MVA-006 CapCut parser |
+| **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 13/13 | — | Dashboard fixes complete |
 
 ---
 
@@ -74,6 +74,6 @@ Domain knowledge, quyết định kiến trúc (ADR), quy ước — xem `AGENTS
 | Type | Số file (cross-project, `knowledge/`) | Số file (per-project, `projects/*/docs/`) |
 | :--- | ---: | ---: |
 | domains | 0 | 0 |
-| decisions | 6 | 0 |
+| decisions | 7 | 0 |
 | conventions | 0 | 0 |
-| research | 0 | 0 |
+| research | 1 | 0 |
