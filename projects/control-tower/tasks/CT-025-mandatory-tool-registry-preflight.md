@@ -1,13 +1,13 @@
 ---
 id: CT-025
 title: "Mandatory Tool Registry + Tool Preflight — bắt buộc dùng code-review-graph/OCR, không fallback manual, mở rộng bằng khai báo"
-status: dispatched
+status: done
 priority: high
 risk: high
 deadline: null
 executor: "@claude-opus"
-reviewer: null
-result_ref: null
+reviewer: "@antigravity"
+result_ref: "95d126f"
 depends_on: [CT-023]
 files:
   - knowledge/tools/tool-registry.md
@@ -21,7 +21,7 @@ files:
 flows: []
 tests: []
 dispatched: 2026-07-24
-in_review: null
+in_review: 2026-07-24
 predicted_success: high
 confidence_interval: [0.75, 0.95]
 prediction_factors:
@@ -110,3 +110,9 @@ Kiến trúc: **1 registry khai báo (source of truth) + 1 rule preflight (thu�
 - [x] Sửa `dispatch/SKILL.md` step 5 reviewer prompt → preflight/install, bỏ "/code-review as default"
 - [x] Sửa `review-order/SKILL.md` toolchain section → trỏ registry + preflight
 - [x] Sửa `knowledge/guides/review-toolchain.md` → bỏ silent fallback, cài theo registry
+
+## Causal Analysis
+- **Root cause**: Khi code-review-graph/OCR (hoặc tool cần dùng) chưa cài, lỗi, hoặc CLI/MCP không gọi được, các skill âm thầm fallback làm thủ công → chất lượng PLAN/REVIEW giảm mà không ai phát hiện.
+- **Mechanism**: Tách khai báo tool ra tool-registry.md (source of truth) + Tool Preflight gate (AGENTS-REFERENCE §8): health_check→install→re-check→BLOCK+escalate nếu hard, log nếu soft. Skills đọc registry theo used_by nên vừa enforce vừa mở rộng bằng 1 dòng khai báo.
+- **Counterfactual**: Không có preflight bắt buộc thì tool thiếu/hỏng khiến skill lặng lẽ dùng manual; files/tests/flows và review suy giảm chất lượng, không có tín hiệu cảnh báo lẫn cơ chế tự cài.
+- **Pattern**: [[mandatory-tool-preflight]]

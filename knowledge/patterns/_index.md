@@ -8,3 +8,4 @@ Registry of reusable causal-analysis patterns (`AGENTS.md` §13). Consulted by `
 | [[missing-db-index]] | performance | medium | 0 |
 | [[race-condition]] | reliability | high | 0 |
 | [[memory-leak]] | reliability | high | 0 |
+| [[mandatory-tool-preflight]] | process | high | 1 |
