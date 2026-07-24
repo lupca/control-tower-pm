@@ -21,7 +21,7 @@ Run these tools before verifying AC items.
 
 1. **OCR Review**
    ```bash
-   ocr review --from main --to $RESULT_REF --format json
+   ocr review --from main --to <RESULT_REF> --format json
    ```
    OCR auto-detects changed files from the git range.
 
@@ -61,10 +61,10 @@ Every repo MUST declare a `.claude/review-toolchain.md`. There is no silent fall
 OCR is the primary tool in most toolchains:
 
 ```bash
-ocr review --from main --to $RESULT_REF --format json
+ocr review --from main --to <RESULT_REF> --format json
 ```
 
-Where `$RESULT_REF` is the branch/commit/PR being reviewed (from the review sheet's `result_ref`). OCR scans only changed files between `main` and the result ref — no need to specify paths manually.
+Where `<RESULT_REF>` is the branch/commit/PR being reviewed (from the review sheet's `result_ref`). OCR scans only changed files between `main` and the result ref — no need to specify paths manually.
 
 **Commands:**
 - `ocr review --from <base> --to <head>` — diff-based review (most common)
