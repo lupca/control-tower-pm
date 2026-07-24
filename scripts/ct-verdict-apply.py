@@ -100,6 +100,9 @@ def tick_ac_checkboxes(body):
     """
     Ticks '- [ ]' -> '- [x]' ONLY within the AC section ('## Tiêu chí nghiệm thu...').
     Stops at the next '## ' heading or end of body.
+    Uses line-anchored regex (re.subn) matching real checkbox list items
+    (lines starting with optional whitespace then '- [ ]').
+    Skips lines inside fenced code blocks (``` or ~~~).
     """
     lines = body.split("\n")
     ac_start = None
@@ -117,12 +120,26 @@ def tick_ac_checkboxes(body):
         return body, 0
 
     ac_lines = lines[ac_start:ac_end]
-    ac_text = "\n".join(ac_lines)
-    ticked = ac_text.count("- [ ]")
-    ac_text_ticked = ac_text.replace("- [ ]", "- [x]")
+    in_fence = False
+    ticked_total = 0
+    new_ac_lines = []
 
-    new_lines = lines[:ac_start] + ac_text_ticked.split("\n") + lines[ac_end:]
-    return "\n".join(new_lines), ticked
+    for line in ac_lines:
+        stripped = line.strip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            new_ac_lines.append(line)
+            continue
+
+        if not in_fence:
+            new_line, n = re.subn(r"^(\s*-\s*)\[ \]", r"\1[x]", line)
+            ticked_total += n
+            new_ac_lines.append(new_line)
+        else:
+            new_ac_lines.append(line)
+
+    new_lines = lines[:ac_start] + new_ac_lines + lines[ac_end:]
+    return "\n".join(new_lines), ticked_total
 
 
 def append_section(body, heading, content):
@@ -271,8 +288,11 @@ def run_agent_stats(agent_id, role, verdict, dry_run=False):
     script = REPO_ROOT / "scripts" / "update-agent-stats.sh"
     if not script.is_file():
         return {"ran": False, "reason": "script not found"}
-    r = subprocess.run([str(script), agent_id, role, verdict], capture_output=True, text=True)
-    return {"ran": True, "returncode": r.returncode, "stdout": r.stdout.strip(), "stderr": r.stderr.strip()}
+    try:
+        r = subprocess.run([str(script), agent_id, role, verdict], capture_output=True, text=True)
+        return {"ran": True, "returncode": r.returncode, "stdout": r.stdout.strip(), "stderr": r.stderr.strip()}
+    except Exception as e:
+        return {"ran": False, "error": str(e)}
 
 
 def atomic_write(path: Path, content: str):
@@ -282,8 +302,45 @@ def atomic_write(path: Path, content: str):
         tmp_path.replace(path)
     except Exception:
         if tmp_path.exists():
-            tmp_path.unlink()
+            try:
+                tmp_path.unlink()
+            except Exception:
+                pass
         raise
+
+
+def transactional_write_all(pending_writes):
+    """
+    Writes all files in pending_writes = [(path, content), ...] atomically.
+    If ANY write fails, rolls back all previously written files to their original state.
+    """
+    backups = {}
+    written = []
+
+    for path, _ in pending_writes:
+        if path.exists():
+            backups[path] = path.read_text(encoding="utf-8")
+        else:
+            backups[path] = None
+
+    try:
+        for path, content in pending_writes:
+            atomic_write(path, content)
+            written.append(path)
+    except Exception as e:
+        for path in reversed(written):
+            orig = backups.get(path)
+            if orig is not None:
+                try:
+                    atomic_write(path, orig)
+                except Exception:
+                    pass
+            else:
+                try:
+                    path.unlink(missing_ok=True)
+                except Exception:
+                    pass
+        fail(f"Transactional write failed: {e}")
 
 
 def main():
@@ -405,8 +462,7 @@ def main():
         pending_writes.append(pa_write)
 
     if not args.dry_run:
-        for p, c in pending_writes:
-            atomic_write(p, c)
+        transactional_write_all(pending_writes)
 
     result["agent_stats"] = {
         "executor": run_agent_stats(executor_norm, "executor", args.verdict, dry_run=args.dry_run),
@@ -418,3 +474,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
