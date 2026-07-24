@@ -3,7 +3,7 @@ title: "Pre-Execution Prediction Accuracy & Metrics"
 type: metric
 tags: [metrics, prediction, control-tower, accuracy]
 created: 2026-07-22
-updated: 2026-07-22
+updated: 2026-07-24
 ---
 
 # Pre-Execution Prediction Accuracy & Metrics
@@ -27,18 +27,23 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 - `medium`: 0.4 <= Score < 0.7 (Rủi ro trung bình)
 - `low`: Score < 0.4 (Rủi ro cao, đề xuất split/enrich)
 
+**Quy tắc đánh giá In-Interval (`In Interval?`)**:
+- Cột `In Interval?` được tính độc lập với `Match?` dựa trên `confidence_interval: [lo, hi]` từ frontmatter của task.
+- Quy đổi outcome thực tế từ verdict: `pass` → `outcome = 1.0`, `changes` → `outcome = 0.0`.
+- Đánh giá: `✅` nếu `lo <= outcome <= hi`, `❌` nếu nằm ngoài khoảng, `—` nếu task không khai báo `confidence_interval`.
+
 ---
 
 ## 2. Summary Statistics
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 2 |
-| **Pass Count (Actual Success)** | 1 |
+| **Total Predicted Tasks** | 6 |
+| **Pass Count (Actual Success)** | 5 |
 | **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 100% (2/2) |
-| **High Prediction Precision** | 100% (1/1) |
-| **Medium Prediction Precision** | N/A |
+| **Overall Prediction Accuracy** | 100% (6/6) |
+| **High Prediction Precision** | 100% (4/4) |
+| **Medium Prediction Precision** | 100% (1/1) |
 | **Low Prediction Precision** | 100% (1/1) |
 
 ---
@@ -51,8 +56,7 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | 2026-07-22 | CT-001 | high | 0.9 | blast_radius: 3 (-0.0), hub_bridge: false (-0.0), no_tests: true (-0.1) | — | pass | ✅ | — |
 | 2026-07-22 | MVA-001 | low | 0.2 | blast_radius: 168 (-0.5), hub_bridge: true (-0.2), no_tests: false (-0.1) | [0.1, 0.4] | changes | ✅ | ✅ |
-<!-- Updated automatically by /verdict -->
-| MVA-003 | medium (0.5) | pass (round 1) | ✅ under-estimated | slideshow restore — scope lớn nhưng plan rõ, executor mạnh |
-| MVA-002 | high (0.8) | pass (round 1) | ✅ accurate | text2img restore — scope nhỏ, plan rõ |
-| MVA-004 | high (0.75) | pass (round 1) | ✅ accurate | most ACs already done by MVA-008, only 1 remaining bug |
+| 2026-07-24 | MVA-002 | high | 0.8 | code cũ còn trong git history, chỉ cần port (-0.0), không chạm hub node nào (-0.0), chưa có test cho module mới (-0.2); note: text2img restore — scope nhỏ, plan rõ | [0.7, 0.9] | pass | ✅ | ✅ |
+| 2026-07-24 | MVA-003 | medium | 0.5 | scope lớn: toàn bộ slideshow_engine (audio_sync, hook_outro, visuals, pipeline) (-0.3), phụ thuộc MVA-002 (cần gen ảnh) (-0.1), chưa có test (-0.1); note: under-estimated — plan rõ, executor mạnh | [0.3, 0.6] | pass | ✅ | ✅ |
+| 2026-07-24 | MVA-004 | high | 0.75 | nhiều fix nhỏ phân tán (-0.15), MoviePy v2 migration cần cẩn thận (-0.1); note: most ACs already done by MVA-008, only 1 remaining bug | [0.6, 0.85] | pass | ✅ | ✅ |
 | 2026-07-24 | CT-023 | high | 0.9 | no_tests: true (-0.1) | — | pass | ✅ | — |
