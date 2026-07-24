@@ -63,7 +63,7 @@ Kiểm thử agent orchestration (LLM gọi tools) qua SiliconFlow API thay vì 
 # Set env vars
 export LLM_BASE_URL="https://api.siliconflow.com/v1"
 export LLM_MODEL="Qwen/Qwen3-32B"
-export LLM_API_KEY="sk-mbtbbvlwesioonlentlzqdhcmlbvihtpdehizqppqhzxdsrp"
+export LLM_API_KEY="$LLM_API_KEY"  # from .env
 
 # AC1-AC3: Run orchestration
 cd /data/projects/marketing-video-agent

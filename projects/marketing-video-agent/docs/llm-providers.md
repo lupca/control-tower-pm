@@ -9,7 +9,7 @@ updated: 2026-07-24
 ## SiliconFlow API
 
 - **Endpoint:** `https://api.siliconflow.com/v1/chat/completions`
-- **Key:** `sk-mbtbbvlwesioonlentlzqdhcmlbvihtpdehizqppqhzxdsrp`
+- **Key:** set via env var `LLM_API_KEY` (see `.env` in target repo)
 
 ### Models available
 
@@ -23,7 +23,7 @@ updated: 2026-07-24
 ```bash
 curl --request POST \
   --url https://api.siliconflow.com/v1/chat/completions \
-  --header 'Authorization: Bearer sk-mbtbbvlwesioonlentlzqdhcmlbvihtpdehizqppqhzxdsrp' \
+  --header 'Authorization: Bearer $LLM_API_KEY' \
   --header 'Content-Type: application/json' \
   --data '{
   "model": "Qwen/Qwen3-32B",
