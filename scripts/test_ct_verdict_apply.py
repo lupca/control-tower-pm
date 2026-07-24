@@ -72,6 +72,47 @@ class TestCTVerdictApply(unittest.TestCase):
         self.assertIn("- [ ] Non-AC checkbox in Implementation section", new_body)
         self.assertIn("- [ ] Another non-AC checkbox", new_body)
 
+    def test_ac3_fenced_code_with_heading_boundary(self):
+        """
+        Regression test for CT-024 Round 3:
+        Verify that a '##' heading inside a fenced code block within the AC section
+        is NOT treated as the AC section boundary, and real AC checkboxes AFTER
+        the fence are correctly ticked and counted.
+        """
+        sample_body = """
+> Project: control-tower
+
+## Tiêu chí nghiệm thu (AC)
+
+- [ ] **AC1:** Pre-fence criteria
+
+```markdown
+## Faked Heading Inside Code Fence
+- [ ] Fenced example checkbox
+```
+
+- [ ] **AC2:** Post-fence criteria
+
+## Next Section
+
+- [ ] Non-AC checkbox
+"""
+        new_body, ticked_count = ct_verdict_apply.tick_ac_checkboxes(sample_body)
+
+        # Expect 2 real AC checkboxes ticked (AC1 and AC2)
+        self.assertEqual(ticked_count, 2)
+
+        # Verify AC1 and AC2 were ticked
+        self.assertIn("- [x] **AC1:** Pre-fence criteria", new_body)
+        self.assertIn("- [x] **AC2:** Post-fence criteria", new_body)
+
+        # Verify fenced code block content remained unchanged
+        self.assertIn("## Faked Heading Inside Code Fence", new_body)
+        self.assertIn("- [ ] Fenced example checkbox", new_body)
+
+        # Verify Next Section checkbox remained unticked
+        self.assertIn("- [ ] Non-AC checkbox", new_body)
+
     def test_ac4a_transactional_writes_rollback(self):
         """
         Verify that transactional_write_all:

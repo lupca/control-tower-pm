@@ -107,14 +107,21 @@ def tick_ac_checkboxes(body):
     lines = body.split("\n")
     ac_start = None
     ac_end = len(lines)
+    in_fence = False
     for i, line in enumerate(lines):
-        if ac_start is None:
-            if re.match(r"^##\s+Tiêu chí nghiệm thu", line):
-                ac_start = i
-        else:
-            if re.match(r"^##\s+", line):
-                ac_end = i
-                break
+        stripped = line.strip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            continue
+
+        if not in_fence:
+            if ac_start is None:
+                if re.match(r"^##\s+Tiêu chí nghiệm thu", line):
+                    ac_start = i
+            else:
+                if re.match(r"^##\s+", line):
+                    ac_end = i
+                    break
 
     if ac_start is None:
         return body, 0
