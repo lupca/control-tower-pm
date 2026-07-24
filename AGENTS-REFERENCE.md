@@ -82,3 +82,69 @@ Append-only format, with a consistent prefix so `grep`/`awk` can parse it:
 - Commit: <hash | n/a>
 ```
 `<operation>` ∈ `{ingest, pm-create, plan, dispatch, review-order, verdict, report, lint, mode}`. Write one entry for every COLLABORATIVE or RESTRICTED action. For a Gate auto-approved in `bypass` mode, include `auto-approved: <gate-name>` in the corresponding action entry rather than omitting or duplicating that action's audit record.
+
+---
+
+## 8. TOOL PREFLIGHT (mandatory before any tool-dependent step)
+
+Every step that uses a tool listed in `knowledge/tools/tool-registry.md` must run preflight before proceeding. The registry is the source of truth — skills do not hardcode tool checks.
+
+### 8.1. Algorithm
+
+```
+1. Look up tool in registry by `used_by` matching the current skill/step
+2. health_check(tool, scope)
+   - scope=control-tower: run check in control-tower context
+   - scope=target-repo: run check in <repo_root> context
+3. IF health_check FAILS:
+   a. Run install(tool) per registry instructions (respecting scope)
+   b. Re-run health_check
+4. IF still FAILS:
+   - required=hard: BLOCK gate, escalate to user with:
+     - Tool id and what step needs it
+     - Command that failed + output
+     - Install command tried + output
+     - "Cannot proceed without <tool>. Please install manually or override."
+   - required=soft: LOG explicitly ("Tool <id> unavailable, step <X> skipped — findings may be missed"), then continue
+5. NEVER fall back to manual work silently. No "skip silently", no "use X as default when Y missing".
+```
+
+### 8.2. Preflight points in skills
+
+| Skill | Step | Tool | Required |
+|-------|------|------|----------|
+| `/pm` | 1-8 (graph queries) | `code-review-graph` | hard (for repos with Graph build ✅) |
+| `/pm` | 8.5 (pre-scan) | `ocr` | soft (log + skip if unavailable) |
+| `/review-order` | 5 (enrichment) | `code-review-graph` | soft (sheet still valid without graph data) |
+| `/dispatch --review` | reviewer prompt | per `.claude/review-toolchain.md` | hard for declared tools |
+| review (in target repo) | toolchain | `code-review`, `ocr`, etc. | per registry |
+
+### 8.3. Escalation format
+
+When a `hard` tool fails preflight:
+
+```
+⛔ PREFLIGHT BLOCKED: <tool-id>
+
+Step: <skill>/<step> requires <tool-id>
+Scope: <control-tower|target-repo>
+Health check: <command>
+Result: <exit code + stderr snippet>
+
+Attempted install: <install command>
+Install result: <exit code + stderr snippet>
+
+Action required: Install <tool-id> manually, then retry.
+Override: Add `# preflight-override: skip <tool-id>` to task body (creates audit trail).
+```
+
+### 8.4. Override mechanism
+
+For edge cases where a tool genuinely cannot be installed, the user can add to the task body:
+
+```markdown
+# preflight-override: skip <tool-id>
+Reason: <why this is acceptable>
+```
+
+This creates an audit trail. The skill logs the override and continues without the tool. Overrides are never silent — they appear in `log.md` and the task file.

@@ -60,7 +60,7 @@ cd <repo_root> && <cli> -m <model> -p "<prompt>" <bypass_flag>
 ```
 
 Where:
-- `<bypass_flag>` = from spawn-patterns.md
+- `<bypass_flag>` = from `knowledge/guides/spawn-patterns.md`
 - `<prompt>` depends on role:
 
 **Executor (default):**
@@ -73,7 +73,9 @@ Execute task at <task_path>
 Review task at <task_path>.
 Result ref: <result_ref>. Review sheet: <review_sheet_path>.
 1. Read .claude/review-toolchain.md — run each tool in pipeline.
-   If file missing, run /code-review as default.
+   For each tool: preflight per knowledge/tools/tool-registry.md (health check → install if needed → re-check).
+   If a required tool fails preflight after install attempt → BLOCK + escalate, do NOT proceed with partial review.
+   /code-review is a baseline tool in the registry, not a fallback that bypasses other tools.
 2. Verify each AC item in the review sheet.
 3. Report: tool findings + AC results + tests + verdict.
 ```

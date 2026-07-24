@@ -100,7 +100,10 @@ verdict_date: null
 ## Review Toolchain
 Chạy review theo repo's toolchain:
   cat .claude/review-toolchain.md
-Nếu file không tồn tại → dùng /code-review mặc định.
+Repo PHẢI khai báo toolchain. Với mỗi tool trong pipeline:
+  - Preflight theo knowledge/tools/tool-registry.md (health_check → install nếu cần → re-check)
+  - Tool required=hard mà preflight fail sau install → BLOCK + escalate, không review với partial tools
+  - /code-review là baseline tool trong registry, chạy cùng (không thay thế) các tools khác
 Chạy tất cả tools trong pipeline, aggregate kết quả,
 rồi verify từng AC item.
 

@@ -17,10 +17,14 @@ Every tool below must be called with `repo_root=<absolute, looked up from index.
    `- [ ] Write a test for <symbol/file> (currently no coverage — knowledge gap) — suggested test file: <suggested test file>`
 7. `get_hub_nodes_tool(top_n=50, repo_root=...)` and `get_bridge_nodes_tool(top_n=50, repo_root=...)` — if any node in `files:` matches the returned list → flag `risk: high` in the frontmatter.
 8. `get_affected_flows_tool(changed_files=[...], repo_root=...)` → fills in `flows:`.
-8.5. **Optional OCR pre-scan**: If the target repo has an `ocr` CLI:
-   - Run `cd <repo_root> && ocr scan --path <comma-separated files from step 4> --format json` via Bash.
-   - If `ocr` command not found or fails → skip silently, continue to step 9.
+8.5. **OCR pre-scan (preflight-gated)**:
+   - **Preflight**: Read `knowledge/tools/tool-registry.md`, look up `ocr`. Run health check: `cd <repo_root> && ocr --version`.
+   - If health check fails → attempt install per registry (`pip install ocr-cli` or `pipx install ocr-cli`).
+   - Re-check: if still fails → `ocr` is `required: soft` for this step, so **log explicitly** ("OCR not available, pre-scan skipped — potential bugs may reach executor") and continue to step 9. Silent fallback is prohibited.
+   - If health check passes → run `cd <repo_root> && ocr scan --path <comma-separated files from step 4> --format json` via Bash.
    - If findings exist → record them in the task body under `## Pre-scan findings (OCR)` (below the Plan section placeholder). This surfaces potential bugs to the executor before they start.
+
+   **Note for graph queries (steps 1-8):** `code-review-graph` is `required: hard` for repos with `Graph build ✅` in PROJECT REGISTRY. If graph health check fails (MCP error, graph missing), attempt rebuild via `build_or_update_graph_tool(repo_root=...)`. If still fails → **BLOCK Spec Gate + escalate** per `AGENTS-REFERENCE.md` §8.3. Never fabricate `files:`/`tests:`/`flows:` manually.
 9. **Compute Pre-Execution Prediction Score (`predicted_success`)**:
     - Start with `Score = 1.0`.
     - `blast_radius > 8`: Score -= 0.3

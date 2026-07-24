@@ -38,9 +38,17 @@ Run these tools before verifying AC items.
 - Include tool output in the verdict report.
 ```
 
-## Fallback
+## Toolchain Requirement
 
-If a repo has no `.claude/review-toolchain.md`, reviewers use `/code-review` as the default.
+Every repo MUST declare a `.claude/review-toolchain.md`. There is no silent fallback.
+
+- If the file is missing: create it using the template above, then proceed with review.
+- For each tool in the pipeline: run **preflight** per `knowledge/tools/tool-registry.md`:
+  1. Health check the tool (command in registry)
+  2. If fails → attempt install (command in registry, respecting `scope`)
+  3. Re-check → if still fails and `required: hard` → **BLOCK + escalate**
+  4. `required: soft` → log explicitly ("Tool X unavailable, skipped") and continue
+- `/code-review` is a **baseline tool in the registry**, run alongside (not instead of) declared tools. It is not an escape hatch to skip other tools.
 
 ## What NOT to include
 
