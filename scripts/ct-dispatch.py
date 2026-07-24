@@ -88,9 +88,9 @@ def validate_spawn_guide(cli):
         fail(f"spawn-patterns guide does not document {cli}: {required}")
 
 
-def double_quote(value):
-    """Quote a prompt in the same readable form as spawn-patterns.md."""
-    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+def shell_quote(value):
+    """Quote a command argument so shell substitutions cannot be evaluated."""
+    return shlex.quote(value)
 
 
 def build_prompt(role, task_path, result_ref=None, review_sheet=None):
@@ -106,7 +106,7 @@ def build_prompt(role, task_path, result_ref=None, review_sheet=None):
 
 def build_command(repo_root, cli, model, effort, prompt):
     root = shlex.quote(str(repo_root))
-    quoted_prompt = double_quote(prompt)
+    quoted_prompt = shell_quote(prompt)
     if cli == "claude":
         return f"cd {root} && claude --model {shlex.quote(model)} -p {quoted_prompt} --dangerously-skip-permissions"
     if cli == "agy":
@@ -176,6 +176,9 @@ def main():
         agent_id = normalize_agent(args.reviewer or reviewer)
         if not agent_id:
             fail("--reviewer or task reviewer is required for review dispatch")
+        if agent_id == normalize_agent(executor):
+            print("reviewer == executor — four-eyes violation, refusing", file=sys.stderr)
+            raise SystemExit(1)
 
     agent_id, model, effort = load_agent(agent_id)
     cli = cli_for_model(model)

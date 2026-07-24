@@ -5,6 +5,7 @@ import contextlib
 import io
 import importlib.util
 import json
+import shlex
 import sys
 import tempfile
 import unittest
@@ -103,11 +104,11 @@ tests:
 
     def test_dispatch_uses_canonical_command_shape_for_each_cli(self):
         self.assertIn(
-            "claude --model claude-sonnet-5 -p \"Execute task at /tmp/task.md\"",
+            "claude --model claude-sonnet-5 -p 'Execute task at /tmp/task.md'",
             ct_dispatch.build_command("/tmp/repo", "claude", "claude-sonnet-5", "high", "Execute task at /tmp/task.md"),
         )
         self.assertIn(
-            "agy --model gemini-3.6-flash-high --print \"Execute task at /tmp/task.md\"",
+            "agy --model gemini-3.6-flash-high --print 'Execute task at /tmp/task.md'",
             ct_dispatch.build_command("/tmp/repo", "agy", "gemini-3.6-flash-high", "high", "Execute task at /tmp/task.md"),
         )
         self.assertIn(
@@ -151,6 +152,46 @@ tests:
         self.assertEqual(1, raised.exception.code)
         self.assertEqual(before, self.task.read_text(encoding="utf-8"))
         self.assertFalse((self.root / "projects/demo/reviews").exists())
+
+    def test_dispatch_review_enforces_four_eyes_without_output_or_writing(self):
+        task_text = self.task.read_text(encoding="utf-8").replace("status: todo", "status: in-review")
+        self.task.write_text(task_text, encoding="utf-8")
+        before = self.task.read_text(encoding="utf-8")
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with self.assertRaises(SystemExit) as raised, patch.object(
+            sys, "argv", ["ct-dispatch.py", "DEMO-001", "--role", "review", "--reviewer", "@worker"]
+        ), contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+            ct_dispatch.main()
+        self.assertEqual(1, raised.exception.code)
+        self.assertEqual("", stdout.getvalue())
+        self.assertIn("four-eyes", stderr.getvalue())
+        self.assertEqual(before, self.task.read_text(encoding="utf-8"))
+
+    def test_dispatch_shell_quotes_injection_shaped_result_ref(self):
+        prompt = ct_dispatch.build_prompt(
+            "review", Path("/tmp/task.md"), "abc$(touch /tmp/pwned)`whoami`", Path("/tmp/review.md")
+        )
+        command = ct_dispatch.build_command("/tmp/repo", "codex", "gpt-5.6-sol", "high", prompt)
+        self.assertIn(shlex.quote(prompt), command)
+        self.assertIn(prompt, shlex.split(command))
+
+    def test_review_order_copies_fenced_ac_headings_in_full(self):
+        self.task.write_text(
+            self.task.read_text(encoding="utf-8").replace(
+                "- [ ] AC2: do not spawn a process\n\n## Verification",
+                "- [ ] AC2: do not spawn a process\n\n```markdown\n## This is inside the AC fence\n- preserve this line\n```\n\n## Verification",
+            ).replace("status: todo", "status: dispatched"),
+            encoding="utf-8",
+        )
+        self.run_main(
+            ct_review_order,
+            ["ct-review-order.py", "DEMO-001", "--ref", "abc123", "--reviewer", "@reviewer"],
+        )
+        sheet = (self.root / "projects/demo/reviews/DEMO-001-review.md").read_text(encoding="utf-8")
+        self.assertIn("## This is inside the AC fence", sheet)
+        self.assertIn("- preserve this line", sheet)
+        self.assertIn("## Test gợi ý chạy trong repo code", sheet)
 
     def test_review_order_writes_task_and_sheet(self):
         self.task.write_text(

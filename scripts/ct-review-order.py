@@ -47,7 +47,22 @@ def section(body, heading):
     start = next((i for i, line in enumerate(lines) if re.match(rf"^##\s+{re.escape(heading)}", line)), None)
     if start is None:
         fail(f"task is missing section {heading!r}")
-    end = next((i for i in range(start + 1, len(lines)) if re.match(r"^##\s+", lines[i])), len(lines))
+    fence = None
+    end = len(lines)
+    for i in range(start + 1, len(lines)):
+        line = lines[i]
+        marker_match = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line)
+        if marker_match:
+            marker = marker_match.group(1)
+            suffix = marker_match.group(2)
+            if fence is None:
+                fence = (marker[0], len(marker))
+            elif marker[0] == fence[0] and len(marker) >= fence[1] and not suffix.strip():
+                fence = None
+            continue
+        if fence is None and re.match(r"^##\s+", line):
+            end = i
+            break
     return "\n".join(lines[start:end]).rstrip()
 
 
