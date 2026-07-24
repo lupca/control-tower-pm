@@ -52,3 +52,6 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-22 | CT-001 | high | 0.9 | blast_radius: 3 (-0.0), hub_bridge: false (-0.0), no_tests: true (-0.1) | — | pass | ✅ | — |
 | 2026-07-22 | MVA-001 | low | 0.2 | blast_radius: 168 (-0.5), hub_bridge: true (-0.2), no_tests: false (-0.1) | [0.1, 0.4] | changes | ✅ | ✅ |
 <!-- Updated automatically by /verdict -->
+| MVA-003 | medium (0.5) | pass (round 1) | ✅ under-estimated | slideshow restore — scope lớn nhưng plan rõ, executor mạnh |
+| MVA-002 | high (0.8) | pass (round 1) | ✅ accurate | text2img restore — scope nhỏ, plan rõ |
+| MVA-004 | high (0.75) | pass (round 1) | ✅ accurate | most ACs already done by MVA-008, only 1 remaining bug |

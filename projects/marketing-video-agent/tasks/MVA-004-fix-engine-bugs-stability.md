@@ -1,13 +1,15 @@
 ---
 id: MVA-004
 title: "Fix bugs + ổn định engines hiện tại"
-status: todo
+status: done
+done: 2026-07-24
+review_rounds: 1
 priority: high
 risk: normal
 deadline: null
-executor: null
-reviewer: null
-result_ref: null
+executor: "@gpt-5.6-sol"
+reviewer: "@antigravity"
+result_ref: "76b17f6"
 depends_on: []
 files:
   - engines/text2video.py
@@ -22,8 +24,8 @@ files:
 flows: []
 tests:
   - tests/test_simplified.py
-dispatched: null
-in_review: null
+dispatched: 2026-07-24
+in_review: 2026-07-24
 predicted_success: high
 prediction_factors:
   score: 0.75
@@ -32,8 +34,8 @@ prediction_factors:
     - "MoviePy v2 migration cần cẩn thận (-0.1)"
 confidence_interval: [0.6, 0.85]
 created: 2026-07-23
-updated: 2026-07-23
-plan_approved: false
+updated: 2026-07-24
+plan_approved: true
 ---
 
 # MVA-004: Fix bugs + ổn định engines hiện tại

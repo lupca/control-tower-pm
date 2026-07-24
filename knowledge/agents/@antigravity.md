@@ -2,7 +2,7 @@
 agent_id: "@antigravity"
 type: ai
 total_tasks_executed: 5
-total_tasks_reviewed: 2
+total_tasks_reviewed: 5
 success_rate: 1.00
 avg_review_rounds: 1.0
 strengths: [complex-backend, complex-frontend, architecture, research, review]

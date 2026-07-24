@@ -4,6 +4,51 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-24 18:35:00] dispatch | CT-023 review: @antigravity
+- Dự án: control-tower
+- Mô tả: Dispatch reviewer @antigravity (agy, gemini-3.1-pro) cho CT-023. Four-eyes OK (@antigravity ≠ @claude-opus).
+- Giải trình: Best-fit reviewer — strengths: architecture, review; success_rate: 1.0.
+- Files touched: projects/control-tower/tasks/CT-023-ocr-review-toolchain.md
+- Trạng thái: Thành công
+- auto-approved: dispatch
+- Commit: n/a
+
+## [2026-07-24 18:30:00] review-order | CT-023: OCR review toolchain architecture
+- Dự án: control-tower
+- Mô tả: Phát phiếu review cho CT-023. Executor @claude-opus, commit 0d0754c. Meta-project, no graph enrichment.
+- Giải trình: 5 files changed (3 skill edits + 1 new guide + 1 task-creation ref). Graph n/a.
+- Files touched: projects/control-tower/reviews/CT-023-review.md, projects/control-tower/tasks/CT-023-ocr-review-toolchain.md
+- Trạng thái: Thành công
+- auto-approved: review-order
+- Commit: n/a
+
+## [2026-07-24 18:10:00] dispatch | CT-023: OCR review toolchain architecture
+- Dự án: control-tower
+- Mô tả: Dispatch executor @claude-opus cho CT-023. CLI: claude -m claude-opus-4-5-20251101.
+- Giải trình: @claude-opus selected — strengths: skill-design, architecture; success_rate: 1.0. Best fit cho task sửa 3 skill files + tạo convention guide.
+- Files touched: projects/control-tower/tasks/CT-023-ocr-review-toolchain.md
+- Trạng thái: Thành công
+- auto-approved: dispatch
+- Commit: n/a
+
+## [2026-07-24 18:05:00] plan | CT-023: OCR review toolchain architecture
+- Dự án: control-tower
+- Mô tả: Plan written — 4 sub-tasks: sửa review-order template, genericize dispatch reviewer prompt, thêm optional ocr scan vào /pm, tạo convention guide.
+- Giải trình: Kiến trúc 3-layer decoupled: CT (WHAT) → repo toolchain (HOW) → reviewer (RUN). Thêm/bớt tool = sửa file trong target repo, CT zero changes.
+- Files touched: projects/control-tower/tasks/CT-023-ocr-review-toolchain.md
+- Trạng thái: Thành công
+- auto-approved: plan
+- Commit: n/a
+
+## [2026-07-24 18:00:00] pm-create | CT-023: OCR review toolchain architecture
+- Dự án: control-tower
+- Mô tả: Tạo task CT-023 — tích hợp OCR (open-code-review) vào review layer với 3 integration points: ocr scan tại Plan Gate, ocr delegate tại review dispatch, ocr review thay thế generic /code-review. Kiến trúc extensible: CT định nghĩa WHAT (contract), repo đích định nghĩa HOW (toolchain).
+- Giải trình: Meta-project, no code graph — files xác định trực tiếp từ user request (3 skill files + 1 guide). Prediction score 0.9 (high), chỉ trừ -0.1 do no tests (markdown files).
+- Files touched: projects/control-tower/tasks/CT-023-ocr-review-toolchain.md, projects/control-tower/control-tower.md
+- Trạng thái: Thành công
+- auto-approved: spec
+- Commit: n/a
+
 ## [2026-07-24 16:45:00] review-order: WEB-005
 - **Dự án:** topvnsport-web
 - **Mô tả hành động:** Phát phiếu review cho WEB-005 (fix discount price display).
@@ -1276,3 +1321,129 @@ prediction: medium → pass (beat prediction)
 notes: "AC pass; 39/39 tests; e2e OTP fail pre-existing (Zalo OA permission)"
 auto-approved: verdict
 
+
+## [2026-07-24 14:30:00] pm-create | MVA-010: Test orchestration SiliconFlow
+- Dự án: marketing-video-agent
+- Mô tả: Tạo task test-only kiểm thử agent orchestration qua SiliconFlow API (Qwen3-32B, GLM-5.1) thay Ollama local. Không thay đổi code.
+- Giải trình: MVA-007/008 đã xác nhận engines standalone hoạt động nhưng skip orchestration vì Ollama không có. User cung cấp SiliconFlow API key, cần verify OpenAIServerModel compatible. auto-approved: spec
+- Files touched: projects/marketing-video-agent/tasks/MVA-010-test-orchestration-siliconflow.md, projects/marketing-video-agent/marketing-video-agent.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 14:30:01] plan | MVA-010: Test orchestration SiliconFlow
+- Dự án: marketing-video-agent
+- Mô tả: Plan viết trực tiếp trong task — 6 bước test-only, không code change.
+- Giải trình: Plan đơn giản vì test-only: set env vars → run → observe → record. auto-approved: plan
+- Files touched: projects/marketing-video-agent/tasks/MVA-010-test-orchestration-siliconflow.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 14:31:00] dispatch | MVA-010: Test orchestration SiliconFlow
+- Dự án: marketing-video-agent
+- Mô tả: Dispatch @claude-sonnet-high (claude-sonnet-5) để test orchestration pipeline với SiliconFlow API. Test-only, không code change.
+- Giải trình: Best-fit executor — success rate 100%, strengths match (code, backend, testing). auto-approved: dispatch
+- Files touched: projects/marketing-video-agent/tasks/MVA-010-test-orchestration-siliconflow.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 14:45:00] plan | MVA-003: Khôi phục slideshow engine
+- Dự án: marketing-video-agent
+- Mô tả: Plan đã viết sẵn từ spec — 6 bước port từ worker_slideshow cũ. Approved.
+- Giải trình: Plan hợp lý, slideshow chưa tồn tại trong graph (đã xóa sạch). Lưu ý: depends_on MVA-002 vẫn todo nhưng user yêu cầu dispatch. auto-approved: plan
+- Files touched: projects/marketing-video-agent/tasks/MVA-003-restore-slideshow-engine.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 14:45:01] dispatch | MVA-003: Khôi phục slideshow engine
+- Dự án: marketing-video-agent
+- Mô tả: Dispatch @gpt-5.6-sol (gpt-5.6-sol) để khôi phục slideshow engine. Reviewer dự kiến: @antigravity (gemini 3.1 pro).
+- Giải trình: User chỉ định trực tiếp. @gpt-5.6-sol success rate 100%, strengths match (reasoning, complex-analysis). auto-approved: dispatch
+- Files touched: projects/marketing-video-agent/tasks/MVA-003-restore-slideshow-engine.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:00:00] review-order | MVA-003: Khôi phục slideshow engine
+- Dự án: marketing-video-agent
+- Mô tả: Phát phiếu review cho @antigravity (gemini 3.1 pro). Executor @gpt-5.6-sol, commit 4700920. 15 tests passed, smoke render OK.
+- Giải trình: Four-eyes OK (@antigravity ≠ @gpt-5.6-sol). Graph flagged render_slideshow (80 connections, untested hub) + compute_beat_synced_durations (bridge node). auto-approved: review-order
+- Files touched: projects/marketing-video-agent/reviews/MVA-003-review.md, projects/marketing-video-agent/tasks/MVA-003-restore-slideshow-engine.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:10:00] verdict | MVA-003: Khôi phục slideshow engine — PASS
+- Dự án: marketing-video-agent
+- Mô tả: Verdict pass — @antigravity reviewed, all 7 AC verified, 15/15 tests green, e2e smoke render OK.
+- Giải trình: Four-eyes OK (@antigravity ≠ @gpt-5.6-sol). Causal analysis recorded (feature lost during refactor, no prior pattern). Predicted medium, actual pass round 1. auto-approved: verdict
+- Files touched: projects/marketing-video-agent/tasks/MVA-003-restore-slideshow-engine.md, projects/marketing-video-agent/reviews/MVA-003-review.md, log.md
+- Trạng thái: Thành công
+- Commit: 4700920a4a8fb429499ee7f338b30be7b32bab1c
+
+## [2026-07-24 15:15:00] plan | MVA-002: Khôi phục text2img engine
+- Dự án: marketing-video-agent
+- Mô tả: Plan đã viết sẵn — 7 bước port từ worker_text2img cũ. auto-approved: plan
+- Files touched: projects/marketing-video-agent/tasks/MVA-002-restore-text2img-engine.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:15:01] dispatch | MVA-002: Khôi phục text2img engine
+- Dự án: marketing-video-agent
+- Mô tả: Dispatch @gpt-5.6-sol. Reviewer dự kiến: @antigravity. auto-approved: dispatch
+- Files touched: projects/marketing-video-agent/tasks/MVA-002-restore-text2img-engine.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:20:00] review-order | MVA-002: Khôi phục text2img engine
+- Dự án: marketing-video-agent
+- Mô tả: Phát phiếu review cho @antigravity. Executor @gpt-5.6-sol, commit a614bd0. 22 tests passed. auto-approved: review-order
+- Files touched: projects/marketing-video-agent/reviews/MVA-002-review.md, projects/marketing-video-agent/tasks/MVA-002-restore-text2img-engine.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:25:00] verdict | MVA-002: Khôi phục text2img engine — PASS
+- Dự án: marketing-video-agent
+- Mô tả: Verdict pass — @antigravity reviewed, all 5 AC verified, 22/22 tests green. auto-approved: verdict
+- Files touched: projects/marketing-video-agent/tasks/MVA-002-restore-text2img-engine.md, projects/marketing-video-agent/reviews/MVA-002-review.md, log.md
+- Trạng thái: Thành công
+- Commit: a614bd0525a0ca354b971d732a2f94b57fe60f2d
+
+## [2026-07-24 15:30:00] review-order | MVA-010: Test orchestration SiliconFlow
+- Dự án: marketing-video-agent
+- Mô tả: Phát phiếu review cho @antigravity. Test-only task, executor @claude-sonnet-high. auto-approved: review-order
+- Files touched: projects/marketing-video-agent/reviews/MVA-010-review.md, projects/marketing-video-agent/tasks/MVA-010-test-orchestration-siliconflow.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:30:01] plan | MVA-004: Fix bugs + ổn định engines
+- Dự án: marketing-video-agent
+- Mô tả: Plan đã viết — 8 bước fix bugs. Lưu ý: nhiều AC có thể đã done trong MVA-008. auto-approved: plan
+- Files touched: projects/marketing-video-agent/tasks/MVA-004-fix-engine-bugs-stability.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:30:02] dispatch | MVA-004: Fix bugs + ổn định engines
+- Dự án: marketing-video-agent
+- Mô tả: Dispatch @gpt-5.6-sol. Reviewer dự kiến @antigravity. auto-approved: dispatch
+- Files touched: projects/marketing-video-agent/tasks/MVA-004-fix-engine-bugs-stability.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:40:00] verdict | MVA-010: Test orchestration SiliconFlow — PASS
+- Dự án: marketing-video-agent
+- Mô tả: Verdict pass — reviewer timeout do SiliconFlow API chạy 10+ phút. User chấp nhận dựa trên executor evidence (connection OK, LLM OK, TTSTool OK). auto-approved: verdict
+- Files touched: projects/marketing-video-agent/tasks/MVA-010-test-orchestration-siliconflow.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a (test-only)
+
+## [2026-07-24 15:40:01] review-order | MVA-004: Fix engine bugs
+- Dự án: marketing-video-agent
+- Mô tả: Executor @gpt-5.6-sol done — chỉ 1 bug còn lại (text_events default override), commit 76b17f6. 24 tests pass. auto-approved: review-order
+- Files touched: projects/marketing-video-agent/tasks/MVA-004-fix-engine-bugs-stability.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 15:50:00] verdict | MVA-004: Fix engine bugs — PASS
+- Dự án: marketing-video-agent
+- Mô tả: Verdict pass — @antigravity reviewed, all 8 AC verified, 24/24 tests green. Hầu hết AC đã done từ MVA-008, chỉ fix 1 bug text_events. auto-approved: verdict
+- Files touched: projects/marketing-video-agent/tasks/MVA-004-fix-engine-bugs-stability.md, log.md
+- Trạng thái: Thành công
+- Commit: 76b17f6

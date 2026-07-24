@@ -1,13 +1,13 @@
 ---
 id: MVA-002
 title: "Khôi phục engine text2img (gen ảnh từ prompt)"
-status: todo
+status: done
 priority: high
 risk: normal
 deadline: null
-executor: null
-reviewer: null
-result_ref: null
+executor: "@gpt-5.6-sol"
+reviewer: "@antigravity"
+result_ref: "a614bd0525a0ca354b971d732a2f94b57fe60f2d"
 depends_on: []
 files:
   - engines/text2img.py
@@ -15,8 +15,8 @@ files:
   - requirements.txt
 flows: []
 tests: []
-dispatched: null
-in_review: null
+dispatched: 2026-07-24
+in_review: 2026-07-24
 predicted_success: high
 prediction_factors:
   score: 0.8
@@ -26,8 +26,8 @@ prediction_factors:
     - "chưa có test cho module mới (-0.2)"
 confidence_interval: [0.7, 0.9]
 created: 2026-07-23
-updated: 2026-07-23
-plan_approved: false
+updated: 2026-07-24
+plan_approved: true
 ---
 
 # MVA-002: Khôi phục engine text2img (gen ảnh từ prompt)
@@ -42,11 +42,11 @@ Source: nghiên cứu @gpt-5.6-sol + @antigravity (2026-07-23).
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] **AC1:** `engines/text2img.py` hoạt động: `generate_image(prompt, width, height) -> Path` trả file ảnh
-- [ ] **AC2:** Hỗ trợ ComfyUI workflow Flux.1 Schnell (port từ worker cũ commit trước `77bc43b`)
-- [ ] **AC3:** `tools/image_tool.py` — smolagents `ImageTool(Tool)` wrap engine, expose prompt/width/height cho LLM
-- [ ] **AC4:** Output path unique (không ghi đè giữa các lần gọi)
-- [ ] **AC5:** Test: `pytest tests/test_text2img.py` pass
+- [x] **AC1:** `engines/text2img.py` hoạt động: `generate_image(prompt, width, height) -> Path` trả file ảnh
+- [x] **AC2:** Hỗ trợ ComfyUI workflow Flux.1 Schnell (port từ worker cũ commit trước `77bc43b`)
+- [x] **AC3:** `tools/image_tool.py` — smolagents `ImageTool(Tool)` wrap engine, expose prompt/width/height cho LLM
+- [x] **AC4:** Output path unique (không ghi đè giữa các lần gọi)
+- [x] **AC5:** Test: `pytest tests/test_text2img.py` pass
 
 ## Plan
 
