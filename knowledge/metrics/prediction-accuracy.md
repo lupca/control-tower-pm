@@ -38,13 +38,13 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 8 |
-| **Pass Count (Actual Success)** | 7 |
-| **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 100% (8/8) |
-| **High Prediction Precision** | 100% (6/6) |
+| **Total Predicted Tasks** | 12 |
+| **Pass Count (Actual Success)** | 10 |
+| **Changes Count (Actual Rework/Fail)** | 2 |
+| **Overall Prediction Accuracy** | 100% (12/12) |
+| **High Prediction Precision** | 100% (9/9) |
 | **Medium Prediction Precision** | 100% (1/1) |
-| **Low Prediction Precision** | 100% (1/1) |
+| **Low Prediction Precision** | 100% (2/2) |
 
 ---
 
@@ -62,3 +62,7 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-24 | CT-023 | high | 0.9 | no_tests: true (-0.1) | — | pass | ✅ | — |
 | 2026-07-24 | CT-024 | high | 0.8 | code (không chỉ markdown) nhưng khu trú 1 file script (-0.1), no_tests: meta-project, chỉ validate bằng sandbox thủ công (-0.1); note: pass nhưng sau 3 round (2 reject) — predicted high hơi lạc quan, rework nhiều | [0.7, 0.9] | pass | ✅ | ❌ |
 | 2026-07-24 | CT-026 | high | 0.8 | code khu trú 1 script, đã có test harness sẵn (CT-024) (-0.1), no_tests suite CI, chỉ chạy tay/sandbox (-0.1) | [0.7, 0.9] | pass | ✅ | ❌ |
+| 2026-07-24 | CT-025 | high | 0.9 | no_tests: meta-project, markdown files only (-0.1), blast_radius: 8 files (2 new) — at limit, coherent single architecture, no split (-0.0) | [0.75, 0.95] | pass | ✅ | ❌ |
+| 2026-07-24 | CT-027 | high | 0.8 | refactor thuần, có test harness sẵn (-0.1), đụng ct-verdict-apply.py — script mutate state thật, cần cẩn thận (-0.1) | [0.7, 0.9] | pass | ✅ | ❌ |
+| 2026-07-25 | PMI-011 | low | 0.3 | blast_radius: 104 files impacted, >15 (-0.5 cumulative), hits hub/bridge node: calculate_discount (hub+bridge), eval_variant_promotion_match (hub) (-0.2) | — | changes | ✅ | — |
+| 2026-07-25 | CT-029 | high | 1.0 | — | — | pass | ✅ | — |

@@ -1670,3 +1670,16 @@ auto-approved: verdict
 - Files touched: projects/control-tower/tasks/CT-029-executor-auto-commit.md, projects/control-tower/control-tower.md, .agents/skills/dispatch/SKILL.md
 - Trạng thái: Thành công
 - auto-approved: pm (todo, plan, dispatch, and execute)
+
+## [2026-07-25 00:15:00] review-order | CT-029: Fix dispatch executor auto commit
+- Dự án: control-tower
+- Mô tả: Phát phiếu review cho CT-029 (executor `@antigravity`, commit `282f41f`). Phiếu review được tạo tại `projects/control-tower/reviews/CT-029-review.md`. Không dùng code-review-graph vì đây là meta-project. Task chuyển sang trạng thái `in-review`.
+- Trạng thái: Thành công
+- auto-approved: review-order (bypass)
+
+## [2026-07-25 00:15:45] verdict | CT-029: PASS — @claude-opus
+- Dự án: control-tower
+- Mô tả: Reviewer `@claude-opus` review ref `282f41f`. Lệnh spawn executor trong skill dispatch đã có yêu cầu commit rõ ràng. Script `ct-verdict-apply.py` tick 1 AC, đóng phiếu review và task. prediction_accuracy cập nhật (+1 pass, độ chính xác tổng 12/12 = 100%). agent_stats cập nhật (@antigravity success_rate lên 0.89).
+- Files touched: projects/control-tower/tasks/CT-029-executor-auto-commit.md, projects/control-tower/reviews/CT-029-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@antigravity.md, knowledge/agents/@claude-opus.md
+- Trạng thái: Thành công (done)
+- auto-approved: verdict (bypass)

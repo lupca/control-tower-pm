@@ -1,7 +1,7 @@
 ---
 id: CT-029
 title: "Fix dispatch executor auto commit"
-status: dispatched
+status: done
 priority: high
 risk: normal
 depends_on: []
@@ -10,14 +10,16 @@ files:
 flows: []
 tests: []
 dispatched: 2026-07-25
-in_review: null
+in_review: 2026-07-25
 executor: "@antigravity"
+result_ref: "282f41f"
 predicted_success: high
 prediction_factors:
   score: 1.0
   deductions: []
 created: 2026-07-25
 updated: 2026-07-25
+reviewer: "@claude-opus"
 ---
 
 # CT-029: Fix dispatch executor auto commit
@@ -25,7 +27,7 @@ updated: 2026-07-25
 > Dự án: [[projects/control-tower/control-tower]]
 
 ## Tiêu chí nghiệm thu (AC)
-- [ ] Lệnh spawn executor trong file `dispatch/SKILL.md` (hoặc prompt template) yêu cầu rõ ràng agent phải commit code và trả về `commit hash`.
+- [x] Lệnh spawn executor trong file `dispatch/SKILL.md` (hoặc prompt template) yêu cầu rõ ràng agent phải commit code và trả về `commit hash`.
 
 ## Verification
 - Kiểm tra nội dung chuỗi `Executor (default):` trong file `.agents/skills/dispatch/SKILL.md`.
