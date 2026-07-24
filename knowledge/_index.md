@@ -13,6 +13,7 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 | decision | [[ADR-005-archive-dormant-experimental-guidance]] | control-tower, documentation, skills, experimental | 2026-07-23 |
 | decision | [[ADR-006-coordination-modes-and-task-states]] | control-tower, coordination, gates, workflow | 2026-07-23 |
 | decision | [[ADR-007-report-stats-script]] | control-tower, tooling, report, automation, tokens | 2026-07-24 |
+| decision | [[ADR-008-verdict-apply-script]] | control-tower, tooling, verdict, automation, tokens | 2026-07-24 |
 | research | [[discount-promotion-architecture]] | pricing, discount, promotion, e-commerce | 2026-07-22 |
 | metric | [[prediction-accuracy]] | metrics, prediction, control-tower, accuracy | 2026-07-22 |
 | guide | [[setup-crg-daemon-autostart]] | tooling, code-review-graph, daemon | 2026-07-24 |

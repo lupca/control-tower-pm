@@ -38,11 +38,11 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 6 |
-| **Pass Count (Actual Success)** | 5 |
+| **Total Predicted Tasks** | 7 |
+| **Pass Count (Actual Success)** | 6 |
 | **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 100% (6/6) |
-| **High Prediction Precision** | 100% (4/4) |
+| **Overall Prediction Accuracy** | 100% (7/7) |
+| **High Prediction Precision** | 100% (5/5) |
 | **Medium Prediction Precision** | 100% (1/1) |
 | **Low Prediction Precision** | 100% (1/1) |
 
@@ -60,3 +60,4 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-24 | MVA-003 | medium | 0.5 | scope lớn: toàn bộ slideshow_engine (audio_sync, hook_outro, visuals, pipeline) (-0.3), phụ thuộc MVA-002 (cần gen ảnh) (-0.1), chưa có test (-0.1); note: under-estimated — plan rõ, executor mạnh | [0.3, 0.6] | pass | ✅ | ✅ |
 | 2026-07-24 | MVA-004 | high | 0.75 | nhiều fix nhỏ phân tán (-0.15), MoviePy v2 migration cần cẩn thận (-0.1); note: most ACs already done by MVA-008, only 1 remaining bug | [0.6, 0.85] | pass | ✅ | ✅ |
 | 2026-07-24 | CT-023 | high | 0.9 | no_tests: true (-0.1) | — | pass | ✅ | — |
+| 2026-07-24 | CT-024 | high | 0.8 | code (không chỉ markdown) nhưng khu trú 1 file script (-0.1), no_tests: meta-project, chỉ validate bằng sandbox thủ công (-0.1); note: pass nhưng sau 3 round (2 reject) — predicted high hơi lạc quan, rework nhiều | [0.7, 0.9] | pass | ✅ | ❌ |
