@@ -50,6 +50,14 @@ Cải tiến 4 điểm độ bền và ngữ nghĩa cho `scripts/ct-verdict-appl
 3. **Tick checkbox đúng phạm vi (AC Scoped Ticking)**: Chỉ tick `- [ ]` → `- [x]` trong section `## Tiêu chí nghiệm thu (AC)` (từ heading AC đến heading `##` kế tiếp), không tick tràn lan toàn bộ body task.
 4. **Ghi atomic (Atomic Writes)**: Gom toàn bộ file mutation (task, review sheet, prediction accuracy, pattern index) và chỉ ghi khi tất cả phép tính thành công qua temp-file + rename. Nếu script phụ `update-agent-stats.sh` lỗi, ghi nhận vào JSON kết quả nhưng không làm hỏng dữ liệu cốt lõi đã ghi.
 
+### Re-verdict & Edge Cases Hardening (CT-026)
+
+Cải tiến 4 điểm xử lý re-verdict và edge cases fence/CRLF cho `scripts/ct-verdict-apply.py`:
+1. **Re-verdict idempotent (Prediction Accuracy)**: `prepare_prediction_accuracy` cập nhật in-place dòng hiện có trong `prediction-accuracy.md` nếu task đã từng có verdict trước đó (thay vì append dòng mới). Đảm bảo mỗi task có đúng 1 dòng phản ánh kết quả cuối cùng, đồng thời tính lại bảng Summary Statistics chính xác.
+2. **Không double-count executed (Agent Profile Stats)**: Re-verdict không tăng `total_tasks_executed` của executor. Phân biệt first-verdict vs re-verdict bằng cách kiểm tra sự tồn tại của task trong `prediction-accuracy.md` (`is_reverdict`). Nếu là re-verdict, điều chỉnh `success_rate` và `recent_trend` theo kết quả mới nhất mà không tăng số task đã thực hiện.
+3. **Fence boundary matching đúng marker (AC Checkbox Scanning)**: `tick_ac_checkboxes` theo dõi marker mở fence (` ``` ` hoặc `~~~`) và chỉ đóng fence khi gặp ĐÚNG marker đã mở. Tránh trường hợp code fence lồng nhau có marker khác chứa dòng `##` gây kết thúc sớm section AC.
+4. **Hỗ trợ CRLF line endings**: `split_frontmatter` và các hàm đọc file tự động normalize `\r\n` thành `\n` trước khi parse frontmatter/body, giúp xử lý các task file có định dạng dòng CRLF (Windows) không bị lỗi parsing.
+
 ## Status
 
 Accepted

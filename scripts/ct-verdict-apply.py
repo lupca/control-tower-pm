@@ -37,7 +37,7 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-FM_RE = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
+FM_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n", re.DOTALL)
 
 
 def fail(msg, **extra):
@@ -46,6 +46,7 @@ def fail(msg, **extra):
 
 
 def split_frontmatter(text, path):
+    text = text.replace("\r\n", "\n")
     m = FM_RE.match(text)
     if not m:
         fail(f"{path}: no frontmatter block found")
@@ -96,25 +97,44 @@ def review_sheet_path(task_path, task_id):
     return project_dir / "reviews" / f"{task_id}-review.md"
 
 
+def update_fence_state(stripped, fence_marker):
+    """
+    Returns (new_fence_marker, is_toggle_line).
+    Strictly checks that a fence opened with ``` is closed ONLY by ```,
+    and a fence opened with ~~~ is closed ONLY by ~~~.
+    """
+    if fence_marker is None:
+        if stripped.startswith("```"):
+            return "```", True
+        elif stripped.startswith("~~~"):
+            return "~~~", True
+        return None, False
+    else:
+        if stripped.startswith(fence_marker):
+            return None, True
+        return fence_marker, False
+
+
 def tick_ac_checkboxes(body):
     """
     Ticks '- [ ]' -> '- [x]' ONLY within the AC section ('## Tiêu chí nghiệm thu...').
     Stops at the next '## ' heading or end of body.
     Uses line-anchored regex (re.subn) matching real checkbox list items
     (lines starting with optional whitespace then '- [ ]').
-    Skips lines inside fenced code blocks (``` or ~~~).
+    Skips lines inside fenced code blocks (``` or ~~~, matched strictly to opening marker).
     """
     lines = body.split("\n")
     ac_start = None
     ac_end = len(lines)
-    in_fence = False
+    fence_marker = None
+
     for i, line in enumerate(lines):
         stripped = line.strip()
-        if stripped.startswith("```") or stripped.startswith("~~~"):
-            in_fence = not in_fence
+        fence_marker, is_toggle = update_fence_state(stripped, fence_marker)
+        if is_toggle:
             continue
 
-        if not in_fence:
+        if fence_marker is None:
             if ac_start is None:
                 if re.match(r"^##\s+Tiêu chí nghiệm thu", line):
                     ac_start = i
@@ -127,23 +147,19 @@ def tick_ac_checkboxes(body):
         return body, 0
 
     ac_lines = lines[ac_start:ac_end]
-    in_fence = False
+    fence_marker = None
     ticked_total = 0
     new_ac_lines = []
 
     for line in ac_lines:
         stripped = line.strip()
-        if stripped.startswith("```") or stripped.startswith("~~~"):
-            in_fence = not in_fence
+        fence_marker, is_toggle = update_fence_state(stripped, fence_marker)
+        if is_toggle or fence_marker is not None:
             new_ac_lines.append(line)
-            continue
-
-        if not in_fence:
+        else:
             new_line, n = re.subn(r"^(\s*-\s*)\[ \]", r"\1[x]", line)
             ticked_total += n
             new_ac_lines.append(new_line)
-        else:
-            new_ac_lines.append(line)
 
     new_lines = lines[:ac_start] + new_ac_lines + lines[ac_end:]
     return "\n".join(new_lines), ticked_total
@@ -170,7 +186,7 @@ def prepare_prediction_accuracy(task_id, verdict, task_fm_lines, today_str):
     path = REPO_ROOT / "knowledge" / "metrics" / "prediction-accuracy.md"
     if not path.is_file():
         return {"updated": False, "reason": "file not found"}, None
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
 
     predicted_level, _ = fm_get(task_fm_lines, "predicted_success")
     score = ""
@@ -188,31 +204,24 @@ def prepare_prediction_accuracy(task_id, verdict, task_fm_lines, today_str):
     lines = text.split("\n")
     last_row_idx = None
     header_idx = None
+    existing_row_indices = []
+    prev_verdict = None
+
     for i, line in enumerate(lines):
         if line.startswith("| Date | Task ID |"):
             header_idx = i
         if header_idx is not None and i > header_idx + 1 and row_re.match(line):
             last_row_idx = i
+            cols = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cols) == 9 and cols[1] == task_id:
+                existing_row_indices.append(i)
+                if prev_verdict is None:
+                    prev_verdict = cols[6]
 
     if header_idx is None:
         return {"updated": False, "reason": "Log History table header not found"}, None
 
-    # Well-formed data rows: 9-column rows after the header/separator.
-    wellformed = []
-    malformed = 0
-    for i in range(header_idx + 2, len(lines)):
-        line = lines[i]
-        if not line.strip().startswith("|"):
-            continue
-        if row_re.match(line):
-            cols = [c.strip() for c in line.strip().strip("|").split("|")]
-            if len(cols) == 9:
-                wellformed.append(cols)
-        else:
-            malformed += 1
-
     # Match = does the actual verdict agree with what the predicted level implied?
-    # high/medium => expected pass; low => expected changes (per file's own §1 scoring semantics).
     if predicted_level in ("high", "medium"):
         matched = verdict == "pass"
     elif predicted_level == "low":
@@ -221,7 +230,7 @@ def prepare_prediction_accuracy(task_id, verdict, task_fm_lines, today_str):
         matched = None
     match_symbol = "✅" if matched else ("❌" if matched is False else "—")
 
-    # Independent In-Interval calculation (AC2)
+    # Independent In-Interval calculation
     confidence_interval_raw, _ = fm_get(task_fm_lines, "confidence_interval")
     ci_parsed = parse_confidence_interval(confidence_interval_raw)
     ci_display = confidence_interval_raw if confidence_interval_raw else "—"
@@ -237,11 +246,28 @@ def prepare_prediction_accuracy(task_id, verdict, task_fm_lines, today_str):
         f"| {today_str} | {task_id} | {predicted_level or '—'} | {score or '—'} | "
         f"{factors or '—'} | {ci_display} | {verdict} | {match_symbol} | {in_interval} |"
     )
-    wellformed.append([today_str, task_id, predicted_level or "—", score or "—",
-                        factors or "—", ci_display, verdict, match_symbol, in_interval])
 
-    insert_at = (last_row_idx + 1) if last_row_idx is not None else (header_idx + 2)
-    lines.insert(insert_at, new_row)
+    is_reverdict = len(existing_row_indices) > 0
+    if is_reverdict:
+        lines[existing_row_indices[0]] = new_row
+        for idx in reversed(existing_row_indices[1:]):
+            lines.pop(idx)
+    else:
+        insert_at = (last_row_idx + 1) if last_row_idx is not None else (header_idx + 2)
+        lines.insert(insert_at, new_row)
+
+    wellformed = []
+    malformed = 0
+    for i in range(header_idx + 2, len(lines)):
+        line = lines[i]
+        if not line.strip().startswith("|"):
+            continue
+        if row_re.match(line):
+            cols = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cols) == 9:
+                wellformed.append(cols)
+        else:
+            malformed += 1
 
     total = len(wellformed)
     pass_count = sum(1 for r in wellformed if r[6] == "pass")
@@ -271,7 +297,14 @@ def prepare_prediction_accuracy(task_id, verdict, task_fm_lines, today_str):
             lines[i] = f"| **{mm.group(1)}** | {stats[mm.group(1)]} |"
 
     new_text = "\n".join(lines)
-    return {"updated": True, "new_row": new_row, "malformed_rows_skipped": malformed, "stats": stats}, (path, new_text)
+    return {
+        "updated": True,
+        "is_reverdict": is_reverdict,
+        "prev_verdict": prev_verdict,
+        "new_row": new_row,
+        "malformed_rows_skipped": malformed,
+        "stats": stats,
+    }, (path, new_text)
 
 
 def prepare_pattern_bump(pattern_id):
@@ -279,7 +312,7 @@ def prepare_pattern_bump(pattern_id):
     pattern_path = REPO_ROOT / "knowledge" / "patterns" / f"{pattern_id}.md"
     if not pattern_path.is_file() or not idx_path.is_file():
         return {"bumped": False, "reason": "pattern or index not found"}, None
-    text = idx_path.read_text(encoding="utf-8")
+    text = idx_path.read_text(encoding="utf-8").replace("\r\n", "\n")
     pat = re.compile(rf"(\|\s*\[\[{re.escape(pattern_id)}\]\]\s*\|[^|]*\|[^|]*\|\s*)(\d+)(\s*\|)")
     m = pat.search(text)
     if not m:
@@ -289,9 +322,86 @@ def prepare_pattern_bump(pattern_id):
     return {"bumped": True, "new_count": new_count}, (idx_path, new_text)
 
 
-def run_agent_stats(agent_id, role, verdict, dry_run=False):
+def run_agent_stats(agent_id, role, verdict, dry_run=False, is_reverdict=False, prev_verdict=None):
     if dry_run:
         return {"ran": False, "dry_run": True}
+
+    agent_clean = agent_id.lstrip("@")
+    profile_path = REPO_ROOT / "knowledge" / "agents" / f"@{agent_clean}.md"
+
+    if profile_path.is_file():
+        try:
+            p_text = profile_path.read_text(encoding="utf-8").replace("\r\n", "\n")
+            p_lines, p_body = split_frontmatter(p_text, profile_path)
+            today_str = date.today().isoformat()
+
+            if role == "executor":
+                exec_str, _ = fm_get(p_lines, "total_tasks_executed")
+                rate_str, _ = fm_get(p_lines, "success_rate")
+
+                executed = int(exec_str) if exec_str and exec_str.isdigit() else 0
+                rate = float(rate_str) if rate_str else 1.0
+
+                if not is_reverdict:
+                    new_executed = executed + 1
+                    if verdict == "pass":
+                        succ_count = round(rate * executed) + 1
+                        trend = "improving"
+                    else:
+                        succ_count = round(rate * executed)
+                        trend = "declining"
+                    new_rate = round(succ_count / new_executed, 2) if new_executed > 0 else 1.0
+                    fm_set(p_lines, "total_tasks_executed", new_executed)
+                    fm_set(p_lines, "success_rate", new_rate)
+                    fm_set(p_lines, "recent_trend", trend)
+                    fm_set(p_lines, "last_active", today_str)
+                    res_executed = new_executed
+                else:
+                    succ_count = round(rate * executed)
+                    if prev_verdict == "changes" and verdict == "pass":
+                        succ_count += 1
+                        trend = "improving"
+                    elif prev_verdict == "pass" and verdict == "changes":
+                        succ_count = max(0, succ_count - 1)
+                        trend = "declining"
+                    else:
+                        trend = "improving" if verdict == "pass" else "declining"
+
+                    succ_count = min(executed, max(0, succ_count))
+                    new_rate = round(succ_count / executed, 2) if executed > 0 else 1.0
+                    fm_set(p_lines, "success_rate", new_rate)
+                    fm_set(p_lines, "recent_trend", trend)
+                    fm_set(p_lines, "last_active", today_str)
+                    res_executed = executed
+
+                new_profile_text = rebuild(p_lines, p_body)
+                atomic_write(profile_path, new_profile_text)
+
+                return {
+                    "ran": True,
+                    "reverdict": is_reverdict,
+                    "total_tasks_executed": res_executed,
+                    "success_rate": new_rate,
+                    "recent_trend": trend,
+                }
+
+            elif role == "reviewer":
+                rev_str, _ = fm_get(p_lines, "total_tasks_reviewed")
+                reviewed = int(rev_str) if rev_str and rev_str.isdigit() else 0
+                new_reviewed = reviewed + 1
+                fm_set(p_lines, "total_tasks_reviewed", new_reviewed)
+                fm_set(p_lines, "last_active", today_str)
+
+                new_profile_text = rebuild(p_lines, p_body)
+                atomic_write(profile_path, new_profile_text)
+
+                return {
+                    "ran": True,
+                    "total_tasks_reviewed": new_reviewed,
+                }
+        except Exception as e:
+            return {"ran": False, "error": str(e)}
+
     script = REPO_ROOT / "scripts" / "update-agent-stats.sh"
     if not script.is_file():
         return {"ran": False, "reason": "script not found"}
@@ -471,9 +581,18 @@ def main():
     if not args.dry_run:
         transactional_write_all(pending_writes)
 
+    is_reverdict = pa_res.get("is_reverdict", False) if isinstance(pa_res, dict) else False
+    prev_verdict = pa_res.get("prev_verdict") if isinstance(pa_res, dict) else None
+
     result["agent_stats"] = {
-        "executor": run_agent_stats(executor_norm, "executor", args.verdict, dry_run=args.dry_run),
-        "reviewer": run_agent_stats(reviewer_arg, "reviewer", args.verdict, dry_run=args.dry_run),
+        "executor": run_agent_stats(
+            executor_norm, "executor", args.verdict,
+            dry_run=args.dry_run, is_reverdict=is_reverdict, prev_verdict=prev_verdict
+        ),
+        "reviewer": run_agent_stats(
+            reviewer_arg, "reviewer", args.verdict,
+            dry_run=args.dry_run, is_reverdict=False, prev_verdict=None
+        ),
     }
 
     print(json.dumps(result, ensure_ascii=False, indent=2))

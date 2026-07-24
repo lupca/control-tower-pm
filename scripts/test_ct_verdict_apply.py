@@ -152,8 +152,13 @@ class TestCTVerdictApply(unittest.TestCase):
         Verify that run_agent_stats catches OSError / subprocess launch failures
         and returns {"ran": False, "error": ...} instead of throwing an exception.
         """
+        def mock_is_file(self_path):
+            if str(self_path).endswith("update-agent-stats.sh"):
+                return True
+            return False
+
         with patch("subprocess.run", side_effect=OSError("Permission denied: update-agent-stats.sh")):
-            with patch.object(Path, "is_file", return_value=True):
+            with patch.object(Path, "is_file", autospec=True, side_effect=mock_is_file):
                 result = ct_verdict_apply.run_agent_stats("@executor", "executor", "pass", dry_run=False)
                 self.assertFalse(result["ran"])
                 self.assertIn("error", result)
@@ -258,6 +263,279 @@ verdict: pending
                 self.assertIn("- [x] **AC1:** First criteria with '- [ ]' in backticks", new_task_text)
                 self.assertIn("status: done", new_task_text)
                 self.assertIn("- [ ] Non-AC item", new_task_text)
+
+    def test_ct026_ac1_reverdict_prediction_accuracy_idempotent(self):
+        """
+        AC1: Re-verdicting a task updates its existing row in prediction-accuracy.md
+        in-place rather than appending a new row, leaving exactly ONE row per task.
+        """
+        import json
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_root = Path(tmpdir)
+            task_dir = tmp_root / "projects" / "control-tower" / "tasks"
+            review_dir = tmp_root / "projects" / "control-tower" / "reviews"
+            metrics_dir = tmp_root / "knowledge" / "metrics"
+            agents_dir = tmp_root / "knowledge" / "agents"
+
+            task_dir.mkdir(parents=True)
+            review_dir.mkdir(parents=True)
+            metrics_dir.mkdir(parents=True)
+            agents_dir.mkdir(parents=True)
+
+            task_file = task_dir / "CT-888-test-reverdict.md"
+            task_file.write_text("""---
+id: CT-888
+title: "Test re-verdict idempotency"
+status: in-review
+priority: medium
+risk: normal
+executor: "@worker"
+reviewer: "@reviewer1"
+confidence_interval: [0.7, 0.9]
+predicted_success: high
+rejections: 0
+---
+
+## Tiêu chí nghiệm thu (AC)
+
+- [ ] **AC1:** Criteria 1
+""", encoding="utf-8")
+
+            review_file = review_dir / "CT-888-review.md"
+            review_file.write_text("""---
+id: CT-888
+status: in-review
+verdict: pending
+---
+# Review
+""", encoding="utf-8")
+
+            pa_file = metrics_dir / "prediction-accuracy.md"
+            pa_file.write_text("""# Prediction Accuracy
+
+| Date | Task ID | Level | Score | Factors | CI | Verdict | Match? | In Interval? |
+|---|---|---|---|---|---|---|---|---|
+
+| Metric | Value |
+|---|---|
+| **Total Predicted Tasks** | 0 |
+| **Pass Count (Actual Success)** | 0 |
+| **Changes Count (Actual Rework/Fail)** | 0 |
+| **Overall Prediction Accuracy** | 0% (0/0) |
+| **High Prediction Precision** | N/A |
+| **Medium Prediction Precision** | N/A |
+| **Low Prediction Precision** | N/A |
+""", encoding="utf-8")
+
+            agent_file = agents_dir / "@worker.md"
+            agent_file.write_text("""---
+agent_id: "@worker"
+total_tasks_executed: 0
+success_rate: 1.0
+---
+""", encoding="utf-8")
+
+            with patch.object(ct_verdict_apply, "REPO_ROOT", tmp_root):
+                # 1. Round 1: verdict = changes
+                sys_argv1 = ["ct-verdict-apply.py", "CT-888", "changes", "--reviewer", "@reviewer1", "--notes", "Need fixes"]
+                with patch.object(sys, "argv", sys_argv1):
+                    with patch("builtins.print"):
+                        ct_verdict_apply.main()
+
+                pa_text1 = pa_file.read_text(encoding="utf-8")
+                ct888_rows1 = [l for l in pa_text1.splitlines() if "| CT-888 |" in l]
+                self.assertEqual(len(ct888_rows1), 1)
+                self.assertIn("changes", ct888_rows1[0])
+
+                # 2. Reset task status to in-review for Round 2
+                task_content = task_file.read_text(encoding="utf-8")
+                task_content = task_content.replace("status: changes-requested", "status: in-review")
+                task_file.write_text(task_content, encoding="utf-8")
+
+                # Round 2: verdict = pass
+                sys_argv2 = ["ct-verdict-apply.py", "CT-888", "pass", "--reviewer", "@reviewer1", "--commit", "abcdef123"]
+                with patch.object(sys, "argv", sys_argv2):
+                    with patch("builtins.print"):
+                        ct_verdict_apply.main()
+
+                pa_text2 = pa_file.read_text(encoding="utf-8")
+                ct888_rows2 = [l for l in pa_text2.splitlines() if "| CT-888 |" in l]
+                # MUST leave exactly ONE row for CT-888, reflecting the final outcome 'pass'
+                self.assertEqual(len(ct888_rows2), 1)
+                self.assertIn("pass", ct888_rows2[0])
+                self.assertIn("| **Pass Count (Actual Success)** | 1 |", pa_text2)
+                self.assertIn("| **Changes Count (Actual Rework/Fail)** | 0 |", pa_text2)
+
+    def test_ct026_ac2_reverdict_does_not_double_count_executed(self):
+        """
+        AC2: Re-verdicting a task does NOT increment total_tasks_executed for the executor again,
+        and success_rate reflects the final outcome.
+        """
+        import json
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_root = Path(tmpdir)
+            task_dir = tmp_root / "projects" / "control-tower" / "tasks"
+            review_dir = tmp_root / "projects" / "control-tower" / "reviews"
+            metrics_dir = tmp_root / "knowledge" / "metrics"
+            agents_dir = tmp_root / "knowledge" / "agents"
+
+            task_dir.mkdir(parents=True)
+            review_dir.mkdir(parents=True)
+            metrics_dir.mkdir(parents=True)
+            agents_dir.mkdir(parents=True)
+
+            task_file = task_dir / "CT-777-test-stats.md"
+            task_file.write_text("""---
+id: CT-777
+title: "Test executor stats"
+status: in-review
+priority: medium
+risk: normal
+executor: "@worker"
+reviewer: "@reviewer1"
+predicted_success: high
+rejections: 0
+---
+
+## Tiêu chí nghiệm thu (AC)
+
+- [ ] **AC1:** Criteria 1
+""", encoding="utf-8")
+
+            pa_file = metrics_dir / "prediction-accuracy.md"
+            pa_file.write_text("""# Prediction Accuracy
+
+| Date | Task ID | Level | Score | Factors | CI | Verdict | Match? | In Interval? |
+|---|---|---|---|---|---|---|---|---|
+
+| Metric | Value |
+|---|---|
+| **Total Predicted Tasks** | 0 |
+| **Pass Count (Actual Success)** | 0 |
+| **Changes Count (Actual Rework/Fail)** | 0 |
+""", encoding="utf-8")
+
+            agent_file = agents_dir / "@worker.md"
+            agent_file.write_text("""---
+agent_id: "@worker"
+type: ai
+total_tasks_executed: 0
+total_tasks_reviewed: 0
+success_rate: 1.0
+recent_trend: stable
+last_active: 2026-07-24
+---
+# @worker
+""", encoding="utf-8")
+
+            with patch.object(ct_verdict_apply, "REPO_ROOT", tmp_root):
+                # 1. Round 1 verdict = changes
+                sys_argv1 = ["ct-verdict-apply.py", "CT-777", "changes", "--reviewer", "@reviewer1", "--notes", "Fix required"]
+                with patch.object(sys, "argv", sys_argv1):
+                    with patch("builtins.print"):
+                        ct_verdict_apply.main()
+
+                prof1 = agent_file.read_text(encoding="utf-8")
+                self.assertIn("total_tasks_executed: 1", prof1)
+
+                # 2. Reset task status to in-review for Round 2
+                task_content = task_file.read_text(encoding="utf-8")
+                task_content = task_content.replace("status: changes-requested", "status: in-review")
+                task_file.write_text(task_content, encoding="utf-8")
+
+                # Round 2 verdict = pass
+                sys_argv2 = ["ct-verdict-apply.py", "CT-777", "pass", "--reviewer", "@reviewer1", "--commit", "commit777"]
+                with patch.object(sys, "argv", sys_argv2):
+                    with patch("builtins.print"):
+                        ct_verdict_apply.main()
+
+                # Check agent profile after Round 2: total_tasks_executed MUST remain 1, success_rate MUST be 1.0
+                prof2 = agent_file.read_text(encoding="utf-8")
+                self.assertIn("total_tasks_executed: 1", prof2)
+                self.assertIn("success_rate: 1.0", prof2)
+
+    def test_ct026_ac3_mixed_marker_fence(self):
+        """
+        AC3: Mixed-marker nested fences (e.g. ``` fence containing ~~~) only close with
+        their own opening marker. A '##' line inside the inner fence does not cause premature AC exit.
+        """
+        sample_body = """
+> Project: control-tower
+
+## Tiêu chí nghiệm thu (AC)
+
+- [ ] **AC1:** Pre-fence item
+
+```markdown
+~~~yaml
+## Fake heading inside mixed-marker fence
+- [ ] Fake fenced item
+~~~
+```
+
+- [ ] **AC2:** Post-fence item
+
+## Implementation
+
+- [ ] Non-AC item
+"""
+        new_body, ticked_count = ct_verdict_apply.tick_ac_checkboxes(sample_body)
+
+        # Both AC1 and AC2 must be ticked
+        self.assertEqual(ticked_count, 2)
+        self.assertIn("- [x] **AC1:** Pre-fence item", new_body)
+        self.assertIn("- [x] **AC2:** Post-fence item", new_body)
+
+        # Fenced content must remain unticked and intact
+        self.assertIn("## Fake heading inside mixed-marker fence", new_body)
+        self.assertIn("- [ ] Fake fenced item", new_body)
+
+        # Implementation item remains unticked
+        self.assertIn("- [ ] Non-AC item", new_body)
+
+    def test_ct026_ac4_crlf_frontmatter_tolerance(self):
+        """
+        AC4: FM_RE and split_frontmatter tolerate CRLF (\\r\\n) task files cleanly.
+        """
+        import json
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_root = Path(tmpdir)
+            task_dir = tmp_root / "projects" / "control-tower" / "tasks"
+            review_dir = tmp_root / "projects" / "control-tower" / "reviews"
+            metrics_dir = tmp_root / "knowledge" / "metrics"
+            agents_dir = tmp_root / "knowledge" / "agents"
+
+            task_dir.mkdir(parents=True)
+            review_dir.mkdir(parents=True)
+            metrics_dir.mkdir(parents=True)
+            agents_dir.mkdir(parents=True)
+
+            task_file = task_dir / "CT-666-crlf-task.md"
+            task_file.write_bytes(
+                "---\r\nid: CT-666\r\ntitle: \"CRLF task\"\r\nstatus: in-review\r\npriority: medium\r\nrisk: normal\r\nexecutor: \"@worker\"\r\nreviewer: \"@reviewer1\"\r\npredicted_success: high\r\nrejections: 0\r\n---\r\n\r\n## Tiêu chí nghiệm thu (AC)\r\n\r\n- [ ] **AC1:** CRLF item\r\n".encode("utf-8")
+            )
+
+            pa_file = metrics_dir / "prediction-accuracy.md"
+            pa_file.write_text("""# Prediction Accuracy
+
+| Date | Task ID | Level | Score | Factors | CI | Verdict | Match? | In Interval? |
+|---|---|---|---|---|---|---|---|---|
+""", encoding="utf-8")
+
+            with patch.object(ct_verdict_apply, "REPO_ROOT", tmp_root):
+                sys_argv = ["ct-verdict-apply.py", "CT-666", "pass", "--reviewer", "@reviewer1", "--commit", "crlf123"]
+                with patch.object(sys, "argv", sys_argv):
+                    with patch("builtins.print") as mock_print:
+                        ct_verdict_apply.main()
+                        res = json.loads(mock_print.call_args[0][0])
+                        self.assertTrue(res["ok"])
+
+            new_task_text = task_file.read_text(encoding="utf-8")
+            self.assertIn("status: done", new_task_text)
+            self.assertIn("- [x] **AC1:** CRLF item", new_task_text)
 
 
 if __name__ == "__main__":
