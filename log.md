@@ -1623,3 +1623,50 @@ auto-approved: verdict
 - Files touched: projects/control-tower/tasks/CT-025-*.md, projects/control-tower/reviews/CT-025-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/patterns/mandatory-tool-preflight.md, knowledge/patterns/_index.md, knowledge/agents/@claude-opus.md, knowledge/agents/@antigravity.md, log.md
 - Trạng thái: Thành công
 - Commit: 95d126f
+
+## [2026-07-24 17:35:00] pm-create | PMI-011 + WEB-006: giảm giá "tất cả sản phẩm" không hoạt động
+- Dự án: topvnsport-pmi, topvnsport-web
+- Mô tả: User báo bug qua chat (đã trùng lần đầu với WEB-005 in-review, user xác nhận muốn tạo task riêng). Blast radius `promotion_service.py` = 104 files (>15) + `calculate_discount`/`eval_variant_promotion_match` là hub/bridge node → đề xuất split 2 task, user đồng ý. Tạo PMI-011 (root cause backend, risk: high, predicted_success: low, score 0.3) + WEB-006 (verify e2e frontend, depends_on PMI-011, risk: normal, predicted_success: high, score 0.7). OCR pre-scan `promotion_service.py`: 9 findings, ghi vào PMI-011 `## Pre-scan findings`.
+- Giải trình: semantic_search + file_summary xác định `promotion_service.py` (matches_single_scope/eval_variant_promotion_match/calculate_discount) là nghi vấn chính, khác gốc rễ với WEB-005 (bug hiển thị frontend, đã fix). files:/tests:/flows: lấy từ get_impact_radius_tool/query_graph_tool(tests_for)/get_affected_flows_tool.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (mới), projects/topvnsport-pmi/topvnsport-pmi.md (next_task_id→12), projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md (mới), projects/topvnsport-web/topvnsport-web.md (next_task_id→7)
+- Trạng thái: Thành công — Spec Gate auto-approved: spec (mode bypass)
+- Commit: n/a
+
+## [2026-07-24 17:40:00] plan | PMI-011 + WEB-006
+- Dự án: topvnsport-pmi, topvnsport-web
+- Mô tả: Viết `## Plan` cho cả 2 task. PMI-011: giả thuyết chính là `eval_variant_promotion_match` coi `scopes=[]` (biểu diễn "tất cả sản phẩm") = "không match gì" (`if not scopes: return False`) thay vì "match tất cả" — silent-fail khớp đúng triệu chứng, ưu tiên hơn cycle-detection bug (sẽ gây hang, không silent-fail). WEB-006: plan verify 4 điểm hiển thị giá sau khi PMI-011 xong, không tự mở rộng fix.
+- Giải trình: Đọc source qua OCR pre-scan output (không đọc diff, chỉ source hiện tại — đúng ranh giới PLAN read-only).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md, projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md
+- Trạng thái: Thành công — Plan Gate auto-approved: plan (mode bypass)
+- Commit: n/a
+
+## [2026-07-24 17:45:00] dispatch | PMI-011 → @antigravity
+- Dự án: topvnsport-pmi
+- Mô tả: Chọn executor tự động (bypass): @antigravity (strengths: complex-backend, success_rate 1.0) — khớp nhất domain "backend" + độ phức tạp cao (hub/bridge, root-cause investigation) so với các executor khác (gpt-5.6-luna-high 0.83, claude-sonnet 1.0 nhưng không có "complex-backend"). Spawn: `agy --model gemini-3.1-pro --effort high --print "Execute task at .../PMI-011-*.md" --dangerously-skip-permissions` (background, id byli0lmo8 — lần đầu btm6sgjnr fail vì thiếu `--effort`, đã sửa). auto-approved: dispatch (risk: high, mode bypass cho phép auto-approve theo AGENTS.md §4.3).
+- Giải trình: WEB-006 KHÔNG dispatch cùng lúc dù mode bypass — `depends_on: [PMI-011]`, dispatch ngay sẽ lãng phí (chưa có gì để verify). Giữ WEB-006 ở `status: todo` (Plan đã viết, chờ PMI-011 done).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: dispatched, executor: @antigravity, dispatched: 2026-07-24)
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-24 23:50:00] review-order | PMI-011: Fix khuyến mãi scope "tất cả sản phẩm"
+- Dự án: topvnsport-pmi
+- Mô tả: @antigravity báo cáo done — 4 root cause xác nhận (scopes=[] silent-fail, thiếu alias ALL_PRODUCTS trong matches_single_scope, keyword precedence sai trong parse_promotion_intent, router thiếu map alias). Test 101/101 pass. Code ban đầu chưa commit — control-tower KHÔNG tự commit (rule cứng CLAUDE.md); User tự chạy `git commit` → hash `6b54a76`. Rebuild graph (build_or_update_graph_tool) để khớp HEAD mới trước khi enrich review sheet.
+- Giải trình: Review sheet nhấn mạnh 2 điểm cần soi kỹ: (1) fix scope-matching bằng cách thêm string alias có thể che giấu vấn đề gốc (thiếu ScopeType enum member), (2) fix keyword-precedence trong NLP intent parser dễ vỡ lại với câu diễn đạt khác — thêm bước Manual QA thử câu khác ngoài mẫu gốc.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: in-review, result_ref: 6b54a76, in_review: 2026-07-24), projects/topvnsport-pmi/reviews/PMI-011-review.md (mới)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: 6b54a76
+
+## [2026-07-25 00:11:42] verdict | PMI-011: Fix khuyến mãi scope "tất cả sản phẩm" — CHANGES
+- Dự án: topvnsport-pmi
+- Mô tả: @gpt-5.6-sol review commit 6b54a76 và yêu cầu changes với 5 findings: alias ALL_PRODUCTS bị Pydantic trả 422 trước router; parser mixed-scope mở rộng thành ALL; specificity empty/ALL không nhất quán; route AC3 không tồn tại; thiếu regression coverage. Task → changes-requested, rejections: 1. Prediction low→changes đúng, overall accuracy 100% (11/11). @antigravity exec 8/0.88 (declining), @gpt-5.6-sol reviewed 14. auto-approved: verdict
+- Giải trình: Toolchain hard preflight đều pass. OCR single-commit + /code-review cùng xác nhận alias branch là dead code; graph cho blast radius high (100 files, 1337 nodes trong 2 hops). Targeted tests 36/36 và unit 101/101 pass, nhưng endpoint probe vẫn trả 422 và parser reproduction xác nhận scope-widening; 2 E2E risk tests fail ở lỗi auth `Access token invalid`.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md, projects/topvnsport-pmi/reviews/PMI-011-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@antigravity.md, knowledge/agents/@gpt-5.6-sol.md, log.md
+- Trạng thái: Thành công
+- Commit: 6b54a76
+
+## [2026-07-25 00:13:00] pm | Tạo CT-029 — Fix dispatch executor auto commit
+- Dự án: control-tower
+- Mô tả: Tạo task CT-029 (xử lý issue exec agent không tự commit). Đã tạo task, cập nhật index, lập plan trong trạng thái bypass, và trực tiếp sửa `.agents/skills/dispatch/SKILL.md` để thêm yêu cầu bắt buộc agent commit code sau khi execute.
+- Files touched: projects/control-tower/tasks/CT-029-executor-auto-commit.md, projects/control-tower/control-tower.md, .agents/skills/dispatch/SKILL.md
+- Trạng thái: Thành công
+- auto-approved: pm (todo, plan, dispatch, and execute)

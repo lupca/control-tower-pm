@@ -65,7 +65,7 @@ Where:
 
 **Executor (default):**
 ```
-Execute task at <task_path>
+Execute task at <task_path>. When you are done, you MUST commit your changes and provide the resulting commit hash.
 ```
 
 **Reviewer (--review):**

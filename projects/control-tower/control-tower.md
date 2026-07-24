@@ -1,8 +1,8 @@
 ---
 task_prefix: CT
-next_task_id: 26
+next_task_id: 30
 created: 2026-07-22
-updated: 2026-07-24
+updated: 2026-07-25
 ---
 
 # Control Tower (Meta-Project)
@@ -65,3 +65,4 @@ updated: 2026-07-24
 - [[CT-024-harden-verdict-apply-script]] — Harden ct-verdict-apply.py — dry-run, scoped ticks, độc lập In-Interval, ghi atomic (done)
 - [[CT-025-mandatory-tool-registry-preflight]] — Mandatory Tool Registry + Tool Preflight — bắt buộc dùng code-review-graph/OCR, không fallback manual, mở rộng bằng khai báo (dispatched)
 - [[CT-026-verdict-apply-reverdict-and-fence-edges]] — ct-verdict-apply.py: idempotent re-verdict + mixed-fence/CRLF edge cases (follow-up CT-024) (todo)
+- [[CT-029-executor-auto-commit]] — Fix dispatch executor auto commit (todo)
