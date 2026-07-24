@@ -1,3 +1,10 @@
+---
+name: dispatch
+description: Build and hand off executor or reviewer CLI commands for a task, including lifecycle and four-eyes checks. Activate on /dispatch.
+argument-hint: "<task-id> @<agent-id> [--review]"
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash
+---
+
 # /dispatch — Auto spawn CLI executor/reviewer
 
 **Usage:** `/dispatch <task-id> @<agent-id> [--review]`
