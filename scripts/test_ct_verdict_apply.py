@@ -537,6 +537,100 @@ last_active: 2026-07-24
             self.assertIn("status: done", new_task_text)
             self.assertIn("- [x] **AC1:** CRLF item", new_task_text)
 
+    def test_ct026_ac2_legacy_duplicate_rows_last_prev_verdict(self):
+        """
+        Regression test for CT-026 AC2 blocking defect:
+        When prediction-accuracy has legacy duplicate rows (e.g. changes -> pass),
+        a new 'changes' verdict must pick the LAST matching row ('pass') as prev_verdict,
+        correctly adjusting executor success_rate (from 1.0 down to 0.0 for pass -> changes)
+        AND consolidating the legacy duplicate rows into a single final 'changes' row.
+        """
+        import json
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_root = Path(tmpdir)
+            task_dir = tmp_root / "projects" / "control-tower" / "tasks"
+            review_dir = tmp_root / "projects" / "control-tower" / "reviews"
+            metrics_dir = tmp_root / "knowledge" / "metrics"
+            agents_dir = tmp_root / "knowledge" / "agents"
+
+            task_dir.mkdir(parents=True)
+            review_dir.mkdir(parents=True)
+            metrics_dir.mkdir(parents=True)
+            agents_dir.mkdir(parents=True)
+
+            task_file = task_dir / "CT-555-legacy-dup.md"
+            task_file.write_text("""---
+id: CT-555
+title: "Legacy duplicate test"
+status: in-review
+priority: medium
+risk: normal
+executor: "@worker"
+reviewer: "@reviewer1"
+predicted_success: high
+rejections: 1
+---
+
+## Tiêu chí nghiệm thu (AC)
+
+- [ ] **AC1:** Criteria 1
+""", encoding="utf-8")
+
+            pa_file = metrics_dir / "prediction-accuracy.md"
+            # Seed legacy duplicate rows: changes -> pass
+            pa_file.write_text("""# Prediction Accuracy
+
+| Date | Task ID | Level | Score | Factors | CI | Verdict | Match? | In Interval? |
+|---|---|---|---|---|---|---|---|---|
+| 2026-07-20 | CT-555 | high | 0.8 | deduction | [0.7, 0.9] | changes | ❌ | ❌ |
+| 2026-07-21 | CT-555 | high | 0.8 | deduction | [0.7, 0.9] | pass | ✅ | ✅ |
+
+| Metric | Value |
+|---|---|
+| **Total Predicted Tasks** | 1 |
+| **Pass Count (Actual Success)** | 1 |
+| **Changes Count (Actual Rework/Fail)** | 0 |
+| **Overall Prediction Accuracy** | 100% (1/1) |
+| **High Prediction Precision** | 100% (1/1) |
+| **Medium Prediction Precision** | N/A |
+| **Low Prediction Precision** | N/A |
+""", encoding="utf-8")
+
+            agent_file = agents_dir / "@worker.md"
+            # Executor had 1 task executed, currently pass -> success_rate 1.0
+            agent_file.write_text("""---
+agent_id: "@worker"
+type: ai
+total_tasks_executed: 1
+total_tasks_reviewed: 0
+success_rate: 1.0
+recent_trend: improving
+last_active: 2026-07-21
+---
+# @worker
+""", encoding="utf-8")
+
+            with patch.object(ct_verdict_apply, "REPO_ROOT", tmp_root):
+                sys_argv = ["ct-verdict-apply.py", "CT-555", "changes", "--reviewer", "@reviewer1", "--notes", "New regression issue"]
+                with patch.object(sys, "argv", sys_argv):
+                    with patch("builtins.print") as mock_print:
+                        ct_verdict_apply.main()
+                        res = json.loads(mock_print.call_args[0][0])
+                        self.assertTrue(res["ok"])
+
+            # 1. Check duplicate rows in prediction-accuracy.md consolidated to 1 row
+            pa_text = pa_file.read_text(encoding="utf-8")
+            ct555_rows = [l for l in pa_text.splitlines() if "| CT-555 |" in l]
+            self.assertEqual(len(ct555_rows), 1)
+            self.assertIn("changes", ct555_rows[0])
+
+            # 2. Check executor stats adjusted correctly (pass -> changes: rate goes from 1.0 to 0.0)
+            prof = agent_file.read_text(encoding="utf-8")
+            self.assertIn("total_tasks_executed: 1", prof)
+            self.assertIn("success_rate: 0.0", prof)
+            self.assertIn("recent_trend: declining", prof)
+
 
 if __name__ == "__main__":
     unittest.main()

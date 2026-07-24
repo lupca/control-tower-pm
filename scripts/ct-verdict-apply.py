@@ -215,8 +215,7 @@ def prepare_prediction_accuracy(task_id, verdict, task_fm_lines, today_str):
             cols = [c.strip() for c in line.strip().strip("|").split("|")]
             if len(cols) == 9 and cols[1] == task_id:
                 existing_row_indices.append(i)
-                if prev_verdict is None:
-                    prev_verdict = cols[6]
+                prev_verdict = cols[6]
 
     if header_idx is None:
         return {"updated": False, "reason": "Log History table header not found"}, None
