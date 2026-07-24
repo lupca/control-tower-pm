@@ -46,7 +46,7 @@ Source of truth for all tools used by control-tower skills. Skills read this reg
 | **scope** | `target-repo` |
 | **applies_to** | All repos (pre-scan optional; review toolchain when declared) |
 | **health_check** | `cd <repo_root> && ocr --version` — exits 0 |
-| **install** | `pip install ocr-cli` or `pipx install ocr-cli` (in target repo's environment); for system-wide: `sudo pip install ocr-cli` |
+| **install** | Download binary from https://github.com/alibaba/open-code-review/releases or `npm install -g @alibaba-group/ocr-linux-x64` (Linux) / `@alibaba-group/ocr-darwin-x64` (macOS) |
 | **required** | `soft` for `/pm` pre-scan (step 8.5); `hard` when declared in repo's `.claude/review-toolchain.md` |
 | **used_by** | `pm` (pre-scan step 8.5), `review` (toolchain) |
 | **fallback** | `none` |

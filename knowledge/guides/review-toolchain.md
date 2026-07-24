@@ -65,3 +65,10 @@ ocr review --from main --to $RESULT_REF --format json
 ```
 
 Where `$RESULT_REF` is the branch/commit/PR being reviewed (from the review sheet's `result_ref`). OCR scans only changed files between `main` and the result ref — no need to specify paths manually.
+
+**Commands:**
+- `ocr review --from <base> --to <head>` — diff-based review (most common)
+- `ocr review --commit <hash>` — review a single commit
+- `ocr scan` — scan changed files (still requires git changes, NOT static scan)
+
+**Note:** Both `review` and `scan` compare against git state. For truly static analysis of existing files, use other linters or specify `--path` with actual uncommitted changes.

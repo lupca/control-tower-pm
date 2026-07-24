@@ -24,7 +24,7 @@
   - `gemini-*` → **agy** CLI
   - `gpt-*` → **codex** CLI
 - Spawn pattern:
-  - **claude:** `cd <repo> && claude -m <model> -p "..." --dangerously-skip-permissions`
+  - **claude:** `cd <repo> && claude -model <model> -p "..." --dangerously-skip-permissions`
   - **agy:** `cd <repo> && agy -m <model> -p "..."`
   - **codex:** `cd <repo> && codex exec -m <model> [--reasoning <effort>] --dangerously-bypass-approvals-and-sandbox "..."`
 - **MCP required:** If repo has no `.mcp.json`, see `knowledge/guides/setup-code-review-graph.md`

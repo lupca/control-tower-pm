@@ -1,8 +1,8 @@
 ---
 task_prefix: CT
-next_task_id: 24
+next_task_id: 26
 created: 2026-07-22
-updated: 2026-07-23
+updated: 2026-07-24
 ---
 
 # Control Tower (Meta-Project)
@@ -23,8 +23,9 @@ updated: 2026-07-23
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
-| done | 22 |
-| dispatched | 1 |
+| done | 23 |
+| dispatched | 2 |
+| todo | 1 |
 *(Cập nhật bởi `/report`)*
 
 ## References
@@ -61,3 +62,6 @@ updated: 2026-07-23
 - [[CT-021-coordination-mode-flow-simplify]] — Coordination mode + đơn giản hóa task flow (done)
 - [[CT-022-reviewer-rotation]] — Reviewer Rotation — track rejections, enforce reviewer change (done)
 - [[CT-023-ocr-review-toolchain]] — Tích hợp OCR vào review layer — review toolchain architecture (done)
+- [[CT-024-harden-verdict-apply-script]] — Harden ct-verdict-apply.py — dry-run, scoped ticks, độc lập In-Interval, ghi atomic (done)
+- [[CT-025-mandatory-tool-registry-preflight]] — Mandatory Tool Registry + Tool Preflight — bắt buộc dùng code-review-graph/OCR, không fallback manual, mở rộng bằng khai báo (dispatched)
+- [[CT-026-verdict-apply-reverdict-and-fence-edges]] — ct-verdict-apply.py: idempotent re-verdict + mixed-fence/CRLF edge cases (follow-up CT-024) (todo)

@@ -17,6 +17,7 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 | research | [[discount-promotion-architecture]] | pricing, discount, promotion, e-commerce | 2026-07-22 |
 | metric | [[prediction-accuracy]] | metrics, prediction, control-tower, accuracy | 2026-07-22 |
 | guide | [[setup-crg-daemon-autostart]] | tooling, code-review-graph, daemon | 2026-07-24 |
+| guide | [[spawn-patterns]] | dispatch, cli, agents, control-tower | 2026-07-24 |
 | agent | [[@antigravity]] | agent, profile, ai | 2026-07-24 |
 | agent | [[@antigravity-3.6]] | agent, profile, ai, deprecated | 2026-07-22 |
 | agent | [[@antigravity-3.6-low]] | agent, profile, ai | 2026-07-22 |

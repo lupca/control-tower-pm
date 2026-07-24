@@ -6,7 +6,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 ## 1. THỐNG KÊ TỔNG QUAN (System Status)
 
-*   **Thời gian cập nhật cuối:** 2026-07-24 (CT-024 dispatched)
+*   **Thời gian cập nhật cuối:** 2026-07-24 21:45 (CT-024 done, CT-026 added)
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
 *   **Tổng số dự án:** 7 dự án đang hoạt động
 
@@ -38,7 +38,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | **TopVNSport - OMS** | `projects/topvnsport-oms/` | ✅ Hoàn thành | 5/5 | — | Zalo OTP integration + main.py refactor done |
 | **TopVNSport - WMS** | `projects/topvnsport-wms/` | ✅ Hoàn thành | 3/3 | — | Table, 414 fix, CI fix done |
 | **TopVNSport - Web** | `projects/topvnsport-web/` | 🔄 Đang chạy | 4/5 | WEB-005: in-review | CORS research done; 1 in-review: WEB-005 discount price |
-| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 23/24 | CT-019: dispatched | CT-024 DONE (pass round 3, @claude-opus, ref ea9897a); 1 dispatched: CT-019 |
+| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 23/26 | CT-019, CT-025: dispatched | 2 dispatched: CT-019, CT-025; 1 todo: CT-026 |
 | **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 8/10 | — | 2 todo: MVA-005 TTS resilience, MVA-006 CapCut parser |
 | **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 13/13 | — | Dashboard fixes complete |
 
@@ -73,7 +73,8 @@ Domain knowledge, quyết định kiến trúc (ADR), quy ước — xem `AGENTS
 
 | Type | Số file (cross-project, `knowledge/`) | Số file (per-project, `projects/*/docs/`) |
 | :--- | ---: | ---: |
-| domains | 0 | 0 |
 | decisions | 8 | 0 |
-| conventions | 0 | 0 |
 | research | 1 | 0 |
+| guides | 2 | 0 |
+| metrics | 1 | 0 |
+| agents | 17 | 0 |
