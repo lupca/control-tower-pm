@@ -23,9 +23,8 @@ updated: 2026-07-25
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
-| done | 23 |
-| dispatched | 2 |
-| todo | 1 |
+| done | 29 |
+| dispatched | 1 |
 *(Cập nhật bởi `/report`)*
 
 ## References
@@ -63,6 +62,9 @@ updated: 2026-07-25
 - [[CT-022-reviewer-rotation]] — Reviewer Rotation — track rejections, enforce reviewer change (done)
 - [[CT-023-ocr-review-toolchain]] — Tích hợp OCR vào review layer — review toolchain architecture (done)
 - [[CT-024-harden-verdict-apply-script]] — Harden ct-verdict-apply.py — dry-run, scoped ticks, độc lập In-Interval, ghi atomic (done)
-- [[CT-025-mandatory-tool-registry-preflight]] — Mandatory Tool Registry + Tool Preflight — bắt buộc dùng code-review-graph/OCR, không fallback manual, mở rộng bằng khai báo (dispatched)
-- [[CT-026-verdict-apply-reverdict-and-fence-edges]] — ct-verdict-apply.py: idempotent re-verdict + mixed-fence/CRLF edge cases (follow-up CT-024) (todo)
-- [[CT-029-executor-auto-commit]] — Fix dispatch executor auto commit (todo)
+- [[CT-025-mandatory-tool-registry-preflight]] — Mandatory Tool Registry + Tool Preflight — bắt buộc dùng code-review-graph/OCR, không fallback manual, mở rộng bằng khai báo (done)
+- [[CT-026-verdict-apply-reverdict-and-fence-edges]] — ct-verdict-apply.py: idempotent re-verdict + mixed-fence/CRLF edge cases (follow-up CT-024) (done)
+- [[CT-027-ct-common-frontmatter-module]] — Tách ct_common.py — module frontmatter dùng chung cho các script control-tower (done)
+- [[CT-028-dispatch-review-order-scripts]] — ct-dispatch.py + ct-review-order.py — script hoá phần cơ khí của /dispatch và /review-order (done)
+- [[CT-029-executor-auto-commit]] — Fix dispatch executor auto commit (done)
+- [[CT-030-skill-validation-in-lint]] — Skill-health validation trong /lint + bổ sung frontmatter cho dispatch/SKILL.md (done)

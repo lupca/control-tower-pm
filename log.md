@@ -4,6 +4,16 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-25 01:10:00] verdict | CT-030: PASS (@claude-opus) — task ĐÓNG
+- Dự án: control-tower
+- Mô tả: Reviewer @claude-opus verify all 7 AC: validator accepts CT extension fields (argument-hint/allowed-tools), dispatch frontmatter added (0 findings), lint check 14 wired, ADR-011 present, tests 3/3 pass. 7 checkboxes ticked.
+- Prediction: high (1.0), interval [0.8, 0.98] → Match ✅, In-Interval ✅. Stats: Overall 100% (14/14), High 100% (11/11).
+- Agent stats: @gpt-5.6-luna-high executed (20 tasks, 85% success, improving), @claude-opus reviewed (12 tasks).
+- Files touched: CT-030-skill-validation-in-lint.md, CT-030-review.md, prediction-accuracy.md, @gpt-5.6-luna-high.md, @claude-opus.md
+- Trạng thái: Thành công (done)
+- auto-approved: verdict
+- Commit: a3306db
+
 ## [2026-07-24 21:45:00] report | Cập nhật tiến độ + migrate spawn-patterns từ memory vào repo
 - Dự án: control-tower (meta)
 - Mô tả: /report cập nhật index.md + knowledge/_index.md. control-tower 22→23 done (+CT-024), 1→2 dispatched (+CT-025), 0→1 todo (+CT-026). Migrate spawn-patterns.md từ ~/.claude memory → knowledge/guides/ (portable, version-controlled). Update SKILL.md dispatch reference. Thêm frontmatter cho spawn-patterns.md, thêm vào knowledge index.
@@ -1677,9 +1687,82 @@ auto-approved: verdict
 - Trạng thái: Thành công
 - auto-approved: review-order (bypass)
 
+## [2026-07-25 00:20:00] dispatch | PMI-011 → @antigravity-3.6-high (re-dispatch sau changes-requested)
+- Dự án: topvnsport-pmi
+- Mô tả: Re-dispatch PMI-011 để fix 5 finding từ verdict changes (alias ALL_PRODUCTS bị Pydantic chặn 422, parser scope-widening regression, specificity empty/ALL không nhất quán, route AC3 sai, thiếu regression test). User chọn executor @antigravity-3.6-high theo quy tắc mới (model nhanh để code, pro-tier chỉ dùng review) dù success_rate thấp (0.33) và weakness false-claims-in-report — User đã được cảnh báo rủi ro này trước khi chọn.
+- Giải trình: reviewer: null, result_ref: null (reset cho vòng review mới); executor cũ @antigravity không tái sử dụng cho rework này theo quyết định User.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: dispatched, executor: @antigravity-3.6-high, dispatched: 2026-07-25, reviewer/result_ref reset)
+- Trạng thái: Chờ spawn (auto-mode classifier có thể chặn lệnh agy --dangerously-skip-permissions, User có thể cần tự chạy qua `!`)
+- Commit: n/a
+
 ## [2026-07-25 00:15:45] verdict | CT-029: PASS — @claude-opus
 - Dự án: control-tower
 - Mô tả: Reviewer `@claude-opus` review ref `282f41f`. Lệnh spawn executor trong skill dispatch đã có yêu cầu commit rõ ràng. Script `ct-verdict-apply.py` tick 1 AC, đóng phiếu review và task. prediction_accuracy cập nhật (+1 pass, độ chính xác tổng 12/12 = 100%). agent_stats cập nhật (@antigravity success_rate lên 0.89).
 - Files touched: projects/control-tower/tasks/CT-029-executor-auto-commit.md, projects/control-tower/reviews/CT-029-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@antigravity.md, knowledge/agents/@claude-opus.md
 - Trạng thái: Thành công (done)
 - auto-approved: verdict (bypass)
+
+## [2026-07-25 00:35:00] review-order | PMI-011: Fix khuyến mãi scope "tất cả sản phẩm" (VÒNG 2)
+- Dự án: topvnsport-pmi
+- Mô tả: @antigravity-3.6-high báo cáo đã fix cả 5 finding từ vòng 1 (alias schema validator, parser scope-widening, specificity tie-break, route alias, regression tests) — 104/104 unit test pass. Commit `a7e9472` (User tự chạy `git commit` — control-tower không tự commit, đúng rule CLAUDE.md, giống lần trước).
+- Giải trình: Phiếu review vòng 2 map từng finding vòng 1 → yêu cầu verify cụ thể (không tin lời khai): gọi API thật với `ALL_PRODUCTS`, test lại đúng 3 câu reproduction NLP của vòng 1, verify cả 2 route bulk-price, đọc test mới có thật sự assert đúng không. Chưa rebuild graph lần này (risk data tái dùng từ vòng 1, thay đổi không đáng kể theo diffstat).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: in-review, executor: @antigravity-3.6-high, result_ref: a7e9472, in_review: 2026-07-25), projects/topvnsport-pmi/reviews/PMI-011-review.md (rewrite cho vòng 2, giữ tham chiếu 5 finding vòng 1)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: a7e9472
+
+## [2026-07-25 10:00:00] pm-create | CT-030: Skill-health validation trong /lint
+- Dự án: control-tower
+- Mô tả: Spec+Plan — validator scripts/ct-validate-skills.py (dựa quick_validate của docs/opensource) loop mọi skill + wire vào /lint + bổ sung frontmatter cho dispatch/SKILL.md (đang thiếu). Scope đã cắt bug -m→--model (CT-028 đã fix). ADR-011 (010 bị CT-028 lấy). risk normal, 5 file (2 new + test). auto-approved: spec, plan
+- Files: projects/control-tower/tasks/CT-030-skill-validation-in-lint.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 10:00:01] dispatch | CT-030 → @gpt-5.6-luna-high
+- Dự án: control-tower
+- Mô tả: Executor @gpt-5.6-luna-high (auto-select: đã viết ct_common.py/ct-dispatch.py ở CT-027/028 — familiarity giảm rework). CLI codex, gpt-5.6-luna effort=high. auto-approved: dispatch
+- Files: projects/control-tower/tasks/CT-030-skill-validation-in-lint.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 10:30:00] review-order | CT-030 → @claude-opus
+- Dự án: control-tower
+- Mô tả: ct-review-order.py phát phiếu reviews/CT-030-review.md, ref a3306db, reviewer @claude-opus (≠ executor @gpt-5.6-luna-high). Task → in-review. Lưu ý reviewer: env không có pytest, verify bằng unittest. auto-approved: review-order
+- Files: projects/control-tower/tasks/CT-030-*.md, projects/control-tower/reviews/CT-030-review.md, log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 10:30:01] dispatch | CT-030 reviewer @claude-opus (--review)
+- Dự án: control-tower
+- Mô tả: Spawn reviewer @claude-opus (claude, opus-4-5). Four-eyes OK. auto-approved: dispatch
+- Files: log.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 01:00:00] verdict | PMI-011: Fix khuyến mãi scope "tất cả sản phẩm" (VÒNG 2) — CHANGES
+- Dự án: topvnsport-pmi
+- Mô tả: @gpt-5.6-sol review commit a7e9472 (vòng 2) — CHANGES REQUESTED. 5 finding vòng 1 đều PASS, nhưng phát hiện 2 vấn đề MỚI: (1) HIGH — regression parser: "biến thể của sản phẩm 20" giờ parse thành VARIANT:101 (bịa) thay vì PRODUCT:20, do việc reorder if/elif ở vòng 2 vô tình đặt keyword "biến thể"/"variant" lên trước product-ID regex; (2) MEDIUM — GET /promotions/bulk-prices trả 405 (chỉ đăng ký POST). Task → changes-requested, rejections: 2.
+- Giải trình: reviewer_rotation_alert = true (rejections >= 2) — theo rule verdict skill, cần đổi reviewer hoặc nâng cấp executor ở vòng sau. @antigravity-3.6-high stats sau reverdict: total_tasks_executed 3, success_rate 0.33 (declining) — đúng như cảnh báo weakness "false-claims-in-report"/low success rate đã nêu khi User chọn executor này. Prediction low→changes vẫn đúng (accuracy 100% 13/13).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: changes-requested, rejections: 2), projects/topvnsport-pmi/reviews/PMI-011-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@antigravity-3.6-high.md, knowledge/agents/@gpt-5.6-sol.md
+- Trạng thái: Thành công — auto-approved: verdict (bypass)
+- Commit: a7e9472
+
+## [2026-07-25 01:10:00] pm | PMI-011: Descope quyết định User (2026-07-25)
+- Dự án: topvnsport-pmi
+- Mô tả: User quyết định descope finding HIGH vòng 2 (NLP `parse_promotion_intent` regression khi prompt có cả product ID + từ "biến thể") — không cần fix, vì tính năng auto-tạo phiếu từ câu tự nhiên "chủ yếu do người nhập quan tâm". Chỉ giữ lại 1 finding bắt buộc: AC3 GET /promotions/bulk-prices trả 405. User nhấn mạnh ưu tiên thật sự là WEB-006 (storefront phải hiển thị được giảm giá) sau khi PMI-011 đóng.
+- Giải trình: Cập nhật AC4 + `## Findings từ reviewer` (gạch ngang finding NLP, đánh dấu DESCOPED) + thêm `## Quyết định phạm vi (User, 2026-07-25)` ghi rõ lý do, không revert code a7e9472 đã đổi cho NLP parser.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 01:15:00] dispatch | PMI-011 → @antigravity-3.6-high (vòng 3, scope thu hẹp)
+- Dự án: topvnsport-pmi
+- Mô tả: Re-dispatch PMI-011 vòng 3, phạm vi đã thu hẹp chỉ còn 1 việc: đăng ký thêm GET method cho route `/promotions/bulk-prices` (hiện chỉ có POST, trả 405). NLP parser finding đã descope theo quyết định User (xem entry `pm` ở trên). User giữ nguyên executor @antigravity-3.6-high (chấp nhận rủi ro dù success_rate 0.33) — cho cơ hội tự sửa lỗi của chính nó, fix lần này rất nhỏ nên rủi ro thấp.
+- Giải trình: Prompt executor nhấn mạnh CHỈ sửa route registration, KHÔNG động vào `parse_promotion_intent` nữa (tránh gây regression thứ 3).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: dispatched, dispatched: 2026-07-25, reviewer/result_ref reset)
+- Trạng thái: Chờ spawn
+- Commit: n/a
+
+## [2026-07-25 00:51:00] report | System Progress & Knowledge Update
+- Dự án: System-wide
+- Mô tả: Chạy `ct-report-stats.py --apply`. Cập nhật tiến độ `control-tower` (29/30 done, 1 dispatched), `topvnsport-pmi` (9/11 done, 1 todo, 1 changes-requested), `topvnsport-web` (4/6 done, 1 in-review, 1 todo). Cập nhật `knowledge/_index.md` và `index.md` timestamp + bảng tiến độ.
+- Trạng thái: Thành công

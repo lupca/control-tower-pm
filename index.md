@@ -6,7 +6,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 ## 1. THỐNG KÊ TỔNG QUAN (System Status)
 
-*   **Thời gian cập nhật cuối:** 2026-07-24 21:45 (CT-024 done, CT-026 added)
+*   **Thời gian cập nhật cuối:** 2026-07-25 00:51 (CT-029 done, CT-030 done)
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
 *   **Tổng số dự án:** 7 dự án đang hoạt động
 
@@ -34,11 +34,11 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 
 | Dự án | Thư mục quản lý | Trạng thái | Tiến độ (Done/Total) | Executor/Reviewer hiện tại | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TopVNSport - PMI** | `projects/topvnsport-pmi/` | 🔄 Đang chạy | 9/10 | — | 1 todo: PMI-002 |
+| **TopVNSport - PMI** | `projects/topvnsport-pmi/` | 🔄 Đang chạy | 9/11 | — | 1 todo: PMI-002; 1 changes-requested: PMI-011 |
 | **TopVNSport - OMS** | `projects/topvnsport-oms/` | ✅ Hoàn thành | 5/5 | — | Zalo OTP integration + main.py refactor done |
 | **TopVNSport - WMS** | `projects/topvnsport-wms/` | ✅ Hoàn thành | 3/3 | — | Table, 414 fix, CI fix done |
-| **TopVNSport - Web** | `projects/topvnsport-web/` | 🔄 Đang chạy | 4/5 | WEB-005: in-review | CORS research done; 1 in-review: WEB-005 discount price |
-| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 23/26 | CT-019, CT-025: dispatched | 2 dispatched: CT-019, CT-025; 1 todo: CT-026 |
+| **TopVNSport - Web** | `projects/topvnsport-web/` | 🔄 Đang chạy | 4/6 | WEB-005: in-review | 1 in-review: WEB-005; 1 todo: WEB-006 |
+| **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 29/30 | CT-019: dispatched | 1 dispatched: CT-019 |
 | **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 8/10 | — | 2 todo: MVA-005 TTS resilience, MVA-006 CapCut parser |
 | **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 13/13 | — | Dashboard fixes complete |
 
