@@ -17,12 +17,14 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 | agent | [[@claude-sonnet-low]] | agent, profile, ai | 2026-07-22 |
 | agent | [[@claude-sonnet-medium]] | agent, profile, ai | 2026-07-22 |
 | agent | [[@claude]] | agent, profile, ai, deprecated | 2026-07-22 |
+| agent | [[@coordinator]] | agent, profile, ai | 2026-07-25 |
 | agent | [[@dev-tung]] | agent, profile, human | 2026-07-21 |
 | agent | [[@gpt-5.6-luna-high]] | agent, profile, ai | 2026-07-24 |
 | agent | [[@gpt-5.6-luna]] | agent, profile, ai | 2026-07-22 |
 | agent | [[@gpt-5.6-sol]] | agent, profile, ai | 2026-07-24 |
 | agent | [[@lupca]] | agent, profile, ai | 2026-07-23 |
 | agent | [[@sonnet-5]] | agent, profile, ai, deprecated | 2026-07-22 |
+| agent | [[@user]] | agent, profile, ai | 2026-07-25 |
 | decision | [[ADR-001-file-over-api]] | architecture, control-tower | 2026-07-21 |
 | decision | [[ADR-002-paradigm-shifts-roadmap]] | architecture, control-tower, paradigm-shift, research | 2026-07-22 |
 | decision | [[ADR-004-drop-obsidian]] | tooling, visualization, simplification | 2026-07-22 |

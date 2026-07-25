@@ -38,12 +38,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 17 |
-| **Pass Count (Actual Success)** | 16 |
+| **Total Predicted Tasks** | 25 |
+| **Pass Count (Actual Success)** | 24 |
 | **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 94% (16/17) |
-| **High Prediction Precision** | 100% (12/12) |
-| **Medium Prediction Precision** | 100% (3/3) |
+| **Overall Prediction Accuracy** | 96% (24/25) |
+| **High Prediction Precision** | 100% (16/16) |
+| **Medium Prediction Precision** | 100% (7/7) |
 | **Low Prediction Precision** | 50% (1/2) |
 
 ---
@@ -71,3 +71,11 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-25 | PMI-012 | medium | 0.5 | blast_radius: 142 files impacted (2-hop), >15 (-0.5 cumulative); note: root cause thật của báo cáo gốc user (PMI-011+WEB-005 pass nhưng không đủ) — verify độc lập qua browser thật xác nhận fix đúng | — | pass | ✅ | — |
 | 2026-07-25 | WEB-006 | high | 0.7 | hits hub/bridge node not applicable (verification task, no core logic change expected) | — | pass | ✅ | — |
 | 2026-07-25 | OMS-006 | medium | 0.5 | risk_high: -0.2 (security), multiple_files: -0.05, unresolved root cause: -0.15 (2 competing hypotheses for the live 500 — Fernet key mismatch vs system_configs.config_value schema drift — needs live diagnosis on both envs before fix), possible prod DB schema change: -0.1 (Project Gate: needs explicit User confirm before executor runs any ALTER/migrate, independent of bypass mode) | [0.35, 0.65] | pass | ✅ | ❌ |
+| 2026-07-25 | OMS-010 | medium | 0.5 | blast_radius > 8: -0.3 (get_impact_radius: 128 file bị ảnh hưởng trong 2 hop), blast_radius > 15: -0.2 (cộng dồn -0.5), blast radius bị phóng đại: main.py là FastAPI entrypoint import toàn bộ routers, nên 2-hop traversal chạm gần hết OMS backend. Diện sửa thực tế nhỏ (bỏ create_all + ensure_zalo_otp_schema, thêm alembic scaffold)., không trừ hub/bridge: không file nào trong files: nằm trong get_hub_nodes(top_n=50)/get_bridge_nodes(top_n=50). Nhưng 2 bridge test NẰM TRÊN flow bị ảnh hưởng (test_storefront_otp_checkout_flow betweenness 0.0109, test_oms_admin_zalo_settings 0.0041) → đã đưa vào tests:., không trừ no-tests: đã có test hiện hữu cho SystemConfig/OTP., không trừ past-failure: OMS-001..006 đều pass. | [0.35, 0.65] | pass | ✅ | ❌ |
+| 2026-07-25 | OMS-011 | medium | 0.5 | blast_radius > 8: -0.3 (get_impact_radius trên deploy_prod.sh + OMS/docker-compose.prod.yml: 49 file bị ảnh hưởng), blast_radius > 15: -0.2 (cộng dồn -0.5), không trừ hub/bridge: không file nào trong files: nằm trong get_hub_nodes/get_bridge_nodes(top_n=50)., không trừ no-tests: đã có test cho GET/PUT /api/configs/sms., rủi ro thật của task này KHÔNG nằm ở code mà ở dữ liệu prod (ciphertext không giải mã được nếu đổi key) — xem Project Gate. | [0.35, 0.65] | pass | ✅ | ❌ |
+| 2026-07-25 | DEVOPS-001 | medium | 0.6 | IaC repo mới, chưa có test coverage (-0.1), Nhiều bước migration thủ công (-0.2), Ảnh hưởng production (-0.1) | — | pass | ✅ | — |
+| 2026-07-25 | DEVOPS-002 | high | 0.75 | Ảnh hưởng production data (-0.15), Cần test với real data (-0.1) | — | pass | ✅ | — |
+| 2026-07-25 | DEVOPS-003 | high | 0.8 | Production verification (-0.1), Multiple services to check (-0.1) | — | pass | ✅ | — |
+| 2026-07-25 | WEB-011 | high | 0.85 | risk_high: -0.15 (sửa CORS gateway + app, ảnh hưởng mọi service; sai là chặn toàn bộ storefront), root cause đã VERIFY trực tiếp trên prod (đếm được header ACAO = 2), không phải giả thuyết ⇒ diện sửa rõ., không trừ blast_radius: sửa config CORS, không đụng logic., web frontend KHÔNG cần sửa dòng nào — đừng để executor đi lạc vào code web. | [0.7, 0.95] | pass | ✅ | ❌ |
+| 2026-07-25 | OMS-015 | medium | 0.4 | blast_radius > 8 (110 files in graph, but fix is scoped to 1-2 files): -0.3, blast_radius > 15: -0.2, no existing tests for customers.py: -0.1 | — | pass | ✅ | — |
+| 2026-07-25 | WEB-012 | high | 0.8 | no existing tests for index.ts: -0.1, simple cleanup, low risk: -0.0, depends_on OMS-015 (must deploy first): -0.1 | — | pass | ✅ | — |

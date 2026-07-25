@@ -3,7 +3,7 @@ project: money-printer-turbo
 full_name: "MoneyPrinterTurbo (AI Short Video Generator)"
 repo_root: /data/projects/MoneyPrinterTurbo
 task_prefix: MPT
-next_task_id: 1
+next_task_id: 2
 created: 2026-07-25
 updated: 2026-07-25
 ---
@@ -15,10 +15,12 @@ Công cụ AI tạo video ngắn tự động: từ chủ đề/từ khóa sinh 
 ## Tiến độ
 | Trạng thái | Số task |
 |:---|---:|
+| dispatched | 1 |
 *(Cập nhật bởi `/report`)*
 
 ## Tasks
 *(Cập nhật bởi `/report` — mỗi lần chạy sẽ regenerate lại toàn bộ danh sách này từ `tasks/*.md`)*
+- [[MPT-001-generate-test-video-ao-the-thao]] — Generate video test chủ đề 'áo thể thao' (sports jersey) qua CLI, verify pipeline E2E (dispatched)
 
 ## References (tài liệu trong repo code — chỉ tham chiếu, KHÔNG copy)
 | Tài liệu | Path | Mô tả |

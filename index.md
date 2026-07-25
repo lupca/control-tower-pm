@@ -6,9 +6,9 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 
 ## 1. THỐNG KÊ TỔNG QUAN (System Status)
 
-*   **Thời gian cập nhật cuối:** 2026-07-25 01:37 (Nhiều cập nhật từ báo cáo tự động)
+*   **Thời gian cập nhật cuối:** 2026-07-25 21:35 (Cập nhật từ báo cáo tự động: money-printer-turbo & devops)
 *   **Trạng thái Agent:** 🟢 Hoạt động bình thường — **Mô hình B**: control-tower chỉ PLAN + COORDINATE (`/pm`, `/ingest`, `/report`, `/lint`, `/review-order`, `/verdict`); EXECUTE + REVIEW đều ngoài hệ.
-*   **Tổng số dự án:** 8 dự án đang hoạt động
+*   **Tổng số dự án:** 9 dự án đang hoạt động
 
 ---
 
@@ -26,6 +26,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 | `marketing-video-agent` | `/data/projects/marketing-video-agent` | `projects/marketing-video-agent/tasks/` (`marketing-video-agent.md`) | ✅ yes (1035 nodes) | ✅ yes (867 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `mva`) | `false` |
 | `control-tower-web` | `/home/lupca/projects/control-tower-web` | `projects/control-tower-web/tasks/` (`control-tower-web.md`) | ✅ yes (62 nodes) | ✅ yes (29 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `ctw`, poll 2s) | `false` |
 | `money-printer-turbo` | `/data/projects/MoneyPrinterTurbo` | `projects/money-printer-turbo/tasks/` (`money-printer-turbo.md`) | ✅ yes (1380 nodes, 16438 edges) | ✅ yes (1301 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `mpt`, poll 2s) | `false` |
+| `topvnsport-devops` | `/home/lupca/projects/topvnsport-devops` | `projects/topvnsport-devops/tasks/` (`topvnsport-devops.md`) | ⏳ pending | ⏳ pending | ⏳ pending | `false` |
 
 Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng. `patterns_exportable` (`AGENTS.md` §14.1): `true` khi code trong repo đủ generic để đáng surface sang project khác (case này — cùng 1 monorepo topvnsport, code dùng chung thật sự); `control-tower` là `false` vì không có code, chỉ có process Markdown.
 
@@ -35,14 +36,15 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 
 | Dự án | Thư mục quản lý | Trạng thái | Tiến độ (Done/Total) | Executor/Reviewer hiện tại | Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TopVNSport - PMI** | `projects/topvnsport-pmi/` | 🔄 Đang chạy | 11/22 | — | 11 todo: PMI-002, PMI-013...PMI-022 |
-| **TopVNSport - OMS** | `projects/topvnsport-oms/` | 🔄 Đang chạy | 5/9 | — | 4 todo: OMS-006...OMS-009 |
-| **TopVNSport - WMS** | `projects/topvnsport-wms/` | 🔄 Đang chạy | 3/5 | — | 2 todo: WMS-004, WMS-005 |
-| **TopVNSport - Web** | `projects/topvnsport-web/` | 🔄 Đang chạy | 6/10 | WEB-005: in-review | 1 in-review: WEB-005; 3 todo: WEB-008...WEB-010 |
+| **TopVNSport - PMI** | `projects/topvnsport-pmi/` | 🔄 Đang chạy | 11/23 | PMI-023: dispatched | 11 todo; 1 dispatched: PMI-023 |
+| **TopVNSport - OMS** | `projects/topvnsport-oms/` | 🔄 Đang chạy | 11/15 | OMS-015: dispatched | 3 todo; 1 dispatched: OMS-015 |
+| **TopVNSport - WMS** | `projects/topvnsport-wms/` | 🔄 Đang chạy | 3/6 | — | 2 todo; ⚠️ 1 task (WMS-006) có status không hợp lệ ("completed") |
+| **TopVNSport - Web** | `projects/topvnsport-web/` | 🔄 Đang chạy | 7/12 | WEB-005: in-review | 1 in-review: WEB-005; 4 todo |
 | **Control Tower** | `projects/control-tower/` | 🔄 Đang chạy | 29/30 | CT-019: dispatched | 1 dispatched: CT-019 |
-| **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 8/10 | — | 2 todo: MVA-005 TTS resilience, MVA-006 CapCut parser |
+| **Marketing Video Agent** | `projects/marketing-video-agent/` | 🔄 Đang chạy | 8/10 | — | 2 todo: MVA-005, MVA-006 |
 | **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 13/13 | — | Dashboard fixes complete |
-| **MoneyPrinterTurbo** | `projects/money-printer-turbo/` | 🆕 Mới onboard | 0/0 | — | Chưa có task; graph chưa build |
+| **MoneyPrinterTurbo** | `projects/money-printer-turbo/` | 🔄 Đang chạy | 0/1 | MPT-001: dispatched | 1 dispatched: MPT-001 |
+| **TopVNSport - DevOps** | `projects/topvnsport-devops/` | ✅ Hoàn thành | 3/3 | — | Phase 1 IaC migration complete |
 
 ---
 
@@ -79,32 +81,4 @@ Domain knowledge, quyết định kiến trúc (ADR), quy ước — xem `AGENTS
 | research | 1 | 0 |
 | guides | 2 | 0 |
 | metrics | 1 | 0 |
-| agents | 17 | 0 |
-
-7. Lỗi trên prod khi cấu hình kết nối Zalo OA
-API Request Failed with status 500
-page-ed20edf269cd732f.js:1 
- PUT http://oms.topvnsport.com/oms-api/api/configs/sms 500 (Internal Server Error)
-
-23-725b2961b84f75f6.js:1 Error: API Request Failed with status 500
-    at a (page-ed20edf269cd732f.js:1:15310)
-    at async V (page-c3d42f0792ec37cb.js:36:2531)
-    at async 46-ab39f333bde1cabd.js:21:22081
-
-Thông tin input: 
-3966711013871443834
-Zalo APP Secret Key
-*
-SOdG1NRnMFaT2N79Z64M
-
-Zalo OA Access Token
-*
-QqGkIVc1uLXiGYXBy8RXNs168Kpmcx4E8o0FR_I1i7aAEGSBoxcAUmeOD2pFZfGxHZGTQRMLbW18CI9ajg6LTL0uMGIyfSHXSXXo0BkpysrLD6C1egNhGqTlHJEgiVHPH714EuRpnMDgBGeHg9-gUcWRC6lvag4JRr8VLgF8gJf1LM1_YC7-PrvQJGMjszuIN5f5NvRPpYP6GdH2rSUwKG823mVoi9b0PoXGMVQHoJ8X0Lqcl9dFOYy2PoZHcwnFCrac2kNrWKK9Kqytw_NHPHqhTdEDYz5dNHbeCPhUfKjLUGqIX_AGTar9AY6GyOPf6N4KSDMpdYGZ1J92wwEC3GfaGNd3mTTXKbfY9AxCwKfYQZmoZkwUTavmB0MuwuH1ML5E6yMIsXOjLM54wCND8tvd3K2nsRa1EAJp-23xcULG
-
-Zalo OA Refresh Token
-*
-1Gk7MFzaGW823O5QzcD21Gu9Y5tsVZHIVL-B3ibE6Y9ETg4disOG9amDgI_XPXaSHmw84jyEEJv-ElzczpfNE70xvc3H65ryQZJ-UF5SG75fJyT_va9_O4TttplDLdG9JMBKDT5OTmWmTROaadK7UZzveaALPnzdF7QiEuHsDMK36uy_fWOrFZWpaJQWMoHjN6siIVO23cXRRRrYfKukEb56bJBEIZ8DL5-I8Q52AnC0KgfLc5uA3cHcjXNCVYeaOH2NAzmwA05u5Om5rY582cWYpGVpLci8JchIA-vwImTwLlqUmpOxM6GPedNP5nfA9pcmM9u465SDEg5zkJ0295Wpj3hY3oW37YwIBBS5E1zMFQ06hpirDm1GbYkMIb4CENhbDSnfMJnXK_eyvpD3EN4xwprvp5doQ_ryHWe
-
-Zalo Template ID
-*
-611498
+| agents | 19 | 0 |

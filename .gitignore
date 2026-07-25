@@ -7,3 +7,5 @@
 .obsidian/workspace-mobile.json
 .obsidian/cache
 .obsidian/
+__pycache__/
+.agents/

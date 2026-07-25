@@ -3,7 +3,7 @@ project: topvnsport-wms
 full_name: "TopVNSport - WMS (Warehouse Management System)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: WMS
-next_task_id: 6
+next_task_id: 7
 created: 2026-07-21
 updated: 2026-07-21
 ---
@@ -16,6 +16,8 @@ Dự án quản lý kho hàng (Warehouse Management System) cho hệ thống Top
 | Trạng thái | Số task |
 |:---|---:|
 | done | 3 |
+| todo | 2 |
+| completed | 1 |
 *(Cập nhật bởi `/report`)*
 
 ## Tasks
@@ -23,6 +25,9 @@ Dự án quản lý kho hàng (Warehouse Management System) cho hệ thống Top
 - [[WMS-001-table-stt-pagination]] — Nâng cấp DataTable: thêm cột STT và pagination cho toàn bộ WMS (done)
 - [[WMS-002-fix-414-stock-api-uri-too-large]] — Fix 414 Request-URI Too Large when fetching stock for many SKUs (done)
 - [[WMS-003-fix-ci-docker-network-label-mismatch]] — Fix CI Docker Compose network label mismatch for oms_default (done)
+- [[WMS-004-fix-race-conditions]] — Fix race conditions: receive scan, pick scan + row locking (todo)
+- [[WMS-005-data-integrity-guards]] — Data integrity: over-pick/receive guards, ship status validation, OMS notification outbox (todo)
+- [[WMS-006-rds-migration]] — Migrate WMS to RDS Aurora (completed)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến cấu trúc DB (schema Pydantic trong `WMS/backend/schemas.py`, model trong `WMS/backend/models.py`) bắt buộc phải có sự xác nhận của User trước khi executor chạy lệnh `alembic revision --autogenerate` / `alembic upgrade head`.
