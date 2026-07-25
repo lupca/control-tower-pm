@@ -3,9 +3,9 @@ agent_id: "@gpt-5.6-luna-high"
 type: ai
 model: gpt-5.6-luna
 effort: high
-total_tasks_executed: 19
+total_tasks_executed: 21
 total_tasks_reviewed: 0
-success_rate: 0.84
+success_rate: 0.86
 avg_review_rounds: 3.5
 strengths: [backend, frontend, cleanup, complex-refactor]
 weaknesses: []

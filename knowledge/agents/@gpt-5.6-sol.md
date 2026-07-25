@@ -4,13 +4,13 @@ type: ai
 model: gpt-5.6-sol
 effort: high
 total_tasks_executed: 9
-total_tasks_reviewed: 13
+total_tasks_reviewed: 17
 success_rate: 1.00
 avg_review_rounds: 4.0
 strengths: [review, complex-analysis, reasoning, code-review, spot-check-runtime]
 weaknesses: []
 recent_trend: improving
-last_active: 2026-07-24
+last_active: 2026-07-25
 ---
 
 # Agent Profile: @gpt-5.6-sol

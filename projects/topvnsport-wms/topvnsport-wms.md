@@ -3,7 +3,7 @@ project: topvnsport-wms
 full_name: "TopVNSport - WMS (Warehouse Management System)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: WMS
-next_task_id: 4
+next_task_id: 6
 created: 2026-07-21
 updated: 2026-07-21
 ---

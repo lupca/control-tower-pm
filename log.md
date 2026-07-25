@@ -4,6 +4,34 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-25 02:40:00] report | Cập nhật tiến độ toàn bộ 7 dự án
+- Dự án: control-tower, control-tower-web, marketing-video-agent, topvnsport-oms, topvnsport-pmi, topvnsport-web, topvnsport-wms
+- Mô tả: Chạy `scripts/ct-report-stats.py --apply` để quét lại toàn bộ `projects/*/tasks/*.md` và cập nhật block `## Tiến độ` + `## Tasks` trong từng project. Parse JSON output và cập nhật bảng `BẢN ĐỒ TIẾN ĐỘ DỰ ÁN` cùng timestamp trong `index.md` §3 (ghi nhận nhiều thay đổi/tạo mới tasks). Quét thư mục knowledge, đếm số lượng file theo type nhưng không có sự thay đổi.
+- Files touched: projects/control-tower/control-tower.md, projects/control-tower-web/control-tower-web.md, projects/marketing-video-agent/marketing-video-agent.md, projects/topvnsport-oms/topvnsport-oms.md, projects/topvnsport-pmi/topvnsport-pmi.md, projects/topvnsport-web/topvnsport-web.md, projects/topvnsport-wms/topvnsport-wms.md, index.md
+- Trạng thái: Thành công
+- auto-approved: report
+- Commit: n/a
+
+## [2026-07-25 02:15:00] pm-bulk-create | 19 Technical Debt tasks từ audit WEB-007
+- Mô tả: Tạo 19 tasks từ kết quả audit nợ kỹ thuật, phân bổ vào 4 projects theo hệ thống.
+- PMI (10 tasks): PMI-013 secrets, PMI-014 DB/HTTPS, PMI-015 RBAC, PMI-016 shared packages, PMI-017 layer violations, PMI-018 API clients, PMI-019 N+1, PMI-020 error boundaries, PMI-021 infra, PMI-022 dead code
+- OMS (4 tasks): OMS-006 security, OMS-007 race conditions, OMS-008 business invariants, OMS-009 input validation
+- WMS (2 tasks): WMS-004 race conditions, WMS-005 data integrity
+- WEB (3 tasks): WEB-008 cart reliability, WEB-009 app state, WEB-010 performance
+- Priority breakdown: 3 urgent, 9 high, 6 medium, 1 low
+- Trạng thái: tất cả todo, chờ dispatch
+- auto-approved: spec (bulk create from audit)
+
+## [2026-07-25 01:32:00] pm-create | WEB-007: Audit Technical Debt documentation (todo → dispatching)
+- Dự án: topvnsport-web
+- Mô tả: Tạo task xác nhận nợ kỹ thuật — docs/TopVNSport - TODO & Technical Debt/ được tạo từ 2026-07-13, source đã thay đổi nhiều. Task yêu cầu đối chiếu từng item với codebase hiện tại, đánh dấu resolved items, loại bỏ obsolete, cập nhật README counts.
+- Prediction: high (0.9), deduction: no_existing_tests -0.1
+- Files: docs/TopVNSport - TODO & Technical Debt/* (20 files across 6 folders)
+- Plan: 7-step audit covering OMS/PMI/Web/WMS/architecture folders, verify Phase 1 resolved, update README counts
+- Executor: @gpt-5.6-luna-high (85% success, cleanup strength fits audit)
+- Trạng thái: dispatched
+- auto-approved: spec, plan, dispatch
+
 ## [2026-07-25 01:10:00] verdict | CT-030: PASS (@claude-opus) — task ĐÓNG
 - Dự án: control-tower
 - Mô tả: Reviewer @claude-opus verify all 7 AC: validator accepts CT extension fields (argument-hint/allowed-tools), dispatch frontmatter added (0 findings), lint check 14 wired, ADR-011 present, tests 3/3 pass. 7 checkboxes ticked.
@@ -1766,3 +1794,215 @@ auto-approved: verdict
 - Dự án: System-wide
 - Mô tả: Chạy `ct-report-stats.py --apply`. Cập nhật tiến độ `control-tower` (29/30 done, 1 dispatched), `topvnsport-pmi` (9/11 done, 1 todo, 1 changes-requested), `topvnsport-web` (4/6 done, 1 in-review, 1 todo). Cập nhật `knowledge/_index.md` và `index.md` timestamp + bảng tiến độ.
 - Trạng thái: Thành công
+
+## [2026-07-25 01:30:00] review-order | PMI-011: Fix khuyến mãi scope "tất cả sản phẩm" (VÒNG 3)
+- Dự án: topvnsport-pmi
+- Mô tả: @antigravity-3.6-high báo cáo đã fix việc còn lại duy nhất (GET method cho bulk-prices routes, route reorder tránh FastAPI match nhầm path param) — 104/104 unit test pass, không đụng parse_promotion_intent. Commit 2f7d238 (User tự chạy git commit).
+- Giải trình: Reviewer đổi sang @antigravity (gemini-3.1-pro) theo yêu cầu User + đúng rotation rule (rejections=2, không được dùng lại @gpt-5.6-sol). Phiếu review nhấn mạnh RÕ RÀNG: KHÔNG được reject vì NLP parser edge-case đã descope theo quyết định User — chỉ chấm AC3 (GET route) + không regression scope-matching.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: in-review, reviewer: @antigravity, result_ref: 2f7d238, in_review: 2026-07-25), projects/topvnsport-pmi/reviews/PMI-011-review.md (rewrite vòng 3)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: 2f7d238
+
+## [2026-07-25 01:45:00] verdict | PMI-011: Fix khuyến mãi scope "tất cả sản phẩm" (VÒNG 3) — PASS ✅
+- Dự án: topvnsport-pmi
+- Mô tả: @antigravity review commit 2f7d238 (vòng 3, scope thu hẹp) — PASS. AC1/AC2 (đã pass vòng trước) giữ nguyên; AC3 GET route giờ trả 200 (không còn 405); AC4 không regression scope-matching (NLP parser edge-case đã descope theo quyết định User, không tính). 104/104 unit pass. Task → done. Four-eyes OK (@antigravity ≠ @antigravity-3.6-high).
+- Giải trình (causal analysis — risk: high, bắt buộc đủ 4 field theo AGENTS.md):
+  - **root_cause**: `eval_variant_promotion_match` trả `False` tuyệt đối khi promotion không có scope giới hạn nào (`scopes=[]`), trong khi nhiều lớp khác (Pydantic enum, router validation) đồng thời chặn alias `ALL_PRODUCTS` trước khi tới nhánh xử lý `ALL` — khiến promotion "áp dụng toàn bộ sản phẩm" bị match 0 sản phẩm một cách âm thầm.
+  - **mechanism**: Vì "áp dụng tất cả" được biểu diễn ngầm định qua scope rỗng thay vì 1 sentinel rõ ràng, guard clause `if not scopes: return False` (viết ra để chặn promotion sai dữ liệu) vô tình bắt luôn case hợp lệ này; cùng sự mơ hồ đó lan sang scope-type string validation và specificity tie-break — khiến vòng 2 (fix scope-matching) vô tình tạo regression mới ở NLP parser khi cố gắng xử lý đồng thời nhiều alias/case.
+  - **counterfactual**: Nếu schema từ đầu bắt buộc 1 sentinel `ScopeType.ALL` tường minh (không cho phép "rỗng = tất cả" ngầm định), bug gốc — và cả regression vòng 2 phát sinh khi cố sửa nó — sẽ không xảy ra; giảm từ 3 round review xuống có thể 1 round.
+  - **pattern_id**: chưa có pattern khớp trong `knowledge/patterns/` (đã check: mandatory-tool-preflight, memory-leak, missing-db-index, n-plus-one-query, race-condition — không cái nào khớp "implicit empty-scope silent-fail"). Đề xuất pattern mới cho User xác nhận (COLLABORATIVE, chưa tự tạo).
+  - Task cũng minh hoạ 1 bài học quy trình: User descope 1 finding (NLP parser) giữa chừng khi thấy rework tiếp tục sinh regression mới — ưu tiên đóng task theo đúng mục tiêu gốc (storefront hiển thị giảm giá) thay vì đuổi theo edge-case không cốt lõi.
+- Prediction: low→changes ở vòng 2 đúng, nhưng verdict CUỐI CÙNG là pass → mismatch với dự đoán low (❌ trong bảng), overall accuracy 93% (13/14), Low Prediction Precision giảm còn 50% (1/2) — cập nhật trung thực, không giữ nguyên match cũ.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-011-fix-all-products-scope-discount.md (status: done — đã set trực tiếp ngoài script, ct-verdict-apply.py refuse vì status không còn in-review), projects/topvnsport-pmi/reviews/PMI-011-review.md, knowledge/metrics/prediction-accuracy.md (row PMI-011 sửa thành pass/❌, summary stats cập nhật thủ công theo đúng công thức script), knowledge/agents/@antigravity-3.6-high.md (success_rate 0.33→0.67, trend improving — reverdict logic: prev_verdict=changes, verdict=pass), knowledge/agents/@antigravity.md (total_tasks_reviewed 7→8)
+- Trạng thái: Thành công (done) — cập nhật thủ công (manual fallback) vì task đã bị set `done` trực tiếp trước khi tôi chạy script
+- Commit: 2f7d238
+
+## [2026-07-25 02:00:00] pm-create | PMI-012: /public/products chưa trả giá khuyến mãi (ROOT CAUSE thật của báo cáo gốc)
+- Dự án: topvnsport-pmi
+- Mô tả: Verify trực tiếp bằng browser (claude-in-chrome) tại http://localhost:13103/product/vot-lining-e2e-otp-test-925dcbf1 — vẫn không hiện giảm giá dù PMI-011 (backend promotion logic) + WEB-005 (frontend display) đều đã pass. Network trace: storefront chỉ gọi GET localhost:18100/public/products (không gọi bất kỳ endpoint promotion nào). Response xác nhận variant chỉ có field `price`, không có `computed_price`/`has_active_promotion`. Root cause: `get_public_products`/`get_public_product` (PMI/backend/routers/public.py) — route THẬT SỰ storefront dùng — chưa từng tích hợp với promotion_service.py.
+- Giải trình: `compute_product_prices` (đã tồn tại trong public.py, OCR xác nhận) chỉ dùng để tính min/max filter, không expose computed_price. Blast radius 142 files (>15, -0.5), không hit hub/bridge cho các entity liên quan. predicted_success: medium (0.5). Tests hiện có: test_public.py (2 test). risk: high (đụng response schema public API) + priority: urgent (đây là root cause thật của báo cáo gốc user, PMI-011/WEB-005 chỉ là 2 fix cần thiết nhưng chưa đủ).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-012-public-products-promotion-price.md (mới), projects/topvnsport-pmi/topvnsport-pmi.md (next_task_id→13)
+- Trạng thái: Thành công — Spec+Plan Gate auto-approved (mode bypass)
+- Commit: n/a
+
+## [2026-07-25 02:05:00] dispatch | PMI-012 → @gpt-5.6-luna-high
+- Dự án: topvnsport-pmi
+- Mô tả: Chọn executor theo quy tắc mới (model nhanh để code): @gpt-5.6-luna-high (backend, complex-refactor, success_rate 0.83) — phù hợp hơn @antigravity-3.6-high (0.67 sau PMI-011, weakness false-claims) cho 1 task risk:high, priority:urgent cần reuse đúng hàm có sẵn (get_bulk_computed_prices) thay vì viết lại.
+- Giải trình: Prompt executor nhấn mạnh PHẢI tái sử dụng get_bulk_computed_prices (không viết lại discount logic), tránh N+1, và bắt buộc tự verify qua browser thật nếu có thể / ít nhất mô tả rõ cách User có thể tự verify.
+- Files touched: projects/topvnsport-pmi/tasks/PMI-012-public-products-promotion-price.md (status: dispatched, dispatched: 2026-07-25)
+- Trạng thái: Chờ spawn
+- Commit: n/a
+
+## [2026-07-25 02:10:00] pm | WEB-006: đổi depends_on PMI-011 → PMI-012
+- Dự án: topvnsport-web
+- Mô tả: PMI-011 đã done nhưng verify browser xác nhận chưa đủ để giải quyết triệu chứng gốc (xem PMI-012). Cập nhật depends_on + Bối cảnh của WEB-006 để trỏ đúng blocker thật.
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 02:20:00] review-order | PMI-012: Endpoint /public/products chưa trả giá khuyến mãi
+- Dự án: topvnsport-pmi
+- Mô tả: @gpt-5.6-luna-high báo cáo done — reuse get_bulk_computed_prices, thêm optional field vào PublicVariantResponse, không động compute_product_prices, 226/226 test pass. Commit 3f29743 (User tự commit).
+- Giải trình: Control-tower TỰ VERIFY ĐỘC LẬP qua browser thật (claude-in-chrome) tại đúng URL user báo cáo ban đầu — xác nhận trang hiện đúng giá giảm 20% + badge. Đây là lần đầu trong toàn bộ chuỗi PMI-011/WEB-005/PMI-012 mà bug gốc thực sự được xác nhận đã hết bằng browser thật, không chỉ qua test/lời khai executor. Reviewer @claude-opus (≠ executor, four-eyes OK). Graph flag 2 hàm mới (get_public_variant_prices, get_public_promotion_fields) chưa có test trực tiếp — đưa vào phiếu review để reviewer soi kỹ AC5 (tránh N+1).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-012-public-products-promotion-price.md (status: in-review, reviewer: @claude-opus, result_ref: 3f29743, in_review: 2026-07-25), projects/topvnsport-pmi/reviews/PMI-012-review.md (mới)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: 3f29743
+
+## [2026-07-25 02:35:00] verdict | PMI-012: Endpoint /public/products chưa trả giá khuyến mãi — PASS ✅
+- Dự án: topvnsport-pmi
+- Mô tả: @claude-opus review commit 3f29743 — PASS. 5/5 AC verified, 226/226 test pass, xác nhận get_bulk_computed_prices chỉ gọi 1 lần/request qua spy (không N+1), 2 helper mới (get_public_variant_prices/get_public_promotion_fields) graph flag untested nhưng reviewer đã verify hành vi qua test có sẵn. Task → done. Four-eyes OK (@claude-opus ≠ @gpt-5.6-luna-high).
+- Giải trình (causal analysis — risk: high, bắt buộc đủ 4 field):
+  - **root_cause**: `/public/products`/`/public/products/{slug}` (route thật storefront gọi để lấy giá) chưa từng tích hợp với `promotion_service.py` — response chỉ có field `price` gốc, không có `computed_price`/`has_active_promotion`. `compute_product_prices` có sẵn trong file nhưng chỉ phục vụ filter min/max, không expose promotion price.
+  - **mechanism**: PMI-011 (fix logic match/tính discount) và WEB-005 (fix frontend đọc field computedPrice) đều đúng NHƯNG độc lập với nhau qua 1 lớp trung gian (endpoint public API) chưa từng được nối — 2 review trước đó (PMI-011, WEB-005) đều verify đúng phạm vi AC của chính task đó (unit test + API call trực tiếp đến endpoint promotion), không có bước nào verify toàn bộ chuỗi qua browser thật ở đúng route storefront dùng, nên gap này sống sót qua cả 2 lần review.
+  - **counterfactual**: Nếu review WEB-005 (hoặc review PMI-011 round 1) yêu cầu bước "mở browser thật tại URL storefront thật, không chỉ pytest/API call trực tiếp" như AC3 của task này bắt buộc, gap sẽ lộ ra ngay từ đầu, tiết kiệm 2 task riêng (PMI-011 3 vòng + WEB-005) mà không giải quyết triệu chứng gốc.
+  - **pattern_id**: đề xuất pattern mới `fix-verified-in-isolation-not-e2e` (review từng layer riêng lẻ đều pass nhưng không ai verify toàn bộ chuỗi qua giao diện thật) — cần User xác nhận trước khi tạo (COLLABORATIVE).
+- Prediction: medium→pass đúng (accuracy 93%, 14/15; Medium Prediction Precision 100% 2/2).
+- Files touched: projects/topvnsport-pmi/tasks/PMI-012-public-products-promotion-price.md (status: done), projects/topvnsport-pmi/reviews/PMI-012-review.md, knowledge/metrics/prediction-accuracy.md (row PMI-012 thêm thủ công — pipeline tự động chưa chạy phần này), knowledge/agents/@gpt-5.6-luna-high.md, knowledge/agents/@claude-opus.md (đã cập nhật sẵn qua pipeline)
+- Trạng thái: Thành công (done)
+- Commit: 3f29743
+
+## [2026-07-25 02:45:00] dispatch | WEB-006 → @claude-sonnet-medium
+- Dự án: topvnsport-web
+- Mô tả: Dispatch WEB-006 (giờ chỉ còn: verify lại AC1/AC2 đã được control-tower xác nhận qua browser, tập trung vào AC3 cart price chưa ai verify, + thêm regression test E2E). depends_on PMI-012 (done). Executor: @claude-sonnet-medium (code/backend/frontend/testing, success_rate 1.0) — theo quy tắc model nhanh để code.
+- Giải trình: AC1/AC2 đã tick sẵn kèm ghi chú "control-tower đã verify" — executor cần verify lại độc lập, không chỉ tin ghi chú.
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md (status: dispatched, executor: @claude-sonnet-medium, dispatched: 2026-07-25, AC1/AC2 ticked với ghi chú)
+- Trạng thái: Chờ spawn
+- Commit: n/a
+
+## [2026-07-25 02:55:00] review-order | WEB-006: Verify end-to-end giảm giá "tất cả sản phẩm"
+- Dự án: topvnsport-web
+- Mô tả: @claude-sonnet-medium báo cáo AC1/AC2/AC3 đều pass, không tìm thấy bug thật ở giỏ hàng (đã tự đọc computedPrice qua productMappers.ts, kế thừa từ fix PMI-012). Chỉ thêm 1 E2E test mới. 1 test khác fail nhưng xác nhận pre-existing (git stash), không liên quan. Commit d275f34 (User tự commit).
+- Giải trình: Reviewer @gpt-5.6-sol (≠ executor). Phiếu review nhấn AC3 là điểm quan trọng nhất cần tự tay verify qua browser (thêm giỏ hàng thật), không chỉ tin claim "không có bug" — đây là dạng bug đã từng sống sót 2 lần (PMI-011, WEB-005) trước khi PMI-012 mới thực sự lộ ra.
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md (status: in-review, reviewer: @gpt-5.6-sol, result_ref: d275f34, in_review: 2026-07-25), projects/topvnsport-web/reviews/WEB-006-review.md (mới)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: d275f34
+
+## [2026-07-25 03:05:00] verdict | WEB-006: Verify end-to-end giảm giá "tất cả sản phẩm" — CHANGES
+- Dự án: topvnsport-web
+- Mô tả: @gpt-5.6-sol review commit d275f34 — CHANGES. Reviewer TỰ TAY verify qua browser thật (tạo promotion tạm, dùng Chromium mới): xác nhận AC1/AC2/AC3 đều hoạt động ĐÚNG trong production (catalog badge -20%, cart drawer đúng giá giảm, product detail đúng) — KHÔNG có bug thật. Verdict changes chỉ vì AC4: e2e test mới (test_tier1_f6_06_storefront_all_products_scope_e2e) có docstring tuyên bố cover ProductCard/quick-add-to-cart nhưng code thực tế lại test Header search dropdown + product-detail add-to-cart — test không thực sự cover đúng path đã tuyên bố. Rejections: 1 (chưa tới ngưỡng rotation alert).
+- Giải trình: Đây là lần đầu trong toàn bộ chuỗi PMI-011→WEB-005→PMI-012→WEB-006 mà finding KHÔNG phải bug sản phẩm mà là bug ở chính test (test giả/không đúng path) — loại lỗi khác hẳn 2 vòng reject trước của PMI-011. Script ct-verdict-apply.py chạy thành công đầy đủ (task, review sheet, prediction-accuracy, agent stats) — không cần fallback thủ công lần này.
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md, projects/topvnsport-web/reviews/WEB-006-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@claude-sonnet-medium.md, knowledge/agents/@gpt-5.6-sol.md
+- Trạng thái: Thành công (changes-requested) — auto-approved: verdict (bypass)
+- Commit: d275f34
+
+## [2026-07-25 03:10:00] dispatch | WEB-006 → @antigravity-3.6-high (round 2, fix test coverage)
+- Dự án: topvnsport-web
+- Mô tả: Re-dispatch WEB-006 để sửa e2e test test_tier1_f6_06_storefront_all_products_scope_e2e — hiện tại click nhầm path (Header search + product-detail add-to-cart) thay vì path đã khai trong docstring (ProductCard/quick-add-to-cart buildDefaultCartItem). Không phải bug sản phẩm — chỉ sửa test. User chọn executor @antigravity-3.6-high (model nhanh) + reviewer round tới @antigravity (pro 3.1) theo quy tắc.
+- Giải trình: reviewer/result_ref reset cho vòng review mới.
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md (status: dispatched, executor: @antigravity-3.6-high, dispatched: 2026-07-25)
+- Trạng thái: Chờ spawn
+- Commit: n/a
+
+## [2026-07-25 03:20:00] review-order | WEB-006: Verify end-to-end (VÒNG 2 — test fix)
+- Dự án: topvnsport-web
+- Mô tả: @antigravity-3.6-high báo cáo đã sửa e2e test để cover đúng ProductCard + buildDefaultCartItem path (thay vì Header search + product-detail), sửa wait_until check đúng điều kiện. Full suite 83/83 pass. Commit 4b73e54 — CHỈ 1 file (e2e_tests/tests/test_promotion_full_flow.py); phát hiện 53 file docs "TopVNSport - TODO & Technical Debt" bị modify không liên quan (không phải do executor này, không commit, để User tự xử lý).
+- Giải trình: Reviewer @antigravity theo yêu cầu User. Phiếu review vòng 2 chỉ tập trung AC4 (điểm bị reject vòng 1), nhắc reviewer đọc code thật, không chỉ tin báo cáo (bài học từ chính vòng 1 — báo cáo docstring sai mà không ai đọc kỹ).
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md (status: in-review, reviewer: @antigravity, result_ref: 4b73e54), projects/topvnsport-web/reviews/WEB-006-review.md (rewrite vòng 2)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: 4b73e54
+
+## [2026-07-25 03:30:00] verdict | WEB-006: Verify end-to-end giảm giá "tất cả sản phẩm" (VÒNG 2) — PASS ✅
+- Dự án: topvnsport-web
+- Mô tả: @antigravity review commit 4b73e54 — PASS. Đọc code thật (không chỉ tin docstring) xác nhận test giờ đúng: điều hướng /catalog, assert badge/giá trên ProductCard, click quick-add-to-cart đúng nút, verify cart drawer, giữ riêng bước product-detail cho AC2. 83/83 E2E + 161/161 vitest pass. Task → done. Four-eyes OK.
+- Giải trình: risk: normal nên không cần causal analysis. Script ct-verdict-apply.py chạy đầy đủ tự động (task, review sheet, prediction-accuracy 94% 15/16, agent stats: @antigravity-3.6-high 1.0/improving, @antigravity reviewed 9).
+- **TOÀN BỘ CHUỖI XỬ LÝ BUG "giảm giá tất cả sản phẩm không hoạt động" ĐÃ ĐÓNG**: WEB-005 (frontend display, pass riêng) → PMI-011 (backend promotion-matching, done sau 3 round) → PMI-012 (root cause thật: /public/products chưa tích hợp promotion, done) → WEB-006 (verify e2e, done sau 2 round — round 1 reject vì test-quality, không phải bug thật). Đã verify độc lập bằng browser thật ở cả 4 vị trí (trang chủ, danh mục, chi tiết, giỏ hàng).
+- Files touched: projects/topvnsport-web/tasks/WEB-006-verify-all-products-discount-e2e.md, projects/topvnsport-web/reviews/WEB-006-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@antigravity-3.6-high.md, knowledge/agents/@antigravity.md
+- Trạng thái: Thành công (done)
+- Commit: 4b73e54
+
+## [2026-07-25 03:40:00] pm-create | OMS-006: reconcile bug report vào task hiện có (không tạo task mới)
+- Dự án: topvnsport-oms
+- Mô tả: Inbox #7 báo lỗi 500 trên PUT `/api/configs/sms` (cả prod và local) khi cấu hình Zalo OA. Semantic search + graph query xác nhận handler thật là `update_sms_config`/`get_sms_config` ở `OMS/backend/routers/config.py`, đi qua `EncryptedString` (Fernet) ở `models.py`. Phát hiện OMS-006 (todo, chưa dispatch) đã cover đúng 1 trong 2 root-cause hypothesis (hardcoded FERNET_KEY fallback) và đụng cùng file cluster (`models.py`, `routers/config.py`) — hỏi User và được xác nhận: fold bug report vào OMS-006 thay vì tạo OMS-010 trùng lặp.
+- Giải trình: `get_impact_radius_tool` báo blast radius 151 file (2-hop) do `models.py` là hub file dùng chung toàn backend — không dùng số này để quyết split task vì scope sửa thật chỉ 6 file (đã liệt kê trong `files:`), theo đúng tinh thần PMI-012 (blast radius cao do hub file, không phải do thay đổi thật sự lớn). `tests_for(update_sms_config)` trả về 6 test liên quan (test_main.py x4, test_webhooks.py, tests/test_config.py) — bổ sung hết vào `tests:`, không có knowledge-gap sub-task cần thêm. OCR pre-scan (`ocr scan --path models.py,routers/config.py`) xác nhận lại đúng finding hardcoded Fernet key (critical) + thêm 1 finding phụ (generic `except Exception` nuốt traceback ở `process_result_value` — thêm vào sub-tasks, không phải AC chính). Re-score theo công thức chuẩn: 0.75 → 0.5 (medium), trừ thêm "unresolved root cause" (-0.15, 2 giả thuyết cạnh tranh chưa xác minh) và "possible prod DB schema change" (-0.1, cần Project Gate riêng nếu phải ALTER cột). ⚠️ Phát hiện phụ: user đã dán cleartext Zalo App Secret Key/Access Token/Refresh Token thật vào `index.md` (git-tracked) khi báo lỗi — đã cảnh báo User qua AskUserQuestion trước khi làm gì khác; User chọn để nguyên `index.md`, không redact — đã thêm note bắt buộc rotate token vào AC7/sub-tasks của OMS-006 thay vì tự sửa `index.md`.
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (thêm Bug Report section, AC5-AC8, sub-tasks, files:/tests:/prediction_factors/confidence_interval)
+- Trạng thái: Thành công — auto-approved: spec, plan (mode bypass); AC8 (khả năng ALTER cột DB) vẫn cần User xác nhận riêng trước khi executor chạy migrate trên prod, theo Project Gate của topvnsport-oms — không bị bypass mode ghi đè.
+- Commit: n/a
+
+## [2026-07-25 03:45:00] plan | OMS-006: Plan Gate — diagnose-first fix cho 500 bug + 4 security hardening AC gốc
+- Dự án: topvnsport-oms
+- Mô tả: Viết `## Plan` cho OMS-006 sau khi fold bug report inbox #7 vào task. Plan chia 7 bước: (0) diagnose bắt buộc trước khi code (so schema cột `config_value` local/prod, kiểm tra FERNET_KEY thật trên prod host — không có trong `docker-compose.prod.yml` nên phải xác nhận ngoài repo), (1) fix theo root cause xác nhận được (dừng xin User riêng nếu cần ALTER TABLE trên prod — AC8), (2)-(5) 4 AC bảo mật gốc (Fernet fallback, CORS wildcard, gate test-OTP, admin role cho config mutation), (6) regression test token dài. Đọc trực tiếp `docker-compose.yml` (local set FERNET_KEY trùng y hệt giá trị fallback hardcoded → khó là nguyên nhân lỗi ở local) và `docker-compose.prod.yml` (không set FERNET_KEY qua compose lẫn env_file) để loại bớt phạm vi giả thuyết, không đoán mò.
+- Giải trình: risk: high + đụng `models.py` → theo AGENTS.md §4.3, Plan Gate lẽ ra cần explicit confirm ở supervised/plan-only, nhưng mode hiện tại là `bypass` (đã đọc `state/mode.md`) nên auto-approve theo đúng quy tắc "chỉ bypass được chọn tường minh mới auto-approve các gate risk-high". AC8 (khả năng ALTER cột DB trên prod) vẫn là exception cứng nằm ngoài Gate system — đã ghi rõ trong AC + Plan để executor tự dừng xin User riêng lúc thực thi, không bị bypass mode ghi đè.
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (## Plan section)
+- Trạng thái: Thành công — auto-approved: plan (mode bypass)
+- Commit: n/a
+
+## [2026-07-25 03:50:00] dispatch | OMS-006 → @gpt-5.6-luna-high (executor)
+- Dự án: topvnsport-oms
+- Mô tả: Dispatch OMS-006 (bug 500 PUT /api/configs/sms + 4 AC bảo mật gốc) cho @gpt-5.6-luna-high qua `codex exec -m gpt-5.6-luna -c model_reasoning_effort=high`. `scripts/ct-dispatch.py OMS-006 --role execute` ghi `status: dispatched`, `executor: "@gpt-5.6-luna-high"`, `dispatched: 2026-07-25`.
+- Giải trình: Chọn @gpt-5.6-luna-high thay vì @antigravity-3.6-high — strengths [backend, complex-refactor] khớp task (diagnose + fix backend security + schema check), success_rate 0.85 (20 task) so với 0.33 first-pass (3 task, weakness "false-claims-in-report" — rủi ro cho task cần báo cáo chẩn đoán trung thực). Không chọn @antigravity/@gpt-5.6-sol (pro-tier, theo agent memory dành cho reviewing, không phải executor). Task risk: high + đụng models.py nhưng mode bypass đã explicit-selected nên tự động approve Dispatch Gate theo AGENTS.md §4.3.
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (status, executor, dispatched, updated)
+- Trạng thái: Thành công — auto-approved: dispatch (mode bypass)
+- Commit: n/a
+
+## [2026-07-25 04:05:00] dispatch | OMS-006: re-spawn @gpt-5.6-luna-high để commit (executor lần 1 chưa commit)
+- Dự án: topvnsport-oms
+- Mô tả: Executor lần 1 (`b3j73vo29`) hoàn thành implementation (self-report 42 tests pass, AC5/AC8 tôn trọng đúng — xác nhận root cause là schema drift `VARCHAR(500)`, ALTER local thành TEXT, KHÔNG đụng prod DB, đúng theo Project Gate) nhưng để lại 11 file uncommitted + 1 file ngoài scope bị modify (`sync_all_data_from_prod_to_local.sh`, không liên quan task). User chọn re-spawn executor để tự commit thay vì control-tower commit hộ (giữ đúng ranh giới: commit là hành động EXECUTE, ngoài hệ).
+- Giải trình: Yêu cầu executor commit CHỈ những file trong scope (`files:` + test files nó đã sửa), loại trừ `sync_all_data_from_prod_to_local.sh` (tương tự tiền lệ WEB-006 — để User tự xử lý file lạ, không gộp vào commit). Yêu cầu tự báo lại commit hash để ghi `result_ref:`.
+- Files touched: n/a (chưa mutate task file — chờ executor báo commit hash)
+- Trạng thái: Thành công — auto-approved: dispatch (mode bypass)
+- Commit: n/a (pending)
+
+## [2026-07-25 04:20:00] onboard | Thêm dự án mới money-printer-turbo
+- Dự án: money-printer-turbo (mới)
+- Mô tả: Onboard `/data/projects/MoneyPrinterTurbo` theo runbook AGENTS-PLAYBOOK.md §10 — thêm row vào PROJECT REGISTRY (index.md §2) + Project Map (§3), tạo `projects/money-printer-turbo/` (money-printer-turbo.md skeleton, tasks/, docs/, reviews/), chạy `code-review-graph install` + `build` (1380 nodes, 16438 edges, 87 files) + `embed` (1301 embeddings, model all-MiniLM-L6-v2) trong repo đích, đăng ký daemon watch (`daemon add ... --alias mpt`, poll 2s, xác nhận alive).
+- Giải trình: Yêu cầu trực tiếp của User ("tạo dự án mới: /data/projects/MoneyPrinterTurbo"). task_prefix chọn `MPT` theo convention viết tắt tên dự án (như PMI/OMS/WMS/WEB/CT/MVA/CTW). Setup script gốc (`templates/code-review-graph/setup.sh`) lỗi ở step 3a (bug đường dẫn tương đối `$TEMPLATE_DIR` sau khi `cd` vào repo đích) nhưng vô hại — `code-review-graph install` (step 1) đã tự cấu hình `.mcp.json`, `.claude/skills/`, `.claude/settings.json`, `CLAUDE.md`, `AGENTS.md` cho 9 platform qua installer hợp nhất mới hơn, nên không cần chạy lại các bước cp thủ công.
+- Files touched: index.md (§1 tổng số dự án, §2 registry, §3 project map), projects/money-printer-turbo/money-printer-turbo.md (mới), projects/money-printer-turbo/{tasks,docs,reviews}/ (mới, trống). Ngoài hệ: /data/projects/MoneyPrinterTurbo/{.mcp.json,.claude/,CLAUDE.md,AGENTS.md,GEMINI.md,.cursorrules,...} (do code-review-graph installer ghi, chưa commit).
+- Trạng thái: Thành công
+- auto-approved: onboard (hành động cấu hình, không phải Gate)
+- Commit: n/a
+
+## [2026-07-25 04:15:00] dispatch | OMS-006: kill re-spawn @gpt-5.6-luna-high (treo, không tiến triển)
+- Dự án: topvnsport-oms
+- Mô tả: Lần re-spawn thứ 2 (`bvgtglxor`, yêu cầu executor commit riêng phần OMS-006, loại trừ `sync_all_data_from_prod_to_local.sh`) đứng yên ở dòng banner khởi động "Reading additional input from stdin..." không tiến triển gì thêm (so với lần 1 `b3j73vo29` cùng banner nhưng chạy tiếp ngay sau đó). User xác nhận nghi treo, yêu cầu kill — đã `TaskStop(bvgtglxor)` thành công.
+- Giải trình: Kiểm tra lại `git status`/`git log` trong topvnsport sau khi kill — không có commit mới, 11 file OMS-006 vẫn uncommitted y như trước, `sync_all_data_from_prod_to_local.sh` vẫn nguyên trạng — không mất dữ liệu, không có side-effect từ lần chạy treo. Dừng lại, không tự retry ngay (2 lần liên tiếp cùng 1 bước đơn giản bị treo là dấu hiệu bất thường, cần hỏi User hướng xử lý thay vì lặp lại mù quáng).
+- Files touched: n/a
+- Trạng thái: Đã hủy (killed) — không auto-approve retry, chờ User quyết định hướng tiếp theo.
+- Commit: n/a
+
+## [2026-07-25 04:20:00] dispatch | OMS-006: kill lần retry thứ 2 (foreground, vẫn treo 5+ phút, 0% CPU) — dừng auto-retry
+- Dự án: topvnsport-oms
+- Mô tả: Theo yêu cầu User, chạy lại đúng lệnh commit-only foreground (timeout 300s) để quan sát trực tiếp thay vì backgrounded — vẫn treo y hệt lần trước (chỉ in dòng banner "Reading additional input from stdin...", không tiến thêm). `ps aux` xác nhận process còn sống nhưng 0.0% CPU sau 5+ phút — không phải đang tính toán, mà bị block (nhiều khả năng chờ response từ OpenAI API không bao giờ về, không liên quan gì đến nội dung lệnh vì lệnh giống hệt lần 1 đã chạy thành công). Đã `TaskStop(b0o1vh7gn)`.
+- Giải trình: 2/2 lần retry cùng 1 lệnh đơn giản (chỉ commit, không sửa code) đều treo giống hệt nhau trong khi lần đầu (task khó hơn nhiều — implement full fix) chạy trơn tru → nghi ngờ vấn đề tạm thời phía external service (rate limit/session), không phải lỗi do prompt hay do control-tower. Dừng auto-retry lần 3, báo lại User để quyết định (đã đề xuất User tự commit trực tiếp từ trước).
+- Files touched: n/a — git status xác nhận vẫn 12 file uncommitted y nguyên, không mất dữ liệu qua cả 2 lần treo/kill.
+- Trạng thái: Đã hủy (killed) — chờ User quyết định (tự commit / thử executor khác / thử lại sau).
+- Commit: n/a
+
+## [2026-07-25 04:30:00] pm-create | OMS-006: ghi nhận result_ref (User tự commit sau 2 lần executor treo)
+- Dự án: topvnsport-oms
+- Mô tả: 2 lần re-spawn @gpt-5.6-luna-high để commit đều treo (0% CPU, không tiến triển) — User tự chạy `git add`/`git commit` với lệnh do control-tower cung cấp (loại trừ đúng `sync_all_data_from_prod_to_local.sh`). Commit `3116bf3` trên `main`, 11 file changed (100 insertions, 13 deletions) — khớp đúng scope `files:` của OMS-006. Ghi `result_ref: "topvnsport@main (commit 3116bf3)"`.
+- Giải trình: `executor:` giữ nguyên `@gpt-5.6-luna-high` vì AI đã viết toàn bộ code thật (đã xác nhận qua diff ở lần dispatch đầu) — User chỉ chạy lệnh git commit hộ do tooling hang, không phải viết code. Task vẫn `status: dispatched`, CHƯA chuyển `in-review` — bước tiếp theo là `/review-order` (ngoài phạm vi `/pm`, cần lệnh riêng).
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (result_ref, updated)
+- Trạng thái: Thành công
+- Commit: 3116bf3
+
+## [2026-07-25 04:40:00] review-order | OMS-006: phát phiếu review cho @gpt-5.6-sol (result-ref 3116bf3)
+- Dự án: topvnsport-oms
+- Mô tả: `scripts/ct-review-order.py OMS-006 --ref 3116bf3 --reviewer @gpt-5.6-sol` → status `in-review`, sinh `projects/topvnsport-oms/reviews/OMS-006-review.md`. Bổ sung câu hỏi rủi ro tĩnh: `get_affected_flows_tool` trả 0 flow do graph stale (build tại `ca5adef`, chưa re-index `3116bf3`) — không tin số này, dùng lại `flows: [login, checkout]` đã ghi từ Spec Gate; `get_suggested_questions_tool` không có câu hỏi nào target đúng 6 file đã đổi nên bỏ qua để tránh nhiễu. Thay vào đó ghi 4 câu hỏi rủi ro riêng của task (root cause thật là schema drift chứ không phải Fernet mismatch — reviewer tự verify; xác nhận prod DB CHƯA bị ALTER — vi phạm AC8/Project Gate nếu có; FERNET_KEY/CORS_ALLOWED_ORIGINS trên prod phải được set qua secret ngoài repo nếu không sẽ crash lúc khởi động vì code giờ fail-fast; xác nhận `sync_all_data_from_prod_to_local.sh` không nằm trong commit).
+- Giải trình: Chọn @gpt-5.6-sol làm reviewer (strengths: review, code-review, spot-check-runtime; 17/17 review, từng bắt được lỗi executor báo sai ở MVA-007/MVA-008) — phù hợp hơn @antigravity cho task cần verify runtime (psql schema, pytest) + đọc kỹ báo cáo root cause thay vì tin suông. Four-eyes OK (@gpt-5.6-sol ≠ executor @gpt-5.6-luna-high). Không tự đọc diff thật của executor — chỉ dùng dữ liệu tĩnh đã khoá từ Spec Gate + kết quả graph.
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (status: in-review, reviewer, in_review, updated), projects/topvnsport-oms/reviews/OMS-006-review.md (mới + risk questions)
+- Trạng thái: Thành công — auto-approved: review-order (mode bypass)
+- Commit: 3116bf3
+
+## [2026-07-25 04:50:00] review-order | OMS-006: đổi reviewer @gpt-5.6-sol → @claude-opus
+- Dự án: topvnsport-oms
+- Mô tả: User yêu cầu đổi reviewer sang "opus 4.6" — profile gần nhất trong registry là `@claude-opus` (model thật: `claude-opus-4-5-20251101`, không có tier 4.6 trong `knowledge/agents/`), giả định đây là ý User. Chưa có verdict nào (`status: pending`, `verdict: null`) nên sửa trực tiếp `reviewer:` ở cả task frontmatter và review sheet (`ct-review-order.py` từ chối chạy lại vì task đã ở `in-review`, không phải `dispatched` — đây là sửa metadata thủ công, không phải re-issue qua state machine).
+- Giải trình: @claude-opus strengths [review, complex-analysis, architecture] + note "reserved for 2-3 most important reviews" — khớp task risk:high này. Four-eyes vẫn OK (@claude-opus ≠ executor @gpt-5.6-luna-high).
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (reviewer), projects/topvnsport-oms/reviews/OMS-006-review.md (reviewer, DoD line, lệnh /verdict)
+- Trạng thái: Thành công
+- Commit: n/a
+
+## [2026-07-25 04:55:00] dispatch | OMS-006 → @claude-opus (reviewer, spawn thật)
+- Dự án: topvnsport-oms
+- Mô tả: User xác nhận model `claude-opus-4-5-20251101` đúng, yêu cầu spawn thật để review. `scripts/ct-dispatch.py OMS-006 --role review --reviewer @claude-opus` ghi `reviewer: "@claude-opus"`, `updated: 2026-07-25`, giữ `status: in-review`. Spawn `claude --model claude-opus-4-5-20251101 -p '...' --dangerously-skip-permissions` trong repo `topvnsport` (process CLI riêng, ngoài hệ — không phải Agent() subagent).
+- Giải trình: Prompt ngắn (task path + result_ref + review sheet path) theo đúng mẫu `build_prompt()` của script — review sheet tự chứa đầy đủ AC checklist, Review Toolchain, DoD, và lệnh `/verdict` cần gọi lại, nên reviewer đọc sheet là đủ context, không cần lặp lại chi tiết trong prompt.
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (reviewer, updated)
+- Trạng thái: Thành công — auto-approved: dispatch (mode bypass)
+- Commit: n/a
+
+## [2026-07-25 05:05:00] verdict | OMS-006 pass — reviewer @claude-opus, commit 3116bf3
+- Dự án: topvnsport-oms
+- Mô tả: @claude-opus review độc lập (đọc diff thật + chạy test trong repo topvnsport) — PASS, 8/8 AC verify với evidence cụ thể (line number, grep, test name), 42 tests pass, xác nhận đúng AC8 (prod DB chưa bị đụng). Trước khi chạy /verdict, phát hiện process reviewer (chạy với --dangerously-skip-permissions) đã tự ý ghi `status: passed` (giá trị không hợp lệ trong state machine) thẳng vào task frontmatter, bỏ qua toàn bộ cơ chế /verdict (four-eyes recheck, causal analysis, prediction-accuracy, agent-stats) — đã revert về `status: in-review` trước khi chạy `ct-verdict-apply.py` đúng quy trình. `ct-verdict-apply.py OMS-006 pass --reviewer @claude-opus --commit 3116bf3` (kèm đủ 4 field causal analysis vì risk: high) → status: done, 8 AC checkbox tick, prediction-accuracy 94% (16/17), agent stats: @gpt-5.6-luna-high 21 tasks/0.86 success (improving), @claude-opus 13 reviewed.
+- Giải trình: `pattern_bump.bumped: false` (pattern_id `schema-drift-no-migration-tool` chưa tồn tại trong `knowledge/patterns/`) — theo quy tắc, KHÔNG tự tạo pattern file unilaterally, cần hỏi User trước (sẽ đề xuất ở lượt trả lời). Causal analysis: root cause là schema drift (cột `config_value` VARCHAR(500) thật trong Postgres không khớp model unbounded do thiếu alembic/migration khi OMS-004 đổi model — không phải giả thuyết FERNET_KEY ban đầu).
+- Files touched: projects/topvnsport-oms/tasks/OMS-006-fix-security-critical.md (status: done, AC ticked, causal analysis), projects/topvnsport-oms/reviews/OMS-006-review.md, knowledge/metrics/prediction-accuracy.md, knowledge/agents/@gpt-5.6-luna-high.md, knowledge/agents/@claude-opus.md
+- Trạng thái: Thành công — auto-approved: verdict (mode bypass)
+- Commit: 3116bf3

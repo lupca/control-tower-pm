@@ -3,7 +3,7 @@ project: topvnsport-oms
 full_name: "TopVNSport - OMS (Order Management System)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: OMS
-next_task_id: 6
+next_task_id: 10
 created: 2026-07-21
 updated: 2026-07-21
 ---

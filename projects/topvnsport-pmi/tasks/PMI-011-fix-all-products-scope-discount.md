@@ -1,13 +1,13 @@
 ---
 id: PMI-011
 title: "Fix khuyến mãi scope 'tất cả sản phẩm' (giảm 20%) không được áp dụng"
-status: dispatched
+status: done
 priority: high
 risk: high
 created: 2026-07-24
 executor: "@antigravity-3.6-high"
-reviewer: null
-result_ref: null
+reviewer: "@antigravity"
+result_ref: "2f7d238"
 depends_on: []
 files:
   - PMI/backend/services/promotion_service.py
@@ -17,7 +17,7 @@ tests:
   - PMI/backend/tests/unit/test_promotions_scope_stress.py
   - PMI/backend/tests/unit/test_tier5_adversarial_backend.py
 dispatched: 2026-07-25
-in_review: null
+in_review: 2026-07-25
 predicted_success: low
 prediction_factors:
   score: 0.3

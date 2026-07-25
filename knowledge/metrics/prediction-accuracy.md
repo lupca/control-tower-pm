@@ -38,13 +38,13 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 13 |
-| **Pass Count (Actual Success)** | 11 |
-| **Changes Count (Actual Rework/Fail)** | 2 |
-| **Overall Prediction Accuracy** | 100% (13/13) |
-| **High Prediction Precision** | 100% (10/10) |
-| **Medium Prediction Precision** | 100% (1/1) |
-| **Low Prediction Precision** | 100% (2/2) |
+| **Total Predicted Tasks** | 17 |
+| **Pass Count (Actual Success)** | 16 |
+| **Changes Count (Actual Rework/Fail)** | 1 |
+| **Overall Prediction Accuracy** | 94% (16/17) |
+| **High Prediction Precision** | 100% (12/12) |
+| **Medium Prediction Precision** | 100% (3/3) |
+| **Low Prediction Precision** | 50% (1/2) |
 
 ---
 
@@ -64,6 +64,10 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-24 | CT-026 | high | 0.8 | code khu trú 1 script, đã có test harness sẵn (CT-024) (-0.1), no_tests suite CI, chỉ chạy tay/sandbox (-0.1) | [0.7, 0.9] | pass | ✅ | ❌ |
 | 2026-07-24 | CT-025 | high | 0.9 | no_tests: meta-project, markdown files only (-0.1), blast_radius: 8 files (2 new) — at limit, coherent single architecture, no split (-0.0) | [0.75, 0.95] | pass | ✅ | ❌ |
 | 2026-07-24 | CT-027 | high | 0.8 | refactor thuần, có test harness sẵn (-0.1), đụng ct-verdict-apply.py — script mutate state thật, cần cẩn thận (-0.1) | [0.7, 0.9] | pass | ✅ | ❌ |
-| 2026-07-25 | PMI-011 | low | 0.3 | blast_radius: 104 files impacted, >15 (-0.5 cumulative), hits hub/bridge node: calculate_discount (hub+bridge), eval_variant_promotion_match (hub) (-0.2) | — | changes | ✅ | — |
+| 2026-07-25 | PMI-011 | low | 0.3 | blast_radius: 104 files impacted, >15 (-0.5 cumulative), hits hub/bridge node: calculate_discount (hub+bridge), eval_variant_promotion_match (hub) (-0.2); note: pass sau 3 round (2 reject) — predicted low, cuối cùng pass sau khi thu hẹp scope (descope NLP parser theo quyết định User) | — | pass | ❌ | — |
 | 2026-07-25 | CT-029 | high | 1.0 | — | — | pass | ✅ | — |
 | 2026-07-25 | CT-028 | high | 0.75 | 2 script mới + sửa 2 skill + ADR — blast rộng hơn CT-027 (-0.15), no CI, chỉ sandbox (-0.1) | [0.65, 0.85] | pass | ✅ | ❌ |
+| 2026-07-25 | CT-030 | high | 1.0 | có test, blast nhỏ (5 file, 2 new), không hub/bridge (-0.0) | [0.8, 0.98] | pass | ✅ | ❌ |
+| 2026-07-25 | PMI-012 | medium | 0.5 | blast_radius: 142 files impacted (2-hop), >15 (-0.5 cumulative); note: root cause thật của báo cáo gốc user (PMI-011+WEB-005 pass nhưng không đủ) — verify độc lập qua browser thật xác nhận fix đúng | — | pass | ✅ | — |
+| 2026-07-25 | WEB-006 | high | 0.7 | hits hub/bridge node not applicable (verification task, no core logic change expected) | — | pass | ✅ | — |
+| 2026-07-25 | OMS-006 | medium | 0.5 | risk_high: -0.2 (security), multiple_files: -0.05, unresolved root cause: -0.15 (2 competing hypotheses for the live 500 — Fernet key mismatch vs system_configs.config_value schema drift — needs live diagnosis on both envs before fix), possible prod DB schema change: -0.1 (Project Gate: needs explicit User confirm before executor runs any ALTER/migrate, independent of bypass mode) | [0.35, 0.65] | pass | ✅ | ❌ |

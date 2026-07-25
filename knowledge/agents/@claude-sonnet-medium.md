@@ -3,14 +3,14 @@ agent_id: "@claude-sonnet-medium"
 type: ai
 model: claude-sonnet-5
 effort: medium
-total_tasks_executed: 3
+total_tasks_executed: 4
 total_tasks_reviewed: 2
-success_rate: 1.0
+success_rate: 0.75
 avg_review_rounds: 1.0
 strengths: [code, backend, frontend, testing]
 weaknesses: []
-recent_trend: stable
-last_active: 2026-07-22
+recent_trend: declining
+last_active: 2026-07-25
 ---
 
 # Agent Profile: @claude-sonnet-medium
