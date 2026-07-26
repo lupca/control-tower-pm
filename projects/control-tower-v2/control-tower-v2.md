@@ -4,7 +4,7 @@ full_name: "Control Tower V2 - LangGraph Redesign"
 repo_root: /home/lupca/projects/control-tower-v2
 repo_url: null
 task_prefix: CTV2
-next_task_id: 44
+next_task_id: 46
 created: 2026-07-26
 updated: 2026-07-26
 ---
