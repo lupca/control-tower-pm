@@ -1,12 +1,15 @@
 ---
 id: CTV2-046
 title: "Research: V1 vs V2 Feature Gap Analysis"
-status: dispatched
+status: in-review
 priority: high
 risk: low
 deadline: 2026-07-30
 executor: "@gpt-5.6-sol"
+reviewer: "@claude-opus"
 dispatched: 2026-07-26
+result_ref: 06ccb67
+in_review: 2026-07-26
 reviewer:
 files:
   - docs/v1-v2-gap-analysis.md
