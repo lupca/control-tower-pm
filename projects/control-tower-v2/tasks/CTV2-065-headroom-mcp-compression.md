@@ -2,7 +2,7 @@
 id: CTV2-065
 title: "Implement Headroom Compression for MCP Responses"
 repo_root: /home/lupca/projects/control-tower-v2
-status: completed
+status: done
 priority: high
 risk: high
 deadline: null

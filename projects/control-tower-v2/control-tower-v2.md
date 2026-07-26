@@ -4,7 +4,7 @@ full_name: "Control Tower V2 - LangGraph Redesign"
 repo_root: /home/lupca/projects/control-tower-v2
 repo_url: null
 task_prefix: CTV2
-next_task_id: 67
+next_task_id: 70
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -69,7 +69,9 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 - [[CTV2-063-headroom-library-research]] — Research: Headroom Library - Token Reduction & Task Quality (done)
 - [[CTV2-064-openai-provider-support]] — Add OpenAI Provider Support for Coordinator (done)
 - [[CTV2-065-headroom-mcp-compression]] — Implement Headroom Compression for MCP Responses (dispatched)
-- [[CTV2-066-openai-adapter-db-keys]] — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs (dispatched)
+- [[CTV2-066-openai-adapter-db-keys]] — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs (done)
+- [[CTV2-067-markdown-linebreak-fix]] — Fix Markdown Line Breaks + Whitespace Handling (dispatched)
+- [[CTV2-069-markdown-newlines-fix]] — Fix Markdown Rendering - Newlines Double-Encoded (dispatched)
 
 ## Tech Stack
 - **Backend:** FastAPI + SQLAlchemy + Alembic

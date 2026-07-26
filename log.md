@@ -4,6 +4,95 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-27] review-order | CTV2-068
+- Task: CTV2-068 — Research: OCR Integration Design for LangGraph Gates
+- Operation: review-order (Review-order Gate)
+- Result-ref: docs/design/ocr-integration.md
+- Executor: @claude-opus
+- Reviewer: @gemini-3.1-pro
+- Review sheet: projects/control-tower-v2/reviews/CTV2-068-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] dispatch | CTV2-068
+- Task: CTV2-068 — Research: OCR Integration Design for LangGraph Gates
+- Operation: dispatch (Dispatch Gate)
+- Executor: @claude-opus (per user request "cho claude 4.5 xác nhận")
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-068
+- Task: CTV2-068 — Research: OCR Integration Design for LangGraph Gates
+- Operation: plan (Plan Gate)
+- Plan: 4-phase — V1 Analysis, V2 Mapping, Design (OcrService), Output
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-068
+- Task: CTV2-068 — Research: OCR Integration Design for LangGraph Gates
+- Operation: pm-create (Spec Gate)
+- Scope: Verify V1 OCR usage, design V2 integration for review_order_gate + spec_gate
+- AC: 4 items — confirm V1, evaluate V2 proposal, output design doc
+- Predicted success: high (0.9) — research task with clear V1 reference
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict | CTV2-065 (round 2)
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: verdict (Verdict Gate)
+- Verdict: pass
+- Reviewer: @antigravity
+- Commit: 96097f4
+- Tests: 16/16 passed, 260 other tests no regression
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-065 (round 2)
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: review-order (re-review after fixes)
+- Executor: @claude-opus
+- Reviewer: @antigravity
+- Result-ref: eba2ef9
+- Fixes: config extra=ignore, graph_client compress_output param, integration tests
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] verdict | CTV2-065
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: verdict (Verdict Gate)
+- Verdict: changes
+- Reviewer: @antigravity
+- Findings: graph_client.py not modified; Pydantic config needs extra=ignore; Missing integration test
+- Rejections: 1
+- Executor stats: @claude-opus — 6 tasks, 83% success, declining
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] dispatch | CTV2-067
+- Task: CTV2-067 — Fix Markdown Line Breaks + Whitespace Handling
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna-high (codex, gpt-5.6-luna, effort=high)
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-067
+- Task: CTV2-067 — Fix Markdown Line Breaks + Whitespace Handling
+- Operation: plan (Plan Gate)
+- Plan: 4-step fix — install remark-breaks, add to plugins, add whitespace-pre-wrap, test
+- Files: MessageContent.tsx, package.json
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-067
+- Task: CTV2-067 — Fix Markdown Line Breaks + Whitespace Handling
+- Dự án: control-tower-v2
+- Mô tả: Fix regression from CTV2-062 — single \n not rendering as <br>, headers/bullets showing raw
+- Giải trình: Root cause: missing remark-breaks plugin, no whitespace-pre-wrap
+- Files: frontend/src/components/chat/MessageContent.tsx, frontend/package.json
+- Predicted success: high (score 0.9)
+- Verifier: ✅ all checks pass
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] review-order | CTV2-065
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: review-order
+- Executor: @claude-opus
+- Reviewer: @antigravity
+- Result-ref: 1d25027
+- Review sheet: projects/control-tower-v2/reviews/CTV2-065-review.md
+- Mode: bypass (auto-approved: review-order)
+
 ## [2026-07-27] dispatch | CTV2-065
 - Task: CTV2-065 — Implement Headroom Compression for MCP Responses
 - Operation: dispatch (Dispatch Gate)
@@ -116,6 +205,15 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
   ✅ no-conflicting-tasks: no overlap with CTV2-048, CTV2-060
 - Trạng thái: Thành công
 - Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict-pass | CTV2-066
+- Task: CTV2-066 — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs
+- Verdict: pass
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Commit: 5e46299
+- Tests: 258 passed
+- Mode: bypass (auto-approved: verdict)
 
 ## [2026-07-27] dispatch | CTV2-066
 - Task: CTV2-066 — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs

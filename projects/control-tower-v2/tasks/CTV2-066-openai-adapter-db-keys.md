@@ -1,13 +1,13 @@
 ---
 id: CTV2-066
 title: "Fix OpenAI Adapter: Use DB API Keys + Support OpenAI-Compatible APIs"
-status: dispatched
+status: done
 priority: urgent
 risk: normal
 deadline: 2026-07-28
 executor: "@gpt-5.6-luna-high"
-reviewer: null
-result_ref: null
+reviewer: "@claude-opus"
+result_ref: "5e46299"
 depends_on: [CTV2-064]
 files:
   - backend/app/db/models.py
@@ -19,7 +19,9 @@ tests:
   - backend/tests/unit/test_openai_adapter.py
   - backend/tests/integration/test_openai_coordinator.py
 dispatched: 2026-07-27
-in_review: null
+in_review: 2026-07-27
+verdict: pass
+verdict_date: 2026-07-27
 predicted_success: high
 prediction_factors:
   score: 0.85
@@ -29,6 +31,7 @@ prediction_factors:
 created: 2026-07-27
 updated: 2026-07-27
 planned: 2026-07-27
+completed: 2026-07-27
 ---
 
 # CTV2-066: Fix OpenAI Adapter: Use DB API Keys + Support OpenAI-Compatible APIs
@@ -43,21 +46,21 @@ CTV2-064 sai plan: dùng `OPENAI_API_KEY` env var thay vì lấy từ DB per-age
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] AC1: Add `base_url` column to Agent model
+- [x] AC1: Add `base_url` column to Agent model
   - Migration: `ALTER TABLE agents ADD COLUMN base_url VARCHAR(500)`
   - Nullable, default NULL (uses OpenAI default)
-- [ ] AC2: Update `OpenAIAdapter` để nhận `api_key` và `base_url` từ caller
+- [x] AC2: Update `OpenAIAdapter` để nhận `api_key` và `base_url` từ caller
   - Remove dependency on `OPENAI_API_KEY` env var
   - Constructor: `__init__(self, *, api_key: str, base_url: str | None = None)`
   - Pass to `AsyncOpenAI(api_key=api_key, base_url=base_url)`
-- [ ] AC3: Update `ProviderRouter` và `CoordinatorService` để pass agent's api_key/base_url
+- [x] AC3: Update `ProviderRouter` và `CoordinatorService` để pass agent's api_key/base_url
   - Lookup agent record khi resolving provider
   - Pass credentials to adapter
-- [ ] AC4: Frontend UI cho base_url trong Agent settings
+- [x] AC4: Frontend UI cho base_url trong Agent settings
   - Add field trong Agent form
   - Placeholder: "https://api.siliconflow.cn/v1" hoặc để trống cho OpenAI
-- [ ] AC5: Test với OpenAI-compatible API (SiliconFlow, etc.)
-- [ ] AC6: Remove `OPENAI_API_KEY` từ env nếu không còn dùng
+- [x] AC5: Test với OpenAI-compatible API (SiliconFlow, etc.)
+- [x] AC6: Remove `OPENAI_API_KEY` từ env nếu không còn dùng
 
 ## Verification
 
@@ -148,9 +151,9 @@ def _get_adapter(self, agent: Agent) -> CoordinatorProvider:
 
 ## Sub-tasks
 
-- [ ] Create migration cho `base_url` column
-- [ ] Update `OpenAIAdapter` constructor
-- [ ] Update `ProviderRouter`/`CoordinatorService` để pass credentials
-- [ ] Update frontend Agent form
-- [ ] Update/add tests
-- [ ] Remove env var fallback
+- [x] Create migration cho `base_url` column
+- [x] Update `OpenAIAdapter` constructor
+- [x] Update `ProviderRouter`/`CoordinatorService` để pass credentials
+- [x] Update frontend Agent form
+- [x] Update/add tests
+- [x] Remove env var fallback

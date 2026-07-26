@@ -38,11 +38,11 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 54 |
+| **Total Predicted Tasks** | 55 |
 | **Pass Count (Actual Success)** | 53 |
-| **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 80% (43/54) |
-| **High Prediction Precision** | 100% (28/28) |
+| **Changes Count (Actual Rework/Fail)** | 2 |
+| **Overall Prediction Accuracy** | 78% (43/55) |
+| **High Prediction Precision** | 97% (28/29) |
 | **Medium Prediction Precision** | 100% (14/14) |
 | **Low Prediction Precision** | 50% (1/2) |
 
@@ -108,3 +108,4 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-27 | CTV2-059 | high | 0.9 | research task, no code blast radius (-0.0), greenfield project, no existing patterns to conflict (-0.0), no tests required for research (-0.1) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-063 | high | 0.9 | research task, no code changes (-0.0), external library evaluation (-0.1) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-061 | high | 0.9 | no deductions — blast_radius: 7, within limit | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-065 | high | 1.0 | — | — | changes | ❌ | — |
