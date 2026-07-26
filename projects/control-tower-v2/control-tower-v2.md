@@ -4,7 +4,7 @@ full_name: "Control Tower V2 - LangGraph Redesign"
 repo_root: /home/lupca/projects/control-tower-v2
 repo_url: null
 task_prefix: CTV2
-next_task_id: 70
+next_task_id: 73
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -38,8 +38,7 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 
 1. **Database-first**: PostgreSQL là source of truth, không còn File-Over-API
 2. **LangGraph orchestration**: Python state machine, chỉ gọi LLM khi cần judgment
-3. **Chainlit chat**: Open-source chat UI với native LangGraph integration
-4. **Streamlit dashboard**: View-only task management
+3. **Streamlit dashboard**: View-only task management
 
 ## Tiến độ
 | Trạng thái | Số task |
@@ -72,6 +71,9 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 - [[CTV2-066-openai-adapter-db-keys]] — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs (done)
 - [[CTV2-067-markdown-linebreak-fix]] — Fix Markdown Line Breaks + Whitespace Handling (dispatched)
 - [[CTV2-069-markdown-newlines-fix]] — Fix Markdown Rendering - Newlines Double-Encoded (dispatched)
+- [[CTV2-070-openai-adapter-tool-calls]] — Fix OpenAI Adapter: Parse Tool Calls from API Response (dispatched)
+- [[CTV2-071-default-model-from-db]] — Fix Chat Page: Load Default Model from DB (dispatched)
+- [[CTV2-072-prompt-tool-refactor]] — Refactor Prompt System + Tool Execution Loop for API Mode (dispatched)
 
 ## Tech Stack
 - **Backend:** FastAPI + SQLAlchemy + Alembic

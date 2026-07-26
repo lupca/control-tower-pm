@@ -4,6 +4,114 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-27] verdict | CTV2-072 pass
+- Task: CTV2-072 — Refactor Prompt System + Tool Execution Loop for API Mode
+- Operation: verdict (Verdict Gate)
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @gpt-5.6-luna
+- Commit: bf047f0
+- Four-eyes: ✓ (executor ≠ reviewer)
+- AC ticked: 8
+- Prediction: medium (0.6) → pass ✅
+- Stats: 80% overall accuracy (47/59)
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] verdict | CTV2-071 pass
+- Task: CTV2-071 — Fix Chat Page: Load Default Model from DB
+- Operation: verdict (Verdict Gate)
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @gpt-5.6-luna
+- Commit: bf047f0
+- Four-eyes: ✓ (executor ≠ reviewer)
+- AC ticked: 4
+- Prediction: high (0.85) → pass ✅
+- Stats: 79% overall accuracy (46/58)
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] verdict | CTV2-070 pass
+- Task: CTV2-070 — Fix OpenAI Adapter: Parse Tool Calls from API Response
+- Operation: verdict (Verdict Gate)
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @gpt-5.6-luna
+- Commit: bf047f0
+- Four-eyes: ✓ (executor ≠ reviewer)
+- AC ticked: 4
+- Prediction: high (0.9) → pass ✅
+- Stats: 79% overall accuracy (45/57)
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-070, CTV2-071, CTV2-072
+- Tasks: CTV2-070, CTV2-071, CTV2-072
+- Operation: review-order (Review-order Gate)
+- Result-ref: bf047f0
+- Executor: @gpt-5.6-luna
+- Reviewer: @claude-opus
+- Review sheets: projects/control-tower-v2/reviews/CTV2-07{0,1,2}-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] dispatch | CTV2-072
+- Task: CTV2-072 — Refactor Prompt System + Tool Execution Loop for API Mode
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna
+- Reviewer: @claude-opus (pending)
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] pm-create + plan | CTV2-072
+- Task: CTV2-072 — Refactor Prompt System + Tool Execution Loop for API Mode
+- Operation: pm-create + plan (Spec Gate + Plan Gate)
+- Scope: Create global_context.md, implement tool execution loop for API mode
+- Files: coordinator.py, command_router.py, chat.py, context_hierarchy.py, prompts/
+- AC: 8 items — prompt system + tool execution + testing
+- Risk: high (core coordinator changes)
+- Predicted success: medium (0.6)
+- Mode: bypass (auto-approved: spec, plan)
+
+## [2026-07-27] dispatch | CTV2-071
+- Task: CTV2-071 — Fix Chat Page: Load Default Model from DB
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna
+- Reviewer: @claude-opus (pending)
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] dispatch | CTV2-070
+- Task: CTV2-070 — Fix OpenAI Adapter: Parse Tool Calls from API Response
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna
+- Reviewer: @claude-opus (pending)
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] pm-create + plan | CTV2-071
+- Task: CTV2-071 — Fix Chat Page: Load Default Model from DB
+- Operation: pm-create + plan (Spec Gate + Plan Gate)
+- Scope: Remove hardcoded DEFAULT_COORDINATOR_MODEL, load from DB
+- Files: ChatPanel.tsx, ModelSelector.tsx
+- AC: 4 items — wait for API fetch, use DB default, no re-select needed
+- Predicted success: high (0.85)
+- Mode: bypass (auto-approved: spec, plan)
+
+## [2026-07-27] pm-create + plan | CTV2-070
+- Task: CTV2-070 — Fix OpenAI Adapter: Parse Tool Calls from API Response
+- Operation: pm-create + plan (Spec Gate + Plan Gate)
+- Scope: Add tool_calls extraction to openai_adapter.py
+- Files: openai_adapter.py
+- AC: 4 items — extract tool_calls from response (non-streaming + streaming)
+- Predicted success: high (0.9)
+- Mode: bypass (auto-approved: spec, plan)
+
+## [2026-07-27] verdict | CTV2-068
+- Task: CTV2-068 — Research: OCR Integration Design for LangGraph Gates
+- Operation: verdict (Verdict Gate)
+- Verdict: pass
+- Reviewer: @antigravity (gemini-3.1-pro)
+- Executor: @claude-opus (7 tasks, 86% success)
+- Result-ref: docs/design/ocr-integration.md
+- Prediction: high (0.9) → ✅ correct
+- Stats: 79% overall accuracy (44/56), High 97% (29/30)
+- Mode: bypass (auto-approved: verdict)
+
 ## [2026-07-27] review-order | CTV2-068
 - Task: CTV2-068 — Research: OCR Integration Design for LangGraph Gates
 - Operation: review-order (Review-order Gate)

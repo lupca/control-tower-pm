@@ -38,12 +38,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 55 |
-| **Pass Count (Actual Success)** | 53 |
+| **Total Predicted Tasks** | 59 |
+| **Pass Count (Actual Success)** | 57 |
 | **Changes Count (Actual Rework/Fail)** | 2 |
-| **Overall Prediction Accuracy** | 78% (43/55) |
-| **High Prediction Precision** | 97% (28/29) |
-| **Medium Prediction Precision** | 100% (14/14) |
+| **Overall Prediction Accuracy** | 80% (47/59) |
+| **High Prediction Precision** | 97% (31/32) |
+| **Medium Prediction Precision** | 100% (15/15) |
 | **Low Prediction Precision** | 50% (1/2) |
 
 ---
@@ -109,3 +109,7 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-27 | CTV2-063 | high | 0.9 | research task, no code changes (-0.0), external library evaluation (-0.1) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-061 | high | 0.9 | no deductions — blast_radius: 7, within limit | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-065 | high | 1.0 | — | — | changes | ❌ | — |
+| 2026-07-27 | CTV2-068 | high | 0.9 | research task, no code changes (-0.0), clear V1 reference available (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-070 | high | 0.9 | blast_radius: 1 (-0.0) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-071 | high | 0.85 | blast_radius: 2 (-0.0), frontend state timing (-0.05) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-072 | medium | 0.6 | cross-cutting concern, touches coordinator core (-0.15), requires tool execution loop (new feature) (-0.15), risk: high (schemas/core changes) (-0.1) | — | pass | ✅ | — |
