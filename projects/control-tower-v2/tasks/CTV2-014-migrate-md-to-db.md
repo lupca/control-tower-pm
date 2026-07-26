@@ -1,18 +1,20 @@
 ---
 id: CTV2-014
 title: "Migration script: Markdown → PostgreSQL"
-status: todo
+status: done
 priority: critical
 risk: high
-executor:
-reviewer:
+executor: "@antigravity"
+reviewer: "@antigravity"
 deadline: 2026-07-28
 created: 2026-07-26
 updated: 2026-07-26
+completed_at: 2026-07-26
 depends_on: [CTV2-011]
 files:
   - scripts/migrate_md_to_db.py
   - scripts/parse_frontmatter.py
+  - scripts/test_migrate_md_to_db.py
 tests:
   - All projects imported correctly
   - All tasks imported with full data
@@ -37,14 +39,14 @@ control-tower/
 ```
 
 ## Acceptance Criteria
-- [ ] AC1: Parse `index.md` PROJECT REGISTRY → projects
-- [ ] AC2: Parse all `projects/*/tasks/*.md` → tasks với đầy đủ frontmatter
-- [ ] AC3: Parse all `knowledge/agents/@*.md` → agents
-- [ ] AC4: Parse all `knowledge/**/*.md` (non-agents) → knowledge
-- [ ] AC5: Parse `log.md` → audit_log (optional, complex)
-- [ ] AC6: Handle edge cases: missing fields, invalid status, etc.
-- [ ] AC7: Dry-run mode để verify trước khi commit
-- [ ] AC8: Report: số records imported, errors
+- [x] AC1: Parse `index.md` PROJECT REGISTRY → projects
+- [x] AC2: Parse all `projects/*/tasks/*.md` → tasks với đầy đủ frontmatter
+- [x] AC3: Parse all `knowledge/agents/@*.md` → agents
+- [x] AC4: Parse all `knowledge/**/*.md` (non-agents) → knowledge
+- [x] AC5: Parse `log.md` → audit_log (optional, complex)
+- [x] AC6: Handle edge cases: missing fields, invalid status, etc.
+- [x] AC7: Dry-run mode để verify trước khi commit
+- [x] AC8: Report: số records imported, errors
 
 ## Technical Notes
 - Dùng Python script, chạy một lần

@@ -16,11 +16,11 @@ class Project(Base):
     repo_root = Column(String(255), nullable=True)
     task_prefix = Column(String(10), nullable=True)
     task_dir = Column(String(255), nullable=True)
-    graph_status = Column(String(100), nullable=True, default="pending")
-    embed_status = Column(String(20), nullable=True, default="pending")
-    graph_embedded = Column(String(255), nullable=True)
-    daemon_status = Column(String(20), nullable=True, default="stopped")
-    daemon_watch = Column(String(255), nullable=True)
+    graph_status = Column(Text, nullable=True, default="pending")
+    embed_status = Column(String(50), nullable=True, default="pending")
+    graph_embedded = Column(Text, nullable=True)
+    daemon_status = Column(String(50), nullable=True, default="stopped")
+    daemon_watch = Column(Text, nullable=True)
     node_count = Column(Integer, default=0)
     edge_count = Column(Integer, default=0)
     patterns_exportable = Column(Boolean, default=False)
@@ -35,8 +35,8 @@ class Agent(Base):
     __tablename__ = "agents"
 
     id = Column(String(50), primary_key=True)
-    name = Column(String(100), nullable=True)
-    role = Column(String(100), nullable=True)
+    name = Column(String(255), nullable=True)
+    role = Column(Text, nullable=True)
     type = Column(String(20), nullable=False, default="ai")
     status = Column(String(20), default="active")
     model = Column(String(100), nullable=True)
@@ -61,7 +61,7 @@ class Agent(Base):
 class Task(Base):
     __tablename__ = "tasks"
 
-    id = Column(String(20), primary_key=True)
+    id = Column(String(50), primary_key=True)
     project = Column(String(50), nullable=False, index=True)
     title = Column(Text, nullable=False)
     status = Column(String(20), nullable=False, default="todo", index=True)
@@ -74,10 +74,10 @@ class Task(Base):
     tests = Column(JSON, default=list)
     flows = Column(JSON, default=list)
     plan = Column(Text, nullable=True)
-    result_ref = Column(String(100), nullable=True)
+    result_ref = Column(String(255), nullable=True)
     findings = Column(JSON, default=list)
-    verdict = Column(String(10), nullable=True)
-    predicted_success = Column(String(10), nullable=True)
+    verdict = Column(String(20), nullable=True)
+    predicted_success = Column(String(20), nullable=True)
     prediction_factors = Column(JSON, nullable=True)
     deadline = Column(Date, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -96,7 +96,7 @@ class Task(Base):
 class Knowledge(Base):
     __tablename__ = "knowledge"
 
-    id = Column(String(150), primary_key=True)
+    id = Column(String(255), primary_key=True)
     title = Column(String(255), nullable=True)
     category = Column(String(50), nullable=True, index=True)
     path = Column(String(255), nullable=False)
@@ -110,7 +110,7 @@ class Session(Base):
     __tablename__ = "sessions"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    task_id = Column(String(20), ForeignKey("tasks.id"), nullable=True, index=True)
+    task_id = Column(String(50), ForeignKey("tasks.id"), nullable=True, index=True)
     thread_id = Column(String(100), nullable=True)
     current_gate = Column(String(20), nullable=True)
     mode = Column(String(20), nullable=True)
@@ -126,8 +126,8 @@ class AuditLog(Base):
     __tablename__ = "audit_log"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    task_id = Column(String(20), nullable=True, index=True)
-    action = Column(String(50), nullable=False)
-    actor = Column(String(50), nullable=True)
+    task_id = Column(String(100), nullable=True, index=True)
+    action = Column(String(100), nullable=False)
+    actor = Column(String(100), nullable=True)
     details = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
