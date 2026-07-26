@@ -1,11 +1,11 @@
 ---
 id: CTV2-037
 title: "Frontend: TaskDetail Dispatch + Run History"
-status: todo
+status: in-review
 priority: critical
 risk: low
 deadline: 2026-07-29
-executor:
+executor: "@gpt-5.6-luna-high"
 reviewer:
 depends_on: [CTV2-036]
 files:
