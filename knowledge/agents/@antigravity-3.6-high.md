@@ -2,9 +2,9 @@
 agent_id: "@antigravity-3.6-high"
 type: ai
 model: gemini-3.6-flash-high
-total_tasks_executed: 16
+total_tasks_executed: 20
 total_tasks_reviewed: 0
-success_rate: 1.0
+success_rate: 0.95
 avg_review_rounds: 2.0
 strengths: [code, simple-tasks, fast-execution]
 weaknesses: [incomplete-migration, false-claims-in-report]

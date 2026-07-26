@@ -21,9 +21,6 @@ services:
     image: redis:7-alpine
     ports:
       - "6379:6379"
-    volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -51,23 +48,15 @@ services:
 
   worker:
     build: ./backend
-    command: >
-      dramatiq app.workers.agent_runner
-      --processes 2
-      --threads 4
-      --watch app
+    command: dramatiq app.workers.agent_runner
     depends_on:
       redis:
         condition: service_healthy
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://ct:${DB_PASSWORD:-secret}@db:5432/control_tower
-      REDIS_URL: redis://redis:6379/0
-    volumes:
-      - /home/lupca/projects:/home/lupca/projects:rw
-    restart: unless-stopped
+      - DATABASE_URL=postgresql://ct:secret@db:5432/control_tower
+      - REDIS_URL=redis://redis:6379/0
 
 volumes:
   pgdata:
-  redis_data:

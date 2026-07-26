@@ -6,6 +6,6 @@ Registry of reusable causal-analysis patterns (`AGENTS.md` §13). Consulted by `
 |:---|:---|:---|:---|
 | [[n-plus-one-query]] | performance | medium | 0 |
 | [[missing-db-index]] | performance | medium | 0 |
-| [[race-condition]] | reliability | high | 0 |
+| [[race-condition]] | reliability | high | 1 |
 | [[memory-leak]] | reliability | high | 0 |
 | [[mandatory-tool-preflight]] | process | high | 1 |

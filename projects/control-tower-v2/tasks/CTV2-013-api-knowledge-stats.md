@@ -1,11 +1,11 @@
 ---
 id: CTV2-013
 title: "API endpoints for Knowledge & Stats"
-status: todo
+status: done
 priority: high
 risk: low
-executor:
-reviewer:
+executor: "@gemini-3.6-flash"
+reviewer: "@gpt-5.6-sol"
 deadline: 2026-07-28
 created: 2026-07-26
 updated: 2026-07-26

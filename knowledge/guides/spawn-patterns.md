@@ -27,11 +27,12 @@ cd <repo_root> && claude --model <model> -p "<role> task at <task_path>" --dange
 ## Agy (Antigravity/Gemini)
 
 ```bash
-cd <repo_root> && agy --model <model> --print "<role> task at <task_path>" --dangerously-skip-permissions
+cd <repo_root> && agy --agent <model> --effort <effort> --print "<role> task at <task_path>" --dangerously-skip-permissions < /dev/null
 ```
 
-**Flags:** `--model` (not `-m`), `--print` (not `-p`), `--effort` for reasoning level
-**Models:** gemini-3.6-flash, gemini-3.1-pro
+**Flags:** `--agent` (model name), `--effort` (low/medium/high), `--print` (prompt)
+**Models:** gemini-2.5-flash, gemini-2.5-pro, gemini-3.6-flash
+**Note:** Always add `< /dev/null` to prevent stdin hang
 
 ## Codex (OpenAI)
 

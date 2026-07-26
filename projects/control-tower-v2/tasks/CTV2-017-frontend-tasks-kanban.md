@@ -1,11 +1,11 @@
 ---
 id: CTV2-017
 title: "Frontend - Task Table & Kanban views"
-status: todo
+status: done
 priority: high
 risk: medium
-executor:
-reviewer:
+executor: "@gemini-3.6-flash"
+reviewer: "@gpt-5.6-sol"
 deadline: 2026-07-29
 created: 2026-07-26
 updated: 2026-07-26

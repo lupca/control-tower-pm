@@ -1,11 +1,14 @@
 ---
 id: CTV2-011
 title: "Database Schema V2 - Full data model migration"
-status: todo
+status: done
 priority: critical
 risk: medium
-executor:
-reviewer:
+executor: "@antigravity-teamwork"
+reviewer: "@gpt-5.6-sol"
+dispatched: 2026-07-26
+in_review: 2026-07-26
+done: 2026-07-26
 deadline: 2026-07-28
 created: 2026-07-26
 updated: 2026-07-26

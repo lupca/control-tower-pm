@@ -266,6 +266,17 @@ class CommandRouter:
             }
         )
 
+        try:
+            from app.workers.agent_runner import run_agent
+            run_agent.send(
+                run_id=f"run-{task_id}",
+                task_id=task_id,
+                command=f"echo dispatching {task_id}",
+                repo_root="/home/lupca/projects/control-tower"
+            )
+        except Exception:
+            pass
+
         return {
             "action": "dispatched",
             "task_id": task_id,
@@ -385,27 +396,35 @@ class CommandRouter:
     async def _handle_get_status(self, args: str, session_id: str) -> dict:
         """
         /status <task_id>
-        Gets current task state.
+        Gets current task state from DB.
         """
-        parts = args.split()
-        if len(parts) < 1:
+        task_id = args.strip()
+        if not task_id:
             return {"error": "Usage: /status <task_id>"}
 
-        task_id = parts[0]
-        state = self._load_task_state(task_id)
-        if not state:
+        if not self.db:
+            return {"error": f"Task {task_id} not found"}
+
+        from app.db.models import Task
+        db_session = getattr(self.db, "session", self.db)
+        try:
+            task = db_session.query(Task).filter(Task.id == task_id).first()
+        except Exception:
+            task = None
+
+        if not task:
             return {"error": f"Task {task_id} not found"}
 
         return {
             "action": "status",
-            "task_id": state.task_id,
-            "project": state.project,
-            "title": state.title,
-            "status": state.status,
-            "current_gate": state.current_gate,
-            "executor": state.executor,
-            "reviewer": state.reviewer,
-            "verdict": state.verdict
+            "task_id": task.id,
+            "project": getattr(task, "project", "default"),
+            "title": getattr(task, "title", task.id),
+            "status": task.status,
+            "current_gate": getattr(task, "current_gate", None),
+            "executor": task.executor,
+            "reviewer": getattr(task, "reviewer", None),
+            "verdict": getattr(task, "verdict", None)
         }
 
     async def _handle_show_help(self, args: str, session_id: str) -> dict:

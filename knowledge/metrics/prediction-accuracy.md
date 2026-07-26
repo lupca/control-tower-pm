@@ -38,12 +38,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 34 |
-| **Pass Count (Actual Success)** | 33 |
+| **Total Predicted Tasks** | 38 |
+| **Pass Count (Actual Success)** | 37 |
 | **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 97% (33/34) |
-| **High Prediction Precision** | 100% (21/21) |
-| **Medium Prediction Precision** | 100% (11/11) |
+| **Overall Prediction Accuracy** | 97% (37/38) |
+| **High Prediction Precision** | 100% (23/23) |
+| **Medium Prediction Precision** | 100% (13/13) |
 | **Low Prediction Precision** | 50% (1/2) |
 
 ---
@@ -88,3 +88,7 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-26 | CTV2-005 | medium | 0.7 | MCP protocol complexity (-0.15), Existing MCP server available (+0.1), Network/subprocess handling (-0.1) | — | pass | ✅ | — |
 | 2026-07-26 | CTV2-007 | high | 0.85 | Streamlit very simple (+0.1), View-only, no complex state (+0.05) | — | pass | ✅ | — |
 | 2026-07-26 | CTV2-009 | medium | 0.7 | E2E tests complex (-0.15), LLM mocking needed (-0.1) | — | pass | ✅ | — |
+| 2026-07-26 | OMS-007 | medium | 0.65 | risk_high: -0.2 (concurrency), complex_logic: -0.15 | — | pass | ✅ | — |
+| 2026-07-26 | WMS-004 | medium | 0.65 | risk_high: -0.2 (concurrency), complex_logic: -0.15 | — | pass | ✅ | — |
+| 2026-07-26 | OMS-008 | high | 0.8 | — | — | pass | ✅ | — |
+| 2026-07-26 | OMS-009 | high | 0.85 | schema_change: -0.15 | — | pass | ✅ | — |

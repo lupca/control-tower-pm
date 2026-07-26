@@ -5,7 +5,7 @@ status: done
 priority: high
 risk: low
 executor: Antigravity
-reviewer:
+reviewer: "@gpt-5.6-sol"
 deadline: 2026-07-29
 created: 2026-07-26
 updated: 2026-07-26

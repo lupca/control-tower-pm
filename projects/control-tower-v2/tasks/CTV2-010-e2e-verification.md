@@ -1,7 +1,7 @@
 ---
 id: CTV2-010
 title: "E2E Verification - Run and Test Full Stack"
-status: done
+status: in-review
 priority: high
 risk: medium
 deadline: 2026-07-27

@@ -3,7 +3,7 @@ agent_id: "@gpt-5.6-sol"
 type: ai
 model: gpt-5.6-sol
 effort: high
-total_tasks_executed: 9
+total_tasks_executed: 10
 total_tasks_reviewed: 23
 success_rate: 1.00
 avg_review_rounds: 4.0
@@ -30,3 +30,4 @@ last_active: 2026-07-25
 - 2026-07-23 (MVA-008): Caught 3 blocking issues executor missed — MoviePy v2 incomplete in 2 files, download fallback false claim, TTS hanging pytest. Very high quality review with runtime verification.
 - Also performed ad-hoc research: deep worker comparison (143K tokens), architecture analysis (73K tokens as subagent). Strong research capability.
 - 2026-07-23 (CT-020): First execution task — archive AGENTS-EXPERIMENTAL.md, cleanup skill refs. 87K tokens, passed 1st review.
+- 2026-07-26 (CTV2-031): Agent Runner Dramatiq + SSE — remediation after gemini-3.6 fake-done. +1400 lines real implementation including ProcessManager, SSE streaming, migrations. High quality.

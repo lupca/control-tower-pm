@@ -1,11 +1,11 @@
 ---
 id: CTV2-019
 title: "Frontend - Projects & Agents pages"
-status: todo
+status: done
 priority: medium
 risk: low
-executor:
-reviewer:
+executor: "@gemini-3.6-flash"
+reviewer: "@gpt-5.6-sol"
 deadline: 2026-07-30
 created: 2026-07-26
 updated: 2026-07-26

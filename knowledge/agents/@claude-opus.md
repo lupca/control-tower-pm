@@ -3,13 +3,13 @@ agent_id: "@claude-opus"
 type: ai
 model: claude-opus-4-5-20251101
 total_tasks_executed: 4
-total_tasks_reviewed: 14
+total_tasks_reviewed: 15
 success_rate: 1.0
 avg_review_rounds: 1.0
 strengths: [review, research, architecture, complex-analysis, coordination, skill-design]
 weaknesses: []
 recent_trend: improving
-last_active: 2026-07-25
+last_active: 2026-07-26
 ---
 
 # Agent Profile: @claude-opus
@@ -27,3 +27,4 @@ last_active: 2026-07-25
 - 2026-07-22 (CT-015): Consolidated `@claude`'s review history (4 tasks: WMS-001, WMS-002, WMS-003, CT-001) into this profile — `@claude-opus` is now the single reviewer-tier profile for Claude models. `@claude` is deprecated, see [[@claude]].
 - 2026-07-23 (CT-022): Reviewer Rotation — inline skill edit, passed 1st review. (merged from @claude-opus-4.5)
 - 2026-07-24 (CT-023): OCR review toolchain — edited 3 skill files + created convention guide, passed 1st review by @antigravity.
+- 2026-07-26 (CTV2-032): Remediation review — caught subprocess.run vs Popen issue (batch vs streaming), required 1 fix round.

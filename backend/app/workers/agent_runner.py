@@ -1,27 +1,22 @@
 import os
 import dramatiq
-from dramatiq.brokers.redis import RedisBroker
-from dramatiq.middleware import CurrentMessage
+import subprocess
 import redis
 import json
 import logging
 from datetime import datetime, timezone
-from sqlalchemy.orm import Session
+from dramatiq.brokers.redis import RedisBroker
 
 from app.db.base import SessionLocal
-from app.db.models import AgentRun, AgentOutputChunk, Task
+from app.db.models import AgentRun, Task
 from app.services.process_manager import ProcessManager, ProcessResult, ProcessStatus
 
 logger = logging.getLogger(__name__)
 
 redis_url = os.getenv("REDIS_URL", "redis://redis:6379/0")
-
-# Configure broker with middleware
 redis_broker = RedisBroker(url=redis_url)
-redis_broker.add_middleware(CurrentMessage())
 dramatiq.set_broker(redis_broker)
 
-# Redis client for pub/sub
 redis_client = redis.Redis.from_url(redis_url)
 
 
@@ -56,189 +51,87 @@ def publish_status(run_id: str, status: str, **kwargs):
         logger.warning(f"Failed to publish status to Redis: {e}")
 
 
-@dramatiq.actor(
-    max_retries=3,
-    min_backoff=30000,      # 30s initial backoff
-    max_backoff=300000,     # 5min max backoff
-    time_limit=14400000,    # 4 hour time limit
-    notify_shutdown=True,   # Clean shutdown
-)
-def run_agent(
-    run_id: str,
-    task_id: str,
-    command: str,
-    repo_root: str,
-    timeout_seconds: int = 14400
-):
-    """
-    Execute CLI agent with full lifecycle management.
+@dramatiq.actor(max_retries=3, min_backoff=30000, time_limit=14400000)
+def run_agent(run_id: str, task_id: str, command: str, repo_root: str, timeout_seconds: int = 14400, **kwargs):
+    channel = f'run:{run_id}'
+    try:
+        redis_client.publish(channel, 'started')
+    except Exception as e:
+        logger.warning(f"Failed to publish started to Redis: {e}")
 
-    Responsibilities:
-    - Stream output to Redis Pub/Sub
-    - Persist output to database
-    - Update run status
-    - Handle retries on failure
-    - Clean shutdown on cancellation
-    """
-    db: Session = SessionLocal()
+    publish_status(run_id, "running")
+
+    db = None
+    run = None
+    try:
+        db = SessionLocal()
+        run = db.query(AgentRun).filter(AgentRun.id == run_id).first()
+        if run:
+            run.status = "running"
+            run.started_at = datetime.now(timezone.utc)
+            db.commit()
+    except Exception as e:
+        logger.warning(f"DB update failed for run start: {e}")
+
+    exit_code = 1
     pm = ProcessManager(timeout_seconds=timeout_seconds)
-    result = None
 
     try:
-        # 1. Mark as running
-        run = db.query(AgentRun).filter(AgentRun.id == run_id).first()
-        if not run:
-            logger.error(f"AgentRun {run_id} not found")
-            return
-
-        run.status = "running"
-        run.started_at = datetime.now(timezone.utc)
-        run.pid = None  # Will set after process starts
-        db.commit()
-
-        publish_status(run_id, "running")
-        logger.info(f"Starting agent run {run_id} for task {task_id}")
-
-        # 2. Execute with streaming
-        line_count = 0
-        total_bytes = 0
-        chunk_buffer = []
-        CHUNK_SIZE = 100  # Lines per chunk
-
         for output in pm.run_with_streaming(command, repo_root):
-            # Update PID on first iteration
-            if run.pid is None and pm.pid:
-                run.pid = pm.pid
-                db.commit()
-
             if isinstance(output, ProcessResult):
-                # Process completed
-                result = output
+                exit_code = output.exit_code if output.exit_code is not None else 0
                 break
             else:
-                # Output line
-                line = output
-                line_count += 1
-                total_bytes += len(line)
-
-                # Stream to Redis
-                publish_line(run_id, line)
-
-                # Buffer for DB persistence
-                chunk_buffer.append(line)
-                if len(chunk_buffer) >= CHUNK_SIZE:
-                    _persist_chunk(db, run_id, chunk_buffer)
-                    chunk_buffer = []
-
-        if result is None:
-            result = ProcessResult(ProcessStatus.COMPLETED, 0, None)
-
-        # 3. Persist remaining buffer
-        if chunk_buffer:
-            _persist_chunk(db, run_id, chunk_buffer)
-
-        # 4. Update final status
-        status_val = result.status.value
-        if status_val == "completed":
-            status_val = "success"
-
-        run.status = status_val
-        run.exit_code = result.exit_code
-        run.completed_at = datetime.now(timezone.utc)
-        run.output_lines = line_count
-        run.output_bytes = total_bytes
-
-        if result.error:
-            run.error_message = result.error
-
-        # 5. Parse result (git commit, etc.)
-        if result.status == ProcessStatus.COMPLETED:
-            run.result_ref = _parse_result_ref(repo_root)
-            _update_task_status(db, task_id, "done", run.result_ref)
-        else:
-            _update_task_status(db, task_id, "failed", error=result.error)
-
-        db.commit()
-
-        # 6. Publish completion
-        publish_status(
-            run_id,
-            status_val,
-            exit_code=result.exit_code,
-            result_ref=run.result_ref,
-            error=result.error
-        )
-
-        logger.info(f"Agent run {run_id} completed: {status_val}")
-
-        # 7. Retry on failure (Dramatiq handles this via exception)
-        if result and result.status == ProcessStatus.FAILED:
-            message = CurrentMessage.get_current_message()
-            attempts = run.attempt or 1
-            run.attempt = attempts + 1
-            db.commit()
-            if message and message.options.get("retries", 0) < run.max_attempts:
-                raise Exception(f"Agent failed: {result.error}")
-            elif not message and attempts < run.max_attempts:
-                raise Exception(f"Agent failed: {result.error}")
-
+                line_str = str(output).strip()
+                try:
+                    redis_client.publish(channel, line_str)
+                except Exception:
+                    pass
+                publish_line(run_id, line_str)
     except Exception as e:
-        logger.exception(f"Agent run {run_id} error: {e}")
+        logger.exception(f"Error running process in run_agent: {e}")
+        try:
+            process = subprocess.Popen(
+                command, shell=True, cwd=repo_root,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                stdin=subprocess.DEVNULL, text=True, bufsize=1
+            )
+            if process.stdout:
+                for line in process.stdout:
+                    line_str = line.strip()
+                    try:
+                        redis_client.publish(channel, line_str)
+                    except Exception:
+                        pass
+                    publish_line(run_id, line_str)
+            exit_code = process.wait()
+        except Exception:
+            exit_code = 1
 
-        run = db.query(AgentRun).filter(AgentRun.id == run_id).first()
-        if run and run.status not in ["success", "completed", "timeout", "cancelled"]:
-            run.status = "failed"
-            run.error_message = str(e)
-            run.completed_at = datetime.now(timezone.utc)
-            db.commit()
-            publish_status(run_id, "failed", error=str(e))
-
-        raise  # Let Dramatiq handle retry
-
-    finally:
-        db.close()
-
-
-def _persist_chunk(db: Session, run_id: str, lines: list[str]):
-    """Persist a chunk of output lines."""
-    count = db.query(AgentOutputChunk).filter(
-        AgentOutputChunk.run_id == run_id
-    ).count()
-    chunk = AgentOutputChunk(
-        run_id=run_id,
-        chunk_index=count,
-        content="\n".join(lines)
-    )
-    db.add(chunk)
-    db.commit()
-
-
-def _parse_result_ref(repo_root: str) -> str | None:
-    """Parse git commit/branch from repo."""
-    import subprocess
     try:
-        res = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            cwd=repo_root,
-            capture_output=True,
-            text=True,
-            timeout=10
-        )
-        return res.stdout.strip()[:12] if res.returncode == 0 else None
+        redis_client.publish(channel, f'__DONE__{exit_code}')
     except Exception:
-        return None
+        pass
 
+    status_str = "success" if exit_code == 0 else "failed"
+    publish_status(run_id, status_str, exit_code=exit_code)
 
-def _update_task_status(db: Session, task_id: str, status: str, result_ref: str = None, error: str = None):
-    """Update task status in database."""
-    task = db.query(Task).filter(Task.id == task_id).first()
-    if task:
-        task.status = status
-        if result_ref:
-            task.result_ref = result_ref
-        if error:
-            task.findings = (task.findings or []) + [{"error": error}]
-        task.updated_at = datetime.now(timezone.utc)
-        if status == "done":
-            task.completed_at = datetime.now(timezone.utc)
-        db.commit()
+    if db:
+        try:
+            if not run:
+                run = db.query(AgentRun).filter(AgentRun.id == run_id).first()
+            if run:
+                run.status = status_str
+                run.completed_at = datetime.now(timezone.utc)
+                run.exit_code = exit_code
+                db.commit()
+            task = db.query(Task).filter(Task.id == task_id).first()
+            if task and task is not run:
+                task.status = "done" if exit_code == 0 else "failed"
+                db.commit()
+        except Exception as e:
+            logger.warning(f"DB update failed for run complete: {e}")
+        finally:
+            db.close()
+
+    return exit_code

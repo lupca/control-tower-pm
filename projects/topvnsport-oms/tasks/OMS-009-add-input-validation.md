@@ -1,13 +1,13 @@
 ---
 id: OMS-009
 title: "Add input validation (schema constraints)"
-status: dispatched
+status: done
 priority: high
 risk: normal
 deadline: null
 executor: "@antigravity-3.6-high"
-reviewer: null
-result_ref: c99fae89121913355ed28f5202aed5e437f0ffb7
+reviewer: "@claude-opus-5"
+result_ref: "c99fae89121913355ed28f5202aed5e437f0ffb7"
 depends_on: []
 files:
   - OMS/backend/schemas/order.py
