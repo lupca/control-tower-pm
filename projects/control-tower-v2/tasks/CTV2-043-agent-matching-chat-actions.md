@@ -1,11 +1,12 @@
 ---
 id: CTV2-043
 title: "Research: Agent-Task Matching Service + Chat UI Actions"
-status: todo
+status: dispatched
 priority: high
 risk: low
 deadline: 2026-07-30
-executor:
+executor: "@gpt-5.6-luna-high"
+dispatched: 2026-07-26
 reviewer:
 files:
   - backend/app/services/agent_matcher.py
