@@ -1,11 +1,12 @@
 ---
 id: CTV2-042
 title: "E2E Test: Full Task Flow (Create → Dispatch → Complete)"
-status: todo
+status: dispatched
 priority: high
 risk: medium
 deadline: 2026-07-30
-executor:
+executor: "@gpt-5.6-luna-high"
+dispatched: 2026-07-26
 depends_on: [CTV2-043]
 reviewer:
 files:
