@@ -2,12 +2,12 @@
 id: CTV2-044
 task_path: projects/control-tower-v2/tasks/CTV2-044-theme-toggle.md
 project: control-tower-v2
-result_ref: de226c2
+result_ref: b687455
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-status: changes-requested
+status: passed
 issued: 2026-07-26
-verdict: changes
+verdict: pass
 verdict_date: 2026-07-26
 ---
 

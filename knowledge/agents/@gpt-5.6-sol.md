@@ -4,7 +4,7 @@ type: ai
 model: gpt-5.6-sol
 effort: high
 total_tasks_executed: 10
-total_tasks_reviewed: 30
+total_tasks_reviewed: 31
 success_rate: 1.00
 avg_review_rounds: 4.0
 strengths: [review, complex-analysis, reasoning, code-review, spot-check-runtime]

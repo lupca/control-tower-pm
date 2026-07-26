@@ -5,11 +5,11 @@ model: gpt-5.6-luna
 effort: high
 total_tasks_executed: 30
 total_tasks_reviewed: 0
-success_rate: 0.83
+success_rate: 0.87
 avg_review_rounds: 3.5
 strengths: [backend, frontend, cleanup, complex-refactor]
 weaknesses: []
-recent_trend: declining
+recent_trend: improving
 last_active: 2026-07-26
 ---
 
