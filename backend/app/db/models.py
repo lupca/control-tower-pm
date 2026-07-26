@@ -94,6 +94,7 @@ class Task(Base):
     depends_on = Column(JSON, default=list)
 
     sessions = relationship("Session", back_populates="task", cascade="all, delete-orphan")
+    agent_runs = relationship("AgentRun", back_populates="task", cascade="all, delete-orphan")
     project_rel = relationship("Project", back_populates="tasks")
 
 
@@ -135,3 +136,52 @@ class AuditLog(Base):
     actor = Column(String(100), nullable=True)
     details = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class AgentRun(Base):
+    __tablename__ = "agent_runs"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    task_id = Column(String(50), ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    agent_id = Column(String(50), nullable=False)
+    cli = Column(String(20), nullable=False)
+    command = Column(Text, nullable=False)
+
+    status = Column(String(20), nullable=False, default="queued", index=True)
+
+    pid = Column(Integer, nullable=True)
+    dramatiq_message_id = Column(String(50), nullable=True)
+
+    queued_at = Column(DateTime, default=datetime.utcnow)
+    started_at = Column(DateTime, nullable=True)
+    completed_at = Column(DateTime, nullable=True)
+    timeout_seconds = Column(Integer, default=14400)
+
+    exit_code = Column(Integer, nullable=True)
+    result_ref = Column(String(255), nullable=True)
+    error_message = Column(Text, nullable=True)
+
+    output_lines = Column(Integer, default=0)
+    output_bytes = Column(Integer, default=0)
+
+    attempt = Column(Integer, default=1)
+    max_attempts = Column(Integer, default=3)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    task = relationship("Task", back_populates="agent_runs")
+    output_chunks = relationship("AgentOutputChunk", back_populates="run", cascade="all, delete-orphan")
+
+
+class AgentOutputChunk(Base):
+    __tablename__ = "agent_output_chunks"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    run_id = Column(String(36), ForeignKey("agent_runs.id", ondelete="CASCADE"), nullable=False, index=True)
+    chunk_index = Column(Integer, nullable=False)
+    content = Column(Text, nullable=False)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+    run = relationship("AgentRun", back_populates="output_chunks")

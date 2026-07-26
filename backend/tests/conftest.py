@@ -56,6 +56,20 @@ def db():
 
 
 @pytest.fixture
+def db_session(db):
+    yield db.session
+
+
+@pytest.fixture(autouse=True)
+def override_session_local(db):
+    """Ensure SessionLocal binds to SQLite test database during tests."""
+    test_session_factory = sessionmaker(bind=db.session.bind, autocommit=False, autoflush=False)
+    with patch("app.workers.agent_runner.SessionLocal", side_effect=test_session_factory), \
+         patch("app.db.base.SessionLocal", side_effect=test_session_factory):
+        yield
+
+
+@pytest.fixture
 def client(db):
     """FastAPI TestClient with overridden get_db using current test db."""
     def override_get_db():
