@@ -1,13 +1,13 @@
 ---
 id: WMS-004
 title: "Fix race conditions: receive scan, pick scan + row locking"
-status: todo
+status: completed
 priority: high
 risk: high
 deadline: null
-executor: null
+executor: "@antigravity-3.6-high"
 reviewer: null
-result_ref: null
+result_ref: 570cb7c216c0566766c6878c05b11ce3c43922d9
 depends_on: []
 files:
   - WMS/backend/routers/inbound.py
@@ -15,7 +15,7 @@ files:
 flows: [receive, pick]
 tests:
   - WMS/backend/tests/
-dispatched: null
+dispatched: 2026-07-26
 in_review: null
 predicted_success: medium
 prediction_factors:
@@ -24,7 +24,7 @@ prediction_factors:
     - "risk_high: -0.2 (concurrency)"
     - "complex_logic: -0.15"
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 
 # WMS-004: Fix race conditions: receive scan, pick scan + row locking
@@ -33,10 +33,10 @@ updated: 2026-07-25
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] Receive scan có `with_for_update()` khi update `received_qty`
-- [ ] Pick scan có `with_for_update()` khi update `picked_qty`
-- [ ] Concurrent receive test: 10 operators scan cùng barcode → total = 10
-- [ ] Concurrent pick test: 10 pickers cùng order → correct total
+- [x] Receive scan có `with_for_update()` khi update `received_qty`
+- [x] Pick scan có `with_for_update()` khi update `picked_qty`
+- [x] Concurrent receive test: 10 operators scan cùng barcode → total = 10
+- [x] Concurrent pick test: 10 pickers cùng order → correct total
 
 ## Verification
 
@@ -49,14 +49,19 @@ assert shipment.items[0].received_qty == 10  # Not less due to race
 
 ## Plan
 
-*(filled in at Plan Gate)*
+1. **`WMS/backend/routers/inbound.py`**:
+   - In `receive_scan_inbound_shipment`: Add `.with_for_update()` to the query for `models.InboundItem`.
+   - Call `db.flush()` immediately after updating `received_qty` to persist the change within the transaction before returning.
+2. **`WMS/backend/routers/fulfillment.py`**:
+   - In `scan_pick_fulfillment_order`: Add `.with_for_update()` to the query for `models.PickListItem`.
+   - Call `db.flush()` immediately after updating `picked_qty` to persist the lock and value.
 
 ## Sub-tasks
 
-- [ ] Add `with_for_update()` trong receive scan query
-- [ ] Add `with_for_update()` trong pick scan query
-- [ ] Add `db.flush()` sau update để persist ngay
-- [ ] Add concurrency tests
+- [x] Add `with_for_update()` trong receive scan query
+- [x] Add `with_for_update()` trong pick scan query
+- [x] Add `db.flush()` sau update để persist ngay
+- [x] Add concurrency tests
 
 ## Reference
 
