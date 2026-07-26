@@ -1,14 +1,14 @@
 ---
 id: CTV2-045
 title: "Fix Chat Panel Scroll - Prevent UI Stretch"
-status: in-review
+status: done
 priority: high
 risk: low
 deadline: 2026-07-30
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
 dispatched: 2026-07-26
-result_ref: 48ffec7
+result_ref: "48ffec7"
 in_review: 2026-07-26
 reviewer:
 files:
@@ -22,6 +22,7 @@ tests:
   - UI layout not affected by chat length
 created: 2026-07-26
 effort: 1h
+updated: 2026-07-26
 ---
 
 # CTV2-045: Fix Chat Panel Scroll

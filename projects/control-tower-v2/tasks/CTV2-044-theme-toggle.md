@@ -1,7 +1,7 @@
 ---
 id: CTV2-044
 title: "Fix Dark/Light Mode Toggle - Full App Coverage"
-status: in-review
+status: dispatched
 priority: high
 risk: low
 deadline: 2026-07-30
@@ -23,6 +23,8 @@ tests:
   - No hardcoded colors outside theme
 created: 2026-07-26
 effort: 3h
+rejections: 1
+updated: 2026-07-26
 ---
 
 # CTV2-044: Fix Dark/Light Mode Toggle
@@ -60,3 +62,6 @@ Nút toggle theme có nhưng không hoạt động. Một số components có th
 - [ ] AC3: All pages render correctly in both themes
 - [ ] AC4: No hardcoded bg/text colors outside CSS variables
 - [ ] AC5: System preference respected on first visit
+
+## Findings từ reviewer
+- [ ] AC4 fails: indigo-200, indigo-300, emerald-600 compile to fixed Tailwind colors - missing CSS variable palette
