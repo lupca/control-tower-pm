@@ -6,7 +6,9 @@ priority: medium
 risk: low
 deadline: 2026-07-29
 executor: "@gpt-5.6-luna-high"
-reviewer:
+reviewer: "@gpt-5.6-sol"
+result_ref: 1b0209a
+in_review: 2026-07-26
 files:
   - frontend/src/pages/Dashboard.tsx
   - frontend/src/components/dashboard/ProjectCards.tsx
