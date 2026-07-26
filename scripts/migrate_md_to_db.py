@@ -610,6 +610,7 @@ def run_migration(db_url: str, dry_run: bool = False) -> Dict[str, Any]:
 
     if dry_run:
         print("\n[DRY RUN] Skipping database writes.")
+        print(f"Summary: {counts['projects']} projects, {counts['tasks']} tasks, {counts['agents']} agents imported (dry-run)")
         print("=" * 60)
         return {"counts": counts, "warnings": all_warnings, "dry_run": True}
 
@@ -712,6 +713,7 @@ def run_migration(db_url: str, dry_run: bool = False) -> Dict[str, Any]:
         session.commit()
 
         print("\nDATABASE IMPORT COMPLETED SUCCESSFULLY!")
+        print(f"Summary: {imported['projects']} projects, {imported['tasks']} tasks, {imported['agents']} agents imported")
         print("IMPORTED RECORD COUNTS:")
         for k, v in imported.items():
             print(f"  - {k:<12}: {v} inserted/updated")
