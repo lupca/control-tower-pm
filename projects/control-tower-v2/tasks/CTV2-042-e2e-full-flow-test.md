@@ -1,14 +1,14 @@
 ---
 id: CTV2-042
 title: "E2E Test: Full Task Flow (Create → Dispatch → Complete)"
-status: in-review
+status: done
 priority: high
 risk: medium
 deadline: 2026-07-30
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
 dispatched: 2026-07-26
-result_ref: 2c69638
+result_ref: "2c69638"
 in_review: 2026-07-26
 depends_on: [CTV2-043]
 reviewer:
@@ -22,6 +22,7 @@ tests:
   - Flow works in real browser
 created: 2026-07-26
 effort: 6h
+updated: 2026-07-26
 ---
 
 # CTV2-042: E2E Full Task Flow Test
