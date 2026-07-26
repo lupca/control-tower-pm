@@ -1,7 +1,7 @@
 ---
 id: CTV2-043
 title: "Research: Agent-Task Matching Service + Chat UI Actions"
-status: in-review
+status: dispatched
 priority: high
 risk: low
 deadline: 2026-07-30
@@ -23,6 +23,8 @@ tests:
   - Chat has clickable action buttons
 created: 2026-07-26
 effort: 6h
+rejections: 1
+updated: 2026-07-26
 ---
 
 # CTV2-043: Agent-Task Matching + Chat Quick Actions
@@ -117,3 +119,7 @@ const QuickActions: React.FC<{ task: Task }> = ({ task }) => {
 
 - `knowledge/agents/*.md` — agent profiles with specialties
 - `knowledge/metrics/agent-performance.md` — success rates
+
+## Findings từ reviewer
+- [ ] Chat /dispatch queues no AgentRun, so worker discards it
+- [ ] DispatchButton prevents override outside top suggestions

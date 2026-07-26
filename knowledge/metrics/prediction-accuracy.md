@@ -38,10 +38,10 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 38 |
-| **Pass Count (Actual Success)** | 37 |
-| **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 97% (37/38) |
+| **Total Predicted Tasks** | 41 |
+| **Pass Count (Actual Success)** | 39 |
+| **Changes Count (Actual Rework/Fail)** | 2 |
+| **Overall Prediction Accuracy** | 90% (37/41) |
 | **High Prediction Precision** | 100% (23/23) |
 | **Medium Prediction Precision** | 100% (13/13) |
 | **Low Prediction Precision** | 50% (1/2) |
@@ -92,3 +92,6 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-26 | WMS-004 | medium | 0.65 | risk_high: -0.2 (concurrency), complex_logic: -0.15 | — | pass | ✅ | — |
 | 2026-07-26 | OMS-008 | high | 0.8 | — | — | pass | ✅ | — |
 | 2026-07-26 | OMS-009 | high | 0.85 | schema_change: -0.15 | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-041 | — | — | — | — | pass | — | — |
+| 2026-07-26 | CTV2-037 | — | — | — | — | pass | — | — |
+| 2026-07-26 | CTV2-043 | — | — | — | — | changes | — | — |

@@ -1,13 +1,13 @@
 ---
 id: CTV2-037
 title: "Frontend: TaskDetail Dispatch + Run History"
-status: in-review
+status: done
 priority: critical
 risk: low
 deadline: 2026-07-29
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-result_ref: b4fadd4
+result_ref: "b4fadd4"
 in_review: 2026-07-26
 depends_on: [CTV2-036]
 files:
@@ -22,6 +22,7 @@ tests:
   - New run appears in history after dispatch
 created: 2026-07-26
 effort: 4h
+updated: 2026-07-26
 ---
 
 # CTV2-037: TaskDetail Dispatch Integration

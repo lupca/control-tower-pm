@@ -1,13 +1,13 @@
 ---
 id: CTV2-041
 title: "Fix Dashboard Project Progress section"
-status: in-review
+status: done
 priority: medium
 risk: low
 deadline: 2026-07-29
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-result_ref: 1b0209a
+result_ref: "1b0209a"
 in_review: 2026-07-26
 files:
   - frontend/src/pages/Dashboard.tsx
@@ -18,6 +18,7 @@ tests:
   - API returns projectProgress array
 created: 2026-07-26
 effort: 2h
+updated: 2026-07-26
 ---
 
 # CTV2-041: Fix Dashboard Project Progress
