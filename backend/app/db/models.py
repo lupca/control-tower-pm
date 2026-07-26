@@ -16,7 +16,7 @@ class Project(Base):
     repo_root = Column(String(255), nullable=True)
     task_prefix = Column(String(10), nullable=True)
     task_dir = Column(String(255), nullable=True)
-    graph_status = Column(Text, nullable=True, default="pending")
+    graph_status = Column(String(20), nullable=True, default="pending")
     embed_status = Column(String(50), nullable=True, default="pending")
     graph_embedded = Column(Text, nullable=True)
     daemon_status = Column(String(50), nullable=True, default="stopped")
@@ -24,11 +24,14 @@ class Project(Base):
     node_count = Column(Integer, default=0)
     edge_count = Column(Integer, default=0)
     patterns_exportable = Column(Boolean, default=False)
-    status = Column(String(20), default="active")
+    status = Column(String(20), nullable=False, default="active")
     done_count = Column(Integer, default=0)
     total_count = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    tasks = relationship("Task", back_populates="project_rel")
 
 
 class Agent(Base):
@@ -37,10 +40,10 @@ class Agent(Base):
     id = Column(String(50), primary_key=True)
     name = Column(String(255), nullable=True)
     role = Column(Text, nullable=True)
-    type = Column(String(20), nullable=False, default="ai")
-    status = Column(String(20), default="active")
+    type = Column(String(10), nullable=False, default="ai")
+    status = Column(String(20), nullable=False, default="active")
     model = Column(String(100), nullable=True)
-    effort = Column(String(10), nullable=True)
+    effort = Column(String(10), default="medium")
     cli = Column(String(20), nullable=True)
     total_tasks_executed = Column(Integer, default=0)
     total_tasks_reviewed = Column(Integer, default=0)
@@ -62,7 +65,7 @@ class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(String(50), primary_key=True)
-    project = Column(String(50), nullable=False, index=True)
+    project = Column(String(50), ForeignKey("projects.id"), nullable=False, index=True)
     title = Column(Text, nullable=False)
     status = Column(String(20), nullable=False, default="todo", index=True)
     priority = Column(String(10), nullable=True)
@@ -91,6 +94,7 @@ class Task(Base):
     depends_on = Column(JSON, default=list)
 
     sessions = relationship("Session", back_populates="task", cascade="all, delete-orphan")
+    project_rel = relationship("Project", back_populates="tasks")
 
 
 class Knowledge(Base):

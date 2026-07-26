@@ -47,6 +47,7 @@ class TaskUpdate(BaseModel):
     prediction_factors: Optional[Dict[str, Any]] = None
     deadline: Optional[date] = None
     dispatched_at: Optional[datetime] = None
+    in_review_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
 
 
@@ -56,6 +57,7 @@ class TaskResponse(TaskBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     dispatched_at: Optional[datetime] = None
+    in_review_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)

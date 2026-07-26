@@ -107,8 +107,14 @@ class CustomControlTowerGraph:
                 setattr(self.state, k, v)
             return self.state.model_dump()
 
-        return self.state.model_dump()
+    async def ainvoke(self, input_data: Optional[Dict[str, Any]] = None, config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        return self.invoke(input_data, config)
 
 
 def build_graph(checkpointer: Optional[BaseCheckpointSaver] = None):
     return CustomControlTowerGraph(checkpointer=checkpointer)
+
+
+def get_graph(checkpointer: Optional[BaseCheckpointSaver] = None):
+    return build_graph(checkpointer=checkpointer)
+
