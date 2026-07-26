@@ -1,3 +1,10 @@
+---
+name: dispatch
+description: Build and hand off executor or reviewer CLI commands for a task, including lifecycle and four-eyes checks. Activate on /dispatch.
+argument-hint: "<task-id> @<agent-id> [--review]"
+allowed-tools: Read, Edit, Write, Glob, Grep, Bash
+---
+
 # /dispatch — Auto spawn CLI executor/reviewer
 
 **Usage:** `/dispatch <task-id> @<agent-id> [--review]`
@@ -12,6 +19,26 @@
 
 ## Steps
 
+## Mechanical handoff script
+
+After the LLM has selected the agent, checked the Gate, and completed the
+narrative audit work, call the mechanical builder:
+
+```bash
+python3 scripts/ct-dispatch.py <task-id> [--role execute|review] [--reviewer @id] [--print-only]
+```
+
+The script reads the task, PROJECT REGISTRY, agent profile, and
+`knowledge/guides/spawn-patterns.md`, then prints the exact command. It never
+spawns a process. Use `--print-only` while presenting the command for
+confirmation; after the Dispatch Gate, rerun without it so the task state is
+recorded. `--role review` uses `--reviewer` (or the task's `reviewer:`) and
+requires the task already to be `in-review`.
+
+If the script fails or is unavailable, use the manual lookup/command-building
+steps below as a fallback, report the error, and preserve the same status,
+four-eyes, and no-implicit-spawn rules.
+
 ### 1. Parse input
 - Extract `<task-id>` (e.g., MVA-001, CT-017)
 - Extract `@<agent-id>` (e.g., @claude-sonnet-medium)
@@ -24,9 +51,9 @@
   - `gemini-*` → **agy** CLI
   - `gpt-*` → **codex** CLI
 - Spawn pattern:
-  - **claude:** `cd <repo> && claude -model <model> -p "..." --dangerously-skip-permissions`
-  - **agy:** `cd <repo> && agy -m <model> -p "..."`
-  - **codex:** `cd <repo> && codex exec -m <model> [--reasoning <effort>] --dangerously-bypass-approvals-and-sandbox "..."`
+  - Use the exact CLI-specific command in `knowledge/guides/spawn-patterns.md`:
+    Claude uses `--model` + `-p`, Agy uses `--model` + `--print`, and Codex
+    uses `exec -m` + `-c model_reasoning_effort=...`.
 - **MCP required:** If repo has no `.mcp.json`, see `knowledge/guides/setup-code-review-graph.md`
 
 ### 3. Lookup task + project
@@ -55,8 +82,12 @@ logging, and process-spawn steps below are mandatory and run exactly once.
 
 ### 5. Construct spawn command
 
+Normally this step is performed by `scripts/ct-dispatch.py`; the LLM still
+chooses the agent and supplies the Gate decision. The command is printed for
+the coordinator/User to run as a separate CLI process.
+
 ```bash
-cd <repo_root> && <cli> -m <model> -p "<prompt>" <bypass_flag>
+cd <repo_root> && <exact CLI command from knowledge/guides/spawn-patterns.md>
 ```
 
 Where:
@@ -65,7 +96,7 @@ Where:
 
 **Executor (default):**
 ```
-Execute task at <task_path>. When you are done, you MUST commit your changes and provide the resulting commit hash.
+Execute task at <task_path>
 ```
 
 **Reviewer (--review):**
@@ -81,6 +112,11 @@ Result ref: <result_ref>. Review sheet: <review_sheet_path>.
 ```
 
 ### 6. Update task file and audit
+
+For executor dispatch, the script records `status: dispatched`, `executor:`,
+`dispatched:`, and `updated:`. For reviewer dispatch, it records `reviewer:`
+and `updated:` while preserving `status: in-review`. The LLM remains
+responsible for the Gate, `log.md` narrative, and any risk explanation.
 - Set `executor:` or `reviewer:` field
 - Set `status: dispatched` or `status: in-review`
 - Set `dispatched:` or `in_review:` date
@@ -90,14 +126,14 @@ Result ref: <result_ref>. Review sheet: <review_sheet_path>.
 
 ### 7. Spawn and output
 
-Run the constructed command with Bash. This must be a separate CLI process,
-never an `Agent()` subagent. After it starts/completes, print the command and
-terse status:
+Run the printed command with Bash only after the User/Gate permits it. This
+must be a separate CLI process, never an `Agent()` subagent. After it
+starts/completes, print the command and terse status:
 
 ```
 Spawning @<agent-id> for <task-id>:
 
-cd /home/lupca/projects/xxx && claude -m claude-sonnet-5 -p "Execute task at /home/.../tasks/XXX-001-slug.md" --dangerously-skip-permissions
+  cd /home/lupca/projects/xxx && claude --model claude-sonnet-5 -p "Execute task at /home/.../tasks/XXX-001-slug.md" --dangerously-skip-permissions
 
 Task status → dispatched, executor → @<agent-id>
 ```

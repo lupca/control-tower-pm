@@ -9,6 +9,18 @@ allowed-tools: Read, Edit, Write, Grep, Glob, mcp__code-review-graph__get_sugges
 
 You're in control-tower, NOT the target code repo. This skill **never reads the executor's actual diff** and **never runs tests** — it only aggregates existing information (the task + static graph data) into a self-contained review sheet.
 
+The mechanical state transition and initial sheet generation are performed by:
+
+```bash
+python3 scripts/ct-review-order.py <ID> --ref <hash> --reviewer @id [--dry-run]
+```
+
+The script uses `ct_common.py`, enforces four-eyes before any write, updates
+the task atomically, and prints a JSON summary. Run `--dry-run` while checking
+the intended result; after the Review-order Gate, run without it. If the
+script fails or is unavailable, use the manual steps below as a fallback and
+report the error; do not weaken the status or reviewer-equality guards.
+
 ### Step 1 — Locate the task
 
 1. Read `AGENTS.md` (especially §1, §4) and `AGENTS-REFERENCE.md` §5 (handoff artifacts) and `index.md` §2 (PROJECT REGISTRY) if not already read this session.
@@ -44,8 +56,9 @@ effect below still runs exactly once.
 
 ### Step 4 — Record the result-ref, change state
 
-1. Write `result_ref: "<the --ref value>"` into the frontmatter.
-2. Update `status: in-review`, `in_review: <today's date>`, `updated: <today's date>`.
+Run `ct-review-order.py` after the Gate. It writes `result_ref`,
+`status: in-review`, `reviewer:`, `in_review`, and `updated`, and creates the
+initial review sheet. Do not run it in dry-run mode after approval.
 
 ### Step 5 — Enrich with risk questions (read-only, optional)
 
@@ -58,7 +71,10 @@ If the graph returns nothing useful or errors out, skip this step — the review
 
 ### Step 6 — Generate the review sheet
 
-Write the file `projects/<name>/reviews/<ID>-review.md` (e.g. `projects/topvnsport-pmi/reviews/PMI-001-review.md`) — `<name>` comes from the task path found in Step 1. Create the `reviews/` directory if that project doesn't have one yet.
+The script creates `projects/<name>/reviews/<ID>-review.md` (e.g.
+`projects/topvnsport-pmi/reviews/PMI-001-review.md`) with the task AC, DoD,
+tests, result reference, and reviewer. The LLM may then add the graph-derived
+risk questions below; it must not read the executor's diff.
 
 ```markdown
 ---
@@ -67,7 +83,7 @@ task_path: projects/<name>/tasks/<ID>-<slug>.md
 project: <name>
 result_ref: <branch/commit/PR từ --ref>
 executor: <executor: của task>
-reviewer: null
+reviewer: <reviewer>
 status: pending
 issued: <hôm nay YYYY-MM-DD>
 verdict: null
@@ -80,6 +96,7 @@ verdict_date: null
 - Task gốc: `projects/<tên>/tasks/<ID>-<slug>.md`
 - Result-ref: <branch/commit/PR từ --ref>
 - Executor: <executor: của task>
+- Reviewer: <reviewer: từ --reviewer>
 - Ngày phát phiếu: <hôm nay>
 
 ## Acceptance Criteria cần verify
