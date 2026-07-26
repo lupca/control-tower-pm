@@ -1,14 +1,14 @@
 ---
 id: CTV2-047
 title: "Research: Coordinator SDK Options (Claude/Antigravity)"
-status: in-review
+status: done
 priority: high
 risk: low
 deadline: 2026-07-30
 executor: "@gpt-5.6-sol"
 reviewer: "@claude-opus"
 dispatched: 2026-07-26
-result_ref: 362e9c1
+result_ref: "362e9c1"
 in_review: 2026-07-26
 reviewer:
 files:
@@ -19,6 +19,7 @@ tests:
   - Token caching analysis included
 created: 2026-07-26
 effort: 4h
+updated: 2026-07-26
 ---
 
 # CTV2-047: Coordinator SDK Options Research
