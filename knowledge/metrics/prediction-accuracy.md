@@ -38,12 +38,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 46 |
-| **Pass Count (Actual Success)** | 45 |
+| **Total Predicted Tasks** | 54 |
+| **Pass Count (Actual Success)** | 53 |
 | **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 80% (37/46) |
-| **High Prediction Precision** | 100% (23/23) |
-| **Medium Prediction Precision** | 100% (13/13) |
+| **Overall Prediction Accuracy** | 80% (43/54) |
+| **High Prediction Precision** | 100% (28/28) |
+| **Medium Prediction Precision** | 100% (14/14) |
 | **Low Prediction Precision** | 50% (1/2) |
 
 ---
@@ -100,3 +100,11 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-26 | CTV2-044 | — | — | — | — | pass | — | — |
 | 2026-07-26 | CTV2-046 | — | — | — | — | pass | — | — |
 | 2026-07-26 | CTV2-047 | — | — | — | — | pass | — | — |
+| 2026-07-26 | CTV2-051 | — | — | — | — | pass | — | — |
+| 2026-07-26 | CTV2-052 | — | — | — | — | pass | — | — |
+| 2026-07-26 | CTV2-053 | medium | 0.65 | cross-cutting concern, touches coordinator core (-0.15), requires LLM API changes for cache_control (-0.1), needs token measurement instrumentation (-0.1) | [0.5, 0.7] | pass | ✅ | ❌ |
+| 2026-07-27 | CTV2-056 | high | 0.75 | touches Session model (-0.15), migration complexity (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-057 | high | 0.75 | new UI components (-0.15), state management (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-059 | high | 0.9 | research task, no code blast radius (-0.0), greenfield project, no existing patterns to conflict (-0.0), no tests required for research (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-063 | high | 0.9 | research task, no code changes (-0.0), external library evaluation (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-061 | high | 0.9 | no deductions — blast_radius: 7, within limit | — | pass | ✅ | — |

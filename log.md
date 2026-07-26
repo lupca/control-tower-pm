@@ -4,6 +4,552 @@ File này tự động ghi lại toàn bộ hoạt động của Agent nhằm đ
 
 ---
 
+## [2026-07-27] dispatch | CTV2-065
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: dispatch (Dispatch Gate)
+- Executor: @antigravity (agy, gemini-3.1-pro, effort=high)
+- Best-fit: complex implementation + quality-critical testing, 95% success rate
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-065
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: plan (Plan Gate)
+- Plan: 4-phase — Setup (deps+config), Compression wrapper, Integration (4 functions), Testing (data integrity + ratio)
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-065
+- Task: CTV2-065 — Implement Headroom Compression for MCP Responses
+- Operation: pm-create (Spec Gate)
+- Scope: Add headroom-ai compression to graph_client.py MCP responses
+- AC: 7 items — package install, config flag, 4 function wraps, tests for data integrity
+- Risk: high (modifies core MCP pipeline, quality-critical)
+- Predicted success: medium (0.6)
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict | CTV2-063
+- Task: CTV2-063 — Research: Headroom Library - Token Reduction & Task Quality
+- Operation: verdict (Verdict Gate)
+- Verdict: pass
+- Reviewer: @claude-opus
+- Commit: 194217a
+- Executor stats: @antigravity — 10 tasks, 100% success, improving
+- Reviewer stats: @claude-opus — 23 reviews
+- Prediction accuracy: 79% overall (high: 100%, medium: 100%, low: 50%)
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-063
+- Task: CTV2-063 — Research: Headroom Library - Token Reduction & Task Quality
+- Operation: review-order
+- Executor: @antigravity
+- Reviewer: @claude-opus
+- Result-ref: docs/headroom-library-research.md
+- Review sheet: projects/control-tower-v2/reviews/CTV2-063-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] dispatch | CTV2-063
+- Task: CTV2-063 — Research: Headroom Library - Token Reduction & Task Quality
+- Operation: dispatch (Dispatch Gate)
+- Executor: @antigravity (agy, gemini-3.1-pro, effort=high)
+- Best-fit: strengths include "research", 95% success rate
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-063
+- Task: CTV2-063 — Research: Headroom Library - Token Reduction & Task Quality
+- Operation: plan (Plan Gate)
+- Plan: 4-phase approach — Discovery (fetch docs), Evaluation (2 criteria), Integration Assessment (LangGraph/FastAPI fit), Recommendation
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-063
+- Task: CTV2-063 — Research: Headroom Library - Token Reduction & Task Quality
+- Operation: pm-create (Spec Gate)
+- Scope: Research external library (https://github.com/headroomlabs-ai/headroom) for 2 criteria: token reduction, task quality improvement
+- AC: 6 items covering research, evaluation, and recommendation
+- Predicted success: high (0.9) — research task, no code changes
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict | CTV2-061
+- Task: CTV2-061 — Agent API Key Settings UI
+- Operation: verdict pass
+- Executor: @gpt-5.6-luna-high (33 tasks, 88% success)
+- Reviewer: @claude-opus (24 reviews)
+- Commit: fc921ed
+- AC ticked: 9/9
+- Prediction: high (0.9) → pass ✅
+- Overall accuracy: 80% (43/54)
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-061
+- Task: CTV2-061 — Agent API Key Settings UI
+- Operation: review-order
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Result-ref: fc921ed
+- Review sheet: projects/control-tower-v2/reviews/CTV2-061-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] dispatch | CTV2-061
+- Task: CTV2-061 — Agent API Key Settings UI
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna-high (codex, gpt-5.6-luna, effort=high)
+- Best-fit: strengths match (backend, frontend, complex-refactor), success_rate 88%
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-061
+- Task: CTV2-061 — Agent API Key Settings UI
+- Operation: plan (Plan Gate)
+- Plan: 2-phase approach — Phase 1: BE schema + migration + crypto + API (5 steps), Phase 2: FE types + form + page (3 steps)
+- Files: crypto.py (new), migration (new), models.py, schemas.py, agents.py, agent.ts, AgentForm.tsx, Agents.tsx
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-061
+- Task: CTV2-061 — Agent API Key Settings UI
+- Dự án: control-tower-v2
+- Mô tả: Add API key configuration to agent settings UI - currently agents at /agents only config CLI, need to support per-agent API keys with encryption
+- Giải trình: Graph pending (greenfield), files confirmed via Explore agent. Blast radius 7 files (under 8). Related tasks CTV2-052, CTV2-054 already done (model selector, coordinator settings).
+- Files touched: backend/app/db/models.py, backend/app/schemas/agent.py, backend/app/api/agents.py, frontend/src/components/agents/AgentForm.tsx, frontend/src/pages/Agents.tsx, frontend/src/types/agent.ts
+- Predicted success: high (score 0.9)
+- Verifier:
+  ✅ no-circular-deps: depends_on: []
+  ✅ files-exist: confirmed via explore (graph pending)
+  ✅ reasonable-scope: 7 files
+  ✅ tests-for-changes: backend/tests/test_agents.py
+  ✅ no-conflicting-tasks: no overlap with CTV2-048, CTV2-060
+- Trạng thái: Thành công
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] dispatch | CTV2-066
+- Task: CTV2-066 — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna-high
+- Mode: bypass (auto-approved: plan, dispatch)
+
+## [2026-07-27] pm-create | CTV2-066
+- Task: CTV2-066 — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs
+- Operation: pm-create (Spec Gate)
+- Project: control-tower-v2
+- Type: fix (CTV2-064 wrong plan)
+- Priority: urgent
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict-pass | CTV2-064
+- Task: CTV2-064 — Add OpenAI Provider Support for Coordinator
+- Verdict: pass
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Commit: f741511
+- Tests: 77/77 passed, no regressions
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] verdict-pass | CTV2-062
+- Task: CTV2-062 — Fix Chat UI Markdown Rendering
+- Verdict: pass
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Commit: 1b33c05
+- All ACs verified via code review, XSS protection via rehype-sanitize
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-062
+- Task: CTV2-062 — Fix Chat UI Markdown Rendering
+- Operation: review-order
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Result-ref: 1b33c05
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] dispatch | CTV2-064
+- Task: CTV2-064 — Add OpenAI Provider Support for Coordinator
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-064
+- Task: CTV2-064 — Add OpenAI Provider Support for Coordinator
+- Operation: plan (Plan Gate)
+- 4 phases: Dependencies → OpenAIAdapter → Router integration → Testing
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-064
+- Task: CTV2-064 — Add OpenAI Provider Support for Coordinator
+- Operation: pm-create (Spec Gate)
+- Project: control-tower-v2
+- Type: feature (provider integration)
+- predicted_success: high (0.85)
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] dispatch | CTV2-062
+- Task: CTV2-062 — Fix Chat UI Markdown Rendering
+- Operation: dispatch (Dispatch Gate)
+- Executor: @gpt-5.6-luna-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-062
+- Task: CTV2-062 — Fix Chat UI Markdown Rendering
+- Operation: plan (Plan Gate)
+- 4 phases: Dependencies → MessageContent component → ChatMessage update → Testing
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-062
+- Task: CTV2-062 — Fix Chat UI Markdown Rendering
+- Operation: pm-create (Spec Gate)
+- Project: control-tower-v2
+- Type: bug fix (UI)
+- predicted_success: high (0.9)
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict-pass | CTV2-060
+- Task: CTV2-060 — Implement Hybrid Context Snapshot for User Chat
+- Verdict: pass
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Commit: 2fef62b
+- Tests: 234 passed, no regressions
+- Prediction: high (0.85) → actual pass ✅
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-060
+- Task: CTV2-060 — Implement Hybrid Context Snapshot for User Chat
+- Operation: review-order
+- Executor: @gpt-5.6-luna-high
+- Reviewer: @claude-opus
+- Result-ref: 2fef62b
+- Review sheet: projects/control-tower-v2/reviews/CTV2-060-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] re-dispatch | CTV2-060
+- Task: CTV2-060 — Implement Hybrid Context Snapshot for User Chat
+- Operation: re-dispatch (previous executor timeout)
+- Previous: @antigravity-3.6-high (failed: timeout waiting for response)
+- New executor: @gpt-5.6-luna-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] dispatch | CTV2-060
+- Task: CTV2-060 — Implement Hybrid Context Snapshot for User Chat
+- Operation: dispatch (Dispatch Gate)
+- Executor: @antigravity-3.6-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-060
+- Task: CTV2-060 — Implement Hybrid Context Snapshot for User Chat
+- Operation: plan (Plan Gate)
+- 4 phases: Context builder → Coordinator integration → Cache invalidation → Testing
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-060
+- Task: CTV2-060 — Implement Hybrid Context Snapshot for User Chat
+- Operation: pm-create (Spec Gate)
+- Project: control-tower-v2
+- depends_on: [CTV2-059]
+- predicted_success: high (0.85)
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict-pass | CTV2-059
+- Task: CTV2-059 — Research: Kiến trúc Data Manipulation cho User Chat
+- Verdict: pass
+- Reviewer: @gemini-2.5-pro
+- Executor: @claude-opus
+- Commit: 964a9a9
+- Prediction: high (0.9) → actual pass ✅
+- Stats: Overall accuracy 79% (41/52), High precision 100% (26/26)
+- Mode: bypass (auto-approved: verdict)
+
+## [2026-07-27] review-order | CTV2-059
+- Task: CTV2-059 — Research: Kiến trúc Data Manipulation cho User Chat
+- Operation: review-order (Review-order Gate)
+- Result-ref: docs/CTV2-059-chat-data-architecture-research.md
+- Executor: @claude-opus
+- Reviewer: pending assignment (must ≠ @claude-opus)
+- Review sheet: projects/control-tower-v2/reviews/CTV2-059-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-27] dispatch | CTV2-059
+- Task: CTV2-059 — Research: Kiến trúc Data Manipulation cho User Chat
+- Operation: dispatch (Dispatch Gate)
+- Executor: @claude-opus
+- Role: execute (research task)
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-27] plan | CTV2-059
+- Task: CTV2-059 — Research: Kiến trúc Data Manipulation cho User Chat
+- Operation: plan (Plan Gate)
+- 5 phases: LangGraph deep dive → Agentic OS survey → Architecture options → Trade-off analysis → Recommendation
+- Mode: bypass (auto-approved: plan)
+
+## [2026-07-27] pm-create | CTV2-059
+- Task: CTV2-059 — Research: Kiến trúc Data Manipulation cho User Chat
+- Operation: pm-create (Spec Gate)
+- Project: control-tower-v2
+- Type: research
+- predicted_success: high (0.9)
+- Graph: n/a (greenfield project)
+- Mode: bypass (auto-approved: spec)
+
+## [2026-07-27] verdict-pass | CTV2-057
+- Task: CTV2-057 — Chat UI Phase 2: Frontend Components
+- Verdict: pass (Round 3)
+- Reviewer: @claude-opus
+- Executor: @claude-sonnet
+- Commit: 3f7a622
+- All findings verified fixed (F1-F7, AC2, F8, F9)
+- TypeScript clean
+
+## [2026-07-27] verdict-pass | CTV2-056
+- Task: CTV2-056 — Chat UI Phase 1: Backend Schema + API
+- Verdict: pass (Round 2)
+- Reviewer: @claude-opus
+- Executor: @claude-sonnet
+- Commit: cb66c05
+- All 5 findings (F1-F5) verified fixed
+- 229 tests pass
+
+## [2026-07-27] review-changes | CTV2-056, CTV2-057
+- CTV2-056: changes - F1 message_count not maintained, F2 ON DELETE SET NULL conflict
+- CTV2-057: changes - F1 closing session bug, AC2 GlobalChatButton not rendered
+- Reviewer: @claude-opus
+- Re-dispatching fixes...
+
+## [2026-07-27] dispatch (parallel) | CTV2-056, CTV2-057
+- Operation: Split CTV2-056 (large task) → 3 phases, dispatch 2 in parallel
+- CTV2-056: Chat UI Phase 1 - Backend Schema + API
+- CTV2-057: Chat UI Phase 2 - Frontend Components
+- CTV2-058: Chat UI Phase 3 - Integration (blocked, depends on 056+057)
+- Executor: @claude-sonnet
+- Reviewer: @claude-opus (pending)
+- Mode: bypass (auto-approved: spec, plan, dispatch)
+
+## [2026-07-26] verdict-pass | CTV2-054
+- Task: CTV2-054 — Coordinator Model Settings (via Agents)
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @gpt-5.6-luna-high
+- Commit: e9f1fb6
+- Four-eyes: ✓
+- Mode: bypass
+
+## [2026-07-26] dispatch | CTV2-054
+- Task: CTV2-054 — Coordinator Model Settings UI
+- Executor: @gpt-5.6-luna-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] task-create + plan | CTV2-054
+- Task: CTV2-054 — Coordinator Model Settings UI
+- Mode: bypass (auto-approved: spec, plan)
+- Scope: DB table + API + Settings page + update ModelSelector
+
+## [2026-07-26] closed | CTV2-055
+- Task: CTV2-055 — Research: Chat UI với Hierarchical Context + Multi-Session
+- Status: done (research deliverable)
+- Result: docs/chat-ui-architecture.md (855 lines)
+- Commit: 9c357fe
+
+## [2026-07-26] dispatch | CTV2-055
+- Operation: Dispatch executor (changed from sonnet to opus)
+- Task: CTV2-055 — Research: Chat UI với Hierarchical Context + Multi-Session
+- Executor: @claude-opus (opus-4.5)
+- Mode: bypass (auto-approved: plan, dispatch)
+
+## [2026-07-26] pm-create | CTV2-055
+- Operation: Create research task
+- Task: CTV2-055 — Research: Chat UI với Hierarchical Context + Multi-Session
+- Mode: bypass (auto-approved: spec)
+- Type: Research/Design (no code changes)
+- Deliverables: Architecture doc, DB schema proposal, wireframes, token caching strategy
+- Predicted success: high (0.8)
+
+## [2026-07-26] verdict-pass | CTV2-053 (round 2)
+- Task: CTV2-053 — Hierarchical Context Chat System (Global/Project/Task)
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @claude-sonnet-high
+- Commit: 2b4542e
+- Four-eyes: ✓ (reviewer ≠ executor)
+- Mode: bypass (auto-approved: verdict)
+- Agent stats: executor 5 tasks (100% success), reviewer 20 reviews
+- Prediction accuracy: 78% (38/49)
+- Notes: Round 2 - All 5 round 1 findings verified fixed
+
+## [2026-07-26] dispatch-review | CTV2-053 (round 2)
+- Operation: Dispatch reviewer
+- Task: CTV2-053 — Hierarchical Context Chat System
+- Reviewer: @claude-opus
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] review-order | CTV2-053 (round 2)
+- Operation: Issue review sheet
+- Task: CTV2-053 — Hierarchical Context Chat System
+- Result-ref: 2b4542e
+- Executor: @claude-sonnet-high
+- Reviewer: @claude-opus
+- Review sheet: projects/control-tower-v2/reviews/CTV2-053-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-26] dispatch | CTV2-053 (round 2)
+- Operation: Re-dispatch after changes-requested
+- Task: CTV2-053 — Hierarchical Context Chat System
+- Executor: @claude-sonnet-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] verdict-changes | CTV2-053
+- Task: CTV2-053 — Hierarchical Context Chat System (Global/Project/Task)
+- Verdict: changes (reverted from false pass)
+- Original executor: @antigravity-3.6-high (stat penalty: success_rate 0.95→0.90)
+- Original reviewer: @antigravity (stat penalty: success_rate 1.0→0.95, missed bugs)
+- Findings:
+  - Bug: cache_control at request level (should be in content blocks)
+  - Missing: deferred tool loading
+  - Missing: LangGraph integration
+  - Missing: auto-memory for project context
+- Re-assigned: executor @claude-sonnet-high, reviewer @claude-opus
+
+## [2026-07-26] dispatch-review | CTV2-053
+- Operation: Dispatch reviewer
+- Task: CTV2-053 — Hierarchical Context Chat System (Global/Project/Task)
+- Reviewer: @antigravity
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] review-order | CTV2-053
+- Operation: Issue review sheet
+- Task: CTV2-053 — Hierarchical Context Chat System (Global/Project/Task)
+- Result-ref: fa47dc2
+- Executor: @antigravity-3.6-high
+- Reviewer: @antigravity
+- Review sheet: projects/control-tower-v2/reviews/CTV2-053-review.md
+- Mode: bypass (auto-approved: review-order)
+- Four-eyes: ✓ (reviewer @antigravity ≠ executor @antigravity-3.6-high)
+
+## [2026-07-26] dispatch | CTV2-053
+- Operation: Dispatch executor
+- Task: CTV2-053 — Hierarchical Context Chat System (Global/Project/Task)
+- Executor: @antigravity-3.6-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] pm-create + plan | CTV2-053
+- Operation: Create task + Plan (revised after architecture review)
+- Task: CTV2-053 — Hierarchical Context Chat System (Global/Project/Task)
+- Mode: bypass (auto-approved: spec, plan)
+- Predicted success: medium (0.65)
+- Files: backend/app/services/context_hierarchy.py (new), coordinator.py, db/models.py, api/chat.py
+- Plan: 5 phases - Context Hierarchy Service → Coordinator Integration → DB Schema → Token Telemetry → Compaction
+- Note: Revised after reviewing actual CTV2 architecture (CoordinatorService, Session, Project models)
+
+## [2026-07-26] verdict-pass | CTV2-052
+- Task: CTV2-052 — Coordinator Model Selector UI
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @gpt-5.6-luna-high
+- Commit: 65c5af4
+- Four-eyes: ✓
+- Mode: bypass (auto-approved: verdict)
+- Agent stats: executor 32 tasks (88%), reviewer 19 reviews
+
+## [2026-07-26] review-order + dispatch-review | CTV2-052
+- Task: CTV2-052 — Coordinator Model Selector UI
+- Result-ref: 65c5af4
+- Reviewer: @claude-opus
+- Mode: bypass (auto-approved: review-order, dispatch-review)
+
+## [2026-07-26] dispatch | CTV2-052
+- Operation: Dispatch executor
+- Task: CTV2-052 — Coordinator Model Selector UI
+- Executor: @gpt-5.6-luna-high
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] task-create + plan | CTV2-052
+- Operation: Create task + Plan
+- Task: CTV2-052 — Coordinator Model Selector UI
+- Mode: bypass (auto-approved: spec, plan)
+- Files: ChatInput.tsx, ModelSelector.tsx (new), ChatPanel.tsx, useChat.ts
+
+## [2026-07-26] verdict-pass | CTV2-051
+- Task: CTV2-051 — Refactor Coordinator to CLI Dispatch
+- Verdict: pass
+- Reviewer: @claude-opus
+- Executor: @gpt-5.6-luna-high
+- Commit: 27ea213
+- Four-eyes: ✓ (reviewer ≠ executor)
+- Mode: bypass (auto-approved: verdict)
+- Agent stats: executor 31 tasks (87% success), reviewer 18 reviews
+- Prediction accuracy: 79% (37/47)
+
+## [2026-07-26] dispatch-review | CTV2-051
+- Operation: Dispatch reviewer
+- Task: CTV2-051 — Refactor Coordinator to CLI Dispatch
+- Reviewer: @claude-opus
+- Mode: bypass (auto-approved: dispatch-review)
+
+## [2026-07-26] review-order | CTV2-051
+- Operation: Issue review sheet
+- Task: CTV2-051 — Refactor Coordinator to CLI Dispatch
+- Result-ref: 27ea213
+- Reviewer: @claude-opus
+- Review sheet: projects/control-tower-v2/reviews/CTV2-051-review.md
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-26] dispatch | CTV2-051
+- Operation: Dispatch executor
+- Task: CTV2-051 — Refactor Coordinator to CLI Dispatch
+- Executor: @gpt-5.6-luna-high
+- Reviewer (planned): @claude-opus
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] plan | CTV2-051
+- Operation: Plan Gate
+- Task: CTV2-051 — Refactor Coordinator to CLI Dispatch
+- Mode: bypass (auto-approved: plan)
+- Plan: 5 steps — create CLIDispatcher, add prompt formatter, refactor CoordinatorService, model routing, tests
+
+## [2026-07-26] task-create | CTV2-051
+- Operation: Create CLI Coordinator refactor task
+- Task: CTV2-051 — Refactor Coordinator to CLI Dispatch
+- Status: todo (user requested no dispatch this session)
+- Reason: Use account login (Claude Max, Google Pro) instead of API keys
+
+## [2026-07-26] dispatch | CTV2-050
+- Operation: Create + dispatch SDK Coordinator task (from CTV2-047 research)
+- Task: CTV2-050 — Implement SDK-Direct Coordinator
+- Executor: @gpt-5.6-sol (PID 960457)
+- Mode: bypass (auto-approved: spec, dispatch)
+- Note: Correcting earlier mistake — this is the proper implementation task from CTV2-047
+
+## [2026-07-26] verdict-pass | CTV2-048, CTV2-049
+- CTV2-048: Gate System Consolidation
+  - Reviewer 1: @claude-opus — pass
+  - Reviewer 2: @gemini-3.1-pro — pass
+  - All 8 ACs verified, 12 tests pass
+- CTV2-049: Token Telemetry
+  - Reviewer: @claude-opus — pass
+  - All 8 ACs verified, 8 tests pass
+- Commit: 92b7fbc
+- Four-eyes: ✓ (both reviewers ≠ executor @gpt-5.6-sol)
+- Mode: bypass
+
+## [2026-07-26] review-order | CTV2-048, CTV2-049
+- Operation: Spawn reviewers
+- Result ref: 92b7fbc
+- CTV2-048 (HIGH-RISK, dual review):
+  - Reviewer 1: @claude-opus (PID 912413)
+  - Reviewer 2: @gemini-3.1-pro (pending R1 pass)
+- CTV2-049:
+  - Reviewer: @claude-opus (PID 912659)
+- Mode: bypass (auto-approved: review-order)
+
+## [2026-07-26] dispatch | CTV2-048, CTV2-049
+- Operation: Spawn executors
+- Executor: @gpt-5.6-sol (gpt-5.6-sol, effort=high)
+- PIDs:
+  - CTV2-048: 857969
+  - CTV2-049: 858332
+- Mode: bypass (auto-approved: dispatch)
+
+## [2026-07-26] task-create | CTV2-048, CTV2-049
+- Operation: Create 2 implementation tasks from gap analysis findings
+- Project: control-tower-v2
+- Tasks:
+  - **CTV2-048** Gate System Consolidation (critical, risk=high) — fix C1-C6
+  - **CTV2-049** Token Telemetry System (high, risk=normal) — verify 80% target
+- Mode: bypass (auto-approved: spec)
+- Based on: CTV2-046 gap analysis findings
+
 ## [2026-07-26 04:55:00] verdict-pass-batch | CTV2-001..009
 - Operation: verdict pass (all 9 tasks)
 - Reviewer: @antigravity (gemini-3.1-pro)

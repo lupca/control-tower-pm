@@ -64,6 +64,7 @@ Every file in `tasks/` starts with frontmatter:
 ---
 id: PMI-001                          # <PREFIX>-<NNN>, NNN zero-padded to 3 digits
 title: "Thêm validation cost/tax cho variant"
+repo_root: /home/lupca/projects/topvnsport  # CRITICAL: absolute path to code repo, from PROJECT REGISTRY
 status: done                         # todo | dispatched | in-review | done | changes-requested
 priority: high                       # urgent | high | medium | low
 risk: high                           # high | normal (default normal)

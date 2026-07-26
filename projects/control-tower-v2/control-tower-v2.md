@@ -4,7 +4,7 @@ full_name: "Control Tower V2 - LangGraph Redesign"
 repo_root: /home/lupca/projects/control-tower-v2
 repo_url: null
 task_prefix: CTV2
-next_task_id: 64
+next_task_id: 67
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -64,9 +64,12 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 - [[CTV2-058-chat-integration]] — Chat UI Phase 3: Integration + Global Chat (todo, unblocked)
 - [[CTV2-059-chat-data-architecture-research]] — Research: Kiến trúc Data Manipulation cho User Chat (done)
 - [[CTV2-060-hybrid-context-snapshot]] — Implement Hybrid Context Snapshot for User Chat (done)
-- [[CTV2-061-agent-api-key-settings]] — Agent API Key Settings UI (in-review)
-- [[CTV2-062-chat-markdown-rendering]] — Fix Chat UI Markdown Rendering (dispatched)
-- [[CTV2-063-headroom-library-research]] — Research: Headroom Library - Token Reduction & Task Quality (dispatched)
+- [[CTV2-061-agent-api-key-settings]] — Agent API Key Settings UI (done)
+- [[CTV2-062-chat-markdown-rendering]] — Fix Chat UI Markdown Rendering (done)
+- [[CTV2-063-headroom-library-research]] — Research: Headroom Library - Token Reduction & Task Quality (done)
+- [[CTV2-064-openai-provider-support]] — Add OpenAI Provider Support for Coordinator (done)
+- [[CTV2-065-headroom-mcp-compression]] — Implement Headroom Compression for MCP Responses (dispatched)
+- [[CTV2-066-openai-adapter-db-keys]] — Fix OpenAI Adapter: Use DB API Keys + OpenAI-Compatible APIs (dispatched)
 
 ## Tech Stack
 - **Backend:** FastAPI + SQLAlchemy + Alembic

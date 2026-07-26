@@ -17,6 +17,12 @@ allowed-tools: Read, Edit, Write, Glob, Grep, Bash
 > - ✅ `Bash("cd <repo> && claude -p '...'")` — separate process, outside the system
 > - ❌ `Agent("Execute task...")` — subagent in same session, still inside control-tower
 
+> **CRITICAL: REPO PATH CONFUSION PREVENTION**
+> - `control-tower` (this repo, cwd) = coordination only, NO code, NO backend/
+> - `control-tower-v2` = actual code repo at `/home/lupca/projects/control-tower-v2`
+> - Executor MUST `cd <repo_root>` from PROJECT REGISTRY before writing code
+> - If executor writes to `/home/lupca/projects/control-tower/backend/` → WRONG REPO!
+
 ## Steps
 
 ## Mechanical handoff script

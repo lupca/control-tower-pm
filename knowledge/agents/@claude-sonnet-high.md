@@ -3,7 +3,7 @@ agent_id: "@claude-sonnet-high"
 type: ai
 model: claude-sonnet-5
 effort: high
-total_tasks_executed: 4
+total_tasks_executed: 5
 total_tasks_reviewed: 9
 success_rate: 1.0
 avg_review_rounds: 1.0
