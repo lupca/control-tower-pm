@@ -1,10 +1,10 @@
 ---
 id: CTV2-015
 title: "Frontend setup - React + Vite + Tailwind"
-status: todo
+status: done
 priority: high
 risk: low
-executor:
+executor: Antigravity
 reviewer:
 deadline: 2026-07-29
 created: 2026-07-26
@@ -37,13 +37,13 @@ Setup React frontend thay thế Streamlit dashboard + Chainlit chat.
 - Zustand (state management)
 
 ## Acceptance Criteria
-- [ ] AC1: Vite project với React 19 + TypeScript
-- [ ] AC2: TailwindCSS configured với dark mode
-- [ ] AC3: React Router với routes: /, /tasks, /kanban, /task/:id, /projects, /agents
-- [ ] AC4: React Query setup với API client
-- [ ] AC5: Zustand store cho global state (user preferences, open panels)
-- [ ] AC6: Dockerfile cho production build
-- [ ] AC7: Vite proxy `/api` → `http://backend:8000`
+- [x] AC1: Vite project với React 19 + TypeScript
+- [x] AC2: TailwindCSS configured với dark mode
+- [x] AC3: React Router với routes: /, /tasks, /kanban, /task/:id, /projects, /agents
+- [x] AC4: React Query setup với API client
+- [x] AC5: Zustand store cho global state (user preferences, open panels)
+- [x] AC6: Dockerfile cho production build
+- [x] AC7: Vite proxy `/api` → `http://backend:8000`
 
 ## Structure
 ```
