@@ -27,6 +27,7 @@ Chào mừng bạn đến với tháp điều khiển trung tâm. Đây là nơi
 | `control-tower-web` | `/home/lupca/projects/control-tower-web` | `projects/control-tower-web/tasks/` (`control-tower-web.md`) | ✅ yes (62 nodes) | ✅ yes (29 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `ctw`, poll 2s) | `false` |
 | `money-printer-turbo` | `/data/projects/MoneyPrinterTurbo` | `projects/money-printer-turbo/tasks/` (`money-printer-turbo.md`) | ✅ yes (1380 nodes, 16438 edges) | ✅ yes (1301 embeddings, model `all-MiniLM-L6-v2`) | ✅ yes (alias `mpt`, poll 2s) | `false` |
 | `topvnsport-devops` | `/home/lupca/projects/topvnsport-devops` | `projects/topvnsport-devops/tasks/` (`topvnsport-devops.md`) | ⏳ pending | ⏳ pending | ⏳ pending | `false` |
+| `control-tower-v2` | `/home/lupca/projects/control-tower-v2` | `projects/control-tower-v2/tasks/` (`control-tower-v2.md`) | ⏳ pending (greenfield) | ⏳ pending | ⏳ pending | `false` |
 
 Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về một `repo_root` (monorepo `topvnsport`) vì PMI/OMS/WMS là các thư mục con trong cùng repo git. Khi build/embed graph cho `topvnsport`, cả ba dự án đều được hưởng. `patterns_exportable` (`AGENTS.md` §14.1): `true` khi code trong repo đủ generic để đáng surface sang project khác (case này — cùng 1 monorepo topvnsport, code dùng chung thật sự); `control-tower` là `false` vì không có code, chỉ có process Markdown.
 
@@ -45,6 +46,7 @@ Ghi chú: `topvnsport-pmi`, `topvnsport-oms`, `topvnsport-wms` cùng trỏ về 
 | **Control Tower Web** | `projects/control-tower-web/` | ✅ Hoàn thành | 13/13 | — | Dashboard fixes complete |
 | **MoneyPrinterTurbo** | `projects/money-printer-turbo/` | 🔄 Đang chạy | 0/1 | MPT-001: dispatched | 1 dispatched: MPT-001 |
 | **TopVNSport - DevOps** | `projects/topvnsport-devops/` | ✅ Hoàn thành | 3/3 | — | Phase 1 IaC migration complete |
+| **Control Tower V2** | `projects/control-tower-v2/` | ✅ Hoàn thành | 9/9 | — | LangGraph redesign complete |
 
 ---
 

@@ -38,12 +38,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 25 |
-| **Pass Count (Actual Success)** | 24 |
+| **Total Predicted Tasks** | 34 |
+| **Pass Count (Actual Success)** | 33 |
 | **Changes Count (Actual Rework/Fail)** | 1 |
-| **Overall Prediction Accuracy** | 96% (24/25) |
-| **High Prediction Precision** | 100% (16/16) |
-| **Medium Prediction Precision** | 100% (7/7) |
+| **Overall Prediction Accuracy** | 97% (33/34) |
+| **High Prediction Precision** | 100% (21/21) |
+| **Medium Prediction Precision** | 100% (11/11) |
 | **Low Prediction Precision** | 50% (1/2) |
 
 ---
@@ -79,3 +79,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-25 | WEB-011 | high | 0.85 | risk_high: -0.15 (sửa CORS gateway + app, ảnh hưởng mọi service; sai là chặn toàn bộ storefront), root cause đã VERIFY trực tiếp trên prod (đếm được header ACAO = 2), không phải giả thuyết ⇒ diện sửa rõ., không trừ blast_radius: sửa config CORS, không đụng logic., web frontend KHÔNG cần sửa dòng nào — đừng để executor đi lạc vào code web. | [0.7, 0.95] | pass | ✅ | ❌ |
 | 2026-07-25 | OMS-015 | medium | 0.4 | blast_radius > 8 (110 files in graph, but fix is scoped to 1-2 files): -0.3, blast_radius > 15: -0.2, no existing tests for customers.py: -0.1 | — | pass | ✅ | — |
 | 2026-07-25 | WEB-012 | high | 0.8 | no existing tests for index.ts: -0.1, simple cleanup, low risk: -0.0, depends_on OMS-015 (must deploy first): -0.1 | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-001 | high | 0.85 | Greenfield project, no legacy constraints (+0.1), Standard SQLAlchemy patterns (+0.0) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-006 | high | 0.8 | Chainlit well-documented (+0.05), LangGraph native integration (+0.1), UI customization may need work (-0.1) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-008 | high | 0.85 | Standard Docker patterns (+0.05) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-002 | high | 0.85 | Standard FastAPI patterns (+0.0) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-003 | medium | 0.7 | New framework (LangGraph) learning curve (-0.15), Complex state management (-0.1), Well-documented framework (+0.05) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-004 | medium | 0.65 | Core business logic (-0.15), LLM integration needed for some gates (-0.1), Four-eyes enforcement critical (-0.1) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-005 | medium | 0.7 | MCP protocol complexity (-0.15), Existing MCP server available (+0.1), Network/subprocess handling (-0.1) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-007 | high | 0.85 | Streamlit very simple (+0.1), View-only, no complex state (+0.05) | — | pass | ✅ | — |
+| 2026-07-26 | CTV2-009 | medium | 0.7 | E2E tests complex (-0.15), LLM mocking needed (-0.1) | — | pass | ✅ | — |
