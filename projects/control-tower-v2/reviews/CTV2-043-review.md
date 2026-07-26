@@ -2,10 +2,10 @@
 id: CTV2-043
 task_path: projects/control-tower-v2/tasks/CTV2-043-agent-matching-chat-actions.md
 project: control-tower-v2
-result_ref: cd45531
+result_ref: 82c9757
 executor: "@gpt-5.6-luna-high"
 reviewer: "@gpt-5.6-sol"
-status: changes-requested
+status: pending
 issued: 2026-07-26
 verdict: changes
 verdict_date: 2026-07-26
