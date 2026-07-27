@@ -2,7 +2,7 @@
 id: CTV2-068
 title: "Research: OCR Integration Design for LangGraph Gates"
 repo_root: /home/lupca/projects/control-tower-v2
-status: in-review
+status: done
 priority: medium
 risk: normal
 deadline: null

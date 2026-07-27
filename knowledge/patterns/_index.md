@@ -9,3 +9,6 @@ Registry of reusable causal-analysis patterns (`AGENTS.md` §13). Consulted by `
 | [[race-condition]] | reliability | high | 1 |
 | [[memory-leak]] | reliability | high | 0 |
 | [[mandatory-tool-preflight]] | process | high | 1 |
+| [[vacuous-acceptance-test]] | process | high | 2 |
+| [[fixture-dependent-metric]] | process | medium | 1 |
+| [[tool-finding-misattribution]] | process | high | 1 |

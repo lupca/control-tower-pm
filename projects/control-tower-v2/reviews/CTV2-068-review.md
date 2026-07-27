@@ -5,7 +5,7 @@ project: control-tower-v2
 result_ref: docs/design/ocr-integration.md
 executor: "@claude-opus"
 reviewer: "@antigravity"
-status: complete
+status: passed
 issued: 2026-07-27
 verdict: pass
 verdict_date: 2026-07-27

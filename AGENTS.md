@@ -114,6 +114,14 @@ Followed by the standard body:
 
 **Rule:** `/pm` MUST NOT write a task missing `files:`, `## Tiêu chí nghiệm thu (AC)`, `## Verification`, or `tests:` — `files:`/`tests:` must come from a real code-review-graph query (see `AGENTS-REFERENCE.md` §6). `## Verification` contains concrete commands (pytest, curl, grep) so executor chỉ cần chạy theo, không cần tự nghĩ cách verify.
 
+**Rule (AC phải nêu dữ liệu + khẳng định):** một AC yêu cầu test PHẢI nói rõ test
+đó chạy trên **dữ liệu nào** và **assert cái gì**. AC chỉ ghi "có test khẳng định
+X" là chưa đạt — executor có thể viết test đúng tên, chạy xanh, nhưng trên dữ
+liệu suy biến (list rỗng, 1 phần tử, không có quan hệ nào để phá) nên nó không
+thể fail kể cả khi tính chất cần chứng minh bị vi phạm. Xem
+`knowledge/patterns/vacuous-acceptance-test.md` cho template và các dấu hiệu
+nhận biết.
+
 ### 2.2. Task Decomposition Rule
 
 - Each sub-task touches **at most 1 file / 1 concern**.

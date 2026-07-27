@@ -36,6 +36,9 @@ Danh mục toàn bộ knowledge file (cross-project + per-project). Cập nhật
 | guide | [[setup-crg-daemon-autostart]] | tooling, code-review-graph, daemon | 2026-07-24 |
 | guide | [[spawn-patterns]] | dispatch, cli, agents, control-tower | 2026-07-24 |
 | metric | [[prediction-accuracy]] | metrics, prediction, control-tower, accuracy | 2026-07-25 |
+| pattern | [[vacuous-acceptance-test]] | process, acceptance-criteria, testing, spec-gate | 2026-07-27 |
+| pattern | [[fixture-dependent-metric]] | process, metrics, benchmarking, acceptance-criteria | 2026-07-27 |
+| pattern | [[tool-finding-misattribution]] | process, review, toolchain, verdict | 2026-07-27 |
 | research | [[discount-promotion-architecture]] | pricing, discount, promotion, architecture, e-commerce | 2026-07-22 |
 
 *Không tính vào bảng trên (thiếu `type:` frontmatter, không thể phân loại):* `knowledge/guides/review-toolchain.md`, `knowledge/guides/setup-code-review-graph.md`, `knowledge/research/headless-cli-orchestration.md`, `knowledge/research/token-baseline-manual-flow.md`, `knowledge/decisions/ADR-003-model-a-cli-agent-orchestration.md`, `knowledge/decisions/ADR-009-mandatory-toolchain-registry.md`. `knowledge/patterns/*.md` (4 file) dùng schema riêng (`pattern_id`/`category`/`severity`), đã có index riêng tại `knowledge/patterns/_index.md`.

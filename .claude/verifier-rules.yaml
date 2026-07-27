@@ -12,3 +12,5 @@ rules:
     check: "at least one entry in tests:, or a knowledge-gap sub-task was added (AGENTS.md §6.2)"
   - id: no-conflicting-tasks
     check: "no other task with overlapping files: is currently dispatched/in-review"
+  - id: ac-tests-name-data-and-assertion
+    check: "every AC that requires a test also states WHAT DATA the test runs on and WHAT it asserts — an AC saying only 'có test khẳng định X' is a FAIL (see knowledge/patterns/vacuous-acceptance-test.md). Where a previous round was rejected for a vacuous test, the AC must also name what does NOT count as passing."

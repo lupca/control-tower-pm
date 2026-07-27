@@ -1,13 +1,13 @@
 ---
 id: CTV2-067
 title: "Fix Markdown Line Breaks + Whitespace Handling"
-status: dispatched
+status: done
 priority: high
 risk: normal
 deadline: 2026-07-28
 executor: "@gpt-5.6-luna-high"
-reviewer: null
-result_ref: ca8e182
+reviewer: "@claude-opus"
+result_ref: "ca8e182"
 depends_on: []
 files:
   - frontend/src/components/chat/MessageContent.tsx
@@ -16,7 +16,9 @@ flows: [chat-session]
 tests:
   - frontend/src/components/chat/__tests__/ChatMessage.test.tsx
 dispatched: 2026-07-27
-in_review: null
+in_review: 2026-07-27
+reviewed: 2026-07-27
+verdict: pass
 predicted_success: high
 prediction_factors:
   score: 0.9
@@ -46,11 +48,11 @@ CTV2-062 added markdown rendering nhưng output AI vẫn còn hiển thị raw:
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] AC1: Single line break (`\n`) renders as `<br>` — không collapse
-- [ ] AC2: Headers (###) render correctly trong complex output
-- [ ] AC3: Bullet lists (*) render as `<ul><li>` không hiện raw `*`
-- [ ] AC4: Status report output (nhiều sections, lists) renders correctly
-- [ ] AC5: Container có `whitespace-pre-wrap` hoặc tương đương
+- [x] AC1: Single line break (`\n`) renders as `<br>` — không collapse
+- [x] AC2: Headers (###) render correctly trong complex output
+- [x] AC3: Bullet lists (*) render as `<ul><li>` không hiện raw `*`
+- [x] AC4: Status report output (nhiều sections, lists) renders correctly
+- [x] AC5: Container có `whitespace-pre-wrap` hoặc tương đương
 
 ## Verification
 
@@ -96,7 +98,7 @@ cd frontend && npm test -- ChatMessage
 
 ## Sub-tasks
 
-- [ ] Install `remark-breaks` package
-- [ ] Add `remarkBreaks` to remarkPlugins array
-- [ ] Add `whitespace-pre-wrap` to container class
-- [ ] Visual test với complex markdown output
+- [x] Install `remark-breaks` package
+- [x] Add `remarkBreaks` to remarkPlugins array
+- [x] Add `whitespace-pre-wrap` to container class
+- [x] Visual test với complex markdown output

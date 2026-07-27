@@ -95,7 +95,14 @@ def shell_quote(value):
 
 def build_prompt(role, task_path, result_ref=None, review_sheet=None):
     if role == "execute":
-        return f"Execute task at {task_path}"
+        return (
+            f"Execute task at {task_path}. "
+            "When done, commit ONLY the files you changed for this task "
+            "(do not touch unrelated uncommitted changes from concurrent work), "
+            "then print the resulting commit hash on its own final line as "
+            "'RESULT_REF: <hash>'. A task with no commit has no result-ref and "
+            "cannot be reviewed."
+        )
     prompt = f"Review task at {task_path}."
     if result_ref:
         prompt += f" Result ref: {result_ref}."
@@ -108,9 +115,17 @@ def build_command(repo_root, cli, model, effort, prompt):
     root = shlex.quote(str(repo_root))
     quoted_prompt = shell_quote(prompt)
     if cli == "claude":
-        return f"cd {root} && claude --model {shlex.quote(model)} -p {quoted_prompt} --dangerously-skip-permissions"
+        effort_flag = f" --effort {shlex.quote(effort)}" if effort else ""
+        return (
+            f"cd {root} && claude --model {shlex.quote(model)}{effort_flag} "
+            f"-p {quoted_prompt} --dangerously-skip-permissions < /dev/null"
+        )
     if cli == "agy":
-        return f"cd {root} && agy --model {shlex.quote(model)} --print {quoted_prompt} --dangerously-skip-permissions"
+        effort_flag = f" --effort {shlex.quote(effort)}" if effort else ""
+        return (
+            f"cd {root} && agy --model {shlex.quote(model)}{effort_flag} "
+            f"--print {quoted_prompt} --dangerously-skip-permissions < /dev/null"
+        )
     effort = effort or "medium"
     return (
         f"cd {root} && codex exec -m {shlex.quote(model)} "
@@ -192,6 +207,7 @@ def main():
 
     if not args.print_only:
         today = date.today().isoformat()
+        writes = []
         if args.role == "execute":
             fm_set(lines, "status", "dispatched")
             fm_set(lines, "executor", agent_id, quote=True)
@@ -200,7 +216,19 @@ def main():
         else:
             fm_set(lines, "reviewer", agent_id, quote=True)
             fm_set(lines, "updated", today)
-        transactional_write_all([(task_path, rebuild(lines, body))])
+            # The review sheet carries its own `reviewer:` frontmatter and the
+            # reviewer agent reads the sheet to learn who it is. Leaving it stale
+            # makes the agent sign the report as the previous reviewer, which
+            # would credit agent stats to someone who never reviewed and turn the
+            # four-eyes check into paperwork. Keep both files in one transaction.
+            if sheet_path.is_file():
+                sheet_lines, sheet_body = split_frontmatter(
+                    sheet_path.read_text(encoding="utf-8"), sheet_path, fail
+                )
+                fm_set(sheet_lines, "reviewer", agent_id)
+                writes.append((sheet_path, rebuild(sheet_lines, sheet_body)))
+        writes.append((task_path, rebuild(lines, body)))
+        transactional_write_all(writes)
 
     print(command)
 

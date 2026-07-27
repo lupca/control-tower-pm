@@ -1,7 +1,7 @@
 ---
 id: CTV2-064
 title: "Add OpenAI Provider Support for Coordinator"
-status: completed
+status: done
 priority: high
 risk: normal
 deadline: 2026-08-03

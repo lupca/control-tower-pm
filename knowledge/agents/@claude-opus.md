@@ -3,7 +3,7 @@ agent_id: "@claude-opus"
 type: ai
 model: claude-opus-4-5-20251101
 total_tasks_executed: 7
-total_tasks_reviewed: 27
+total_tasks_reviewed: 44
 success_rate: 0.86
 avg_review_rounds: 1.0
 strengths: [review, research, architecture, complex-analysis, coordination, skill-design]

@@ -1,13 +1,13 @@
 ---
 id: CTV2-069
 title: "Fix Markdown Rendering - Newlines Double-Encoded"
-status: dispatched
+status: in-review
 priority: urgent
 risk: normal
 deadline: 2026-07-28
 executor: "@gpt-5.6-luna-high"
-reviewer: null
-result_ref: 0f62f73
+reviewer: "@claude-opus"
+result_ref: "0f62f73"
 depends_on: []
 files:
   - frontend/src/components/chat/ChatPanel.tsx
@@ -18,7 +18,7 @@ flows: [chat-session]
 tests:
   - frontend/src/components/chat/__tests__/ChatMessage.test.tsx
 dispatched: 2026-07-27
-in_review: null
+in_review: 2026-07-27
 predicted_success: high
 prediction_factors:
   score: 0.85

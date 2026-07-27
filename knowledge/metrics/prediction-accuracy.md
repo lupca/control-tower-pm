@@ -38,12 +38,12 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 59 |
-| **Pass Count (Actual Success)** | 57 |
-| **Changes Count (Actual Rework/Fail)** | 2 |
-| **Overall Prediction Accuracy** | 80% (47/59) |
-| **High Prediction Precision** | 97% (31/32) |
-| **Medium Prediction Precision** | 100% (15/15) |
+| **Total Predicted Tasks** | 78 |
+| **Pass Count (Actual Success)** | 73 |
+| **Changes Count (Actual Rework/Fail)** | 5 |
+| **Overall Prediction Accuracy** | 81% (63/78) |
+| **High Prediction Precision** | 93% (42/45) |
+| **Medium Prediction Precision** | 95% (20/21) |
 | **Low Prediction Precision** | 50% (1/2) |
 
 ---
@@ -113,3 +113,22 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-27 | CTV2-070 | high | 0.9 | blast_radius: 1 (-0.0) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-071 | high | 0.85 | blast_radius: 2 (-0.0), frontend state timing (-0.05) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-072 | medium | 0.6 | cross-cutting concern, touches coordinator core (-0.15), requires tool execution loop (new feature) (-0.15), risk: high (schemas/core changes) (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-073 | high | 0.9 | no existing tests: -0.1 | [0.75, 0.95] | pass | ✅ | ❌ |
+| 2026-07-27 | CTV2-074 | high | 0.9 | blast_radius: 4 files (-0.0), no existing tests (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-077 | high | 0.85 | refactor chạm nhiều call site (-0.1), cần test mới cho registry (-0.05) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-078 | high | 0.9 | budget_messages có edge case truncation (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-079 | high | 0.85 | tests hiện có có thể đang mock 2 adapter này (-0.15) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-085 | high | 0.85 | frontend test setup cho palette mới (-0.1), UX autocomplete cần thống nhất với slash syntax (-0.05) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-081 | high | 0.8 | đụng tool-execution loop cả complete_turn lẫn stream_turn (-0.15), cần giữ prefix ổn định giữa các turn (-0.05) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-082 | medium | 0.7 | risk cao: LLM có quyền ghi lên projects/agents (-0.15), gate wiring cho admin permission là logic mới (-0.15) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-083 | high | 0.85 | migration mới cần rollback script theo project gate (-0.1), chưa chốt danh sách settings key ban đầu (-0.05) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-084 | medium | 0.75 | tích hợp MCP config cho 3 CLI khác nhau (claude/codex/agy) (-0.15), cần scoped API token mới (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-088 | medium | 0.65 | hub node: execute_tool (36), TaskOrchestrationService (43) (-0.2), đổi semantics idempotency có thể mở lại lỗi double-dispatch nếu làm ẩu (-0.15) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-095 | high | 0.7 | hub node: build_context_snapshot (39), CoordinatorService (43) (-0.2), CTV2-078 đã chạm vùng này, rủi ro xung đột thấp (-0.1) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-102 | high | 0.75 | hub node: run_agent (53) (-0.2), phạm vi hẹp, không đụng FSM (-0.05) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-090 | high | 0.8 | hub node: execute_tool (36) (-0.2) | — | changes | ❌ | — |
+| 2026-07-27 | CTV2-103 | medium | 0.65 | hub node: run_agent (53), TaskOrchestrationService (43) (-0.2), phải đúng ngay từ đầu: đây là lớp an toàn cho mọi task sau (-0.15) | — | changes | ❌ | — |
+| 2026-07-27 | CTV2-104 | high | 0.75 | hub node: execute_tool (36), CoordinatorService (43) (-0.2), phạm vi hẹp, đã có repro rõ ràng từ reviewer (-0.05) | — | changes | ❌ | — |
+| 2026-07-27 | CTV2-087 | medium | 0.6 | hub node: run_agent (53), execute_tool (36), TaskOrchestrationService (43) (-0.2), phụ thuộc 3 task (086 schema, 099 base/head, 102 schema kết quả) (-0.2) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-105 | medium | 0.6 | hub node: run_agent (53), ProcessManager (47), run_with_streaming (69) (-0.2), đụng vòng đời git bên ngoài process — dọn dẹp và lỗi phần dở là điểm dễ vỡ (-0.2) | — | pass | ✅ | — |
+| 2026-07-27 | CTV2-098 | high | 0.75 | hub node: event_generator (51) (-0.2), không có test WS notification hiện có (-0.05) | — | pass | ✅ | — |

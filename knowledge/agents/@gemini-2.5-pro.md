@@ -5,7 +5,7 @@ model: gemini-2.5-pro
 effort: high
 cli: agy
 total_tasks_executed: 1
-total_tasks_reviewed: 1
+total_tasks_reviewed: 2
 success_rate: 1.0
 avg_review_rounds: 0
 strengths: [complex-logic, full-implementation, follows-instructions]
