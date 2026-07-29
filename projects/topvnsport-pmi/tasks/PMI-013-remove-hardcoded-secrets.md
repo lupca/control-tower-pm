@@ -24,7 +24,7 @@ prediction_factors:
   deductions:
     - "risk_high: -0.2 (production secrets)"
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-28
 ---
 
 # PMI-013: Remove hardcoded secrets từ docker-compose.prod.yml
@@ -33,11 +33,13 @@ updated: 2026-07-25
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] Không còn plaintext password/secret trong docker-compose.prod.yml (4 services: PMI, OMS, WMS, identity-service)
-- [ ] Tạo `.env.prod.example` với placeholder values cho mỗi service
-- [ ] `.gitignore` có pattern `.env.prod`
-- [ ] Compose files sử dụng `env_file:` hoặc `${VAR}` syntax không có fallback
-- [ ] Document: hướng dẫn generate secrets và deploy
+- [x] JWT_SECRET_KEY: `${JWT_SECRET_KEY:?}` (done via OMS-011)
+- [x] FERNET_KEY: `${FERNET_KEY:?}` (done via OMS-011)
+- [x] RDS credentials: `${RDS_*:?}` (done via DEVOPS-001)
+- [x] POSTGRES_PASSWORD: N/A — services dùng RDS, không còn local DB
+- [ ] ALLOWED_SERVICE_KEYS: còn hardcode `prod-service-api-key-must-change` trong PMI
+- [x] `.gitignore` có pattern `.env.prod`
+- [x] Document: deploy_prod.sh + GitHub secrets
 
 ## Verification
 
@@ -52,13 +54,14 @@ updated: 2026-07-25
 
 ## Sub-tasks
 
-- [ ] PMI/docker-compose.prod.yml: remove fallback values, add env_file
-- [ ] OMS/docker-compose.prod.yml: remove FERNET_KEY fallback
-- [ ] WMS/docker-compose.prod.yml: remove hardcoded secrets
-- [ ] identity-service/docker-compose.prod.yml: remove hardcoded secrets
-- [ ] Create .env.prod.example for each service
-- [ ] Update .gitignore
-- [ ] Document secret rotation procedure
+- [x] PMI/docker-compose.prod.yml: JWT_SECRET_KEY done, còn ALLOWED_SERVICE_KEYS
+- [x] OMS/docker-compose.prod.yml: done (FERNET_KEY, JWT, RDS all use ${VAR:?})
+- [x] WMS/docker-compose.prod.yml: done (JWT, RDS all use ${VAR:?})
+- [x] identity-service/docker-compose.prod.yml: done (JWT uses ${VAR:?})
+- [x] .gitignore updated
+- [x] Document: deploy_prod.sh handles secrets from GitHub
+
+**Remaining:** Chỉ còn `ALLOWED_SERVICE_KEYS=prod-service-api-key-must-change` trong PMI.
 
 ## Reference
 

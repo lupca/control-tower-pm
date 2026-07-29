@@ -1,14 +1,17 @@
 ---
 id: PMI-022
 title: "Dead code removal (~1,400 lines across all services)"
-status: todo
+status: done
+completed: 2026-07-29
+result_ref: e0ed0a4c744baa40c5edc0cc27e13b588a6d2ff0
 priority: low
 risk: normal
 deadline: null
-executor: null
-reviewer: null
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-opus-4.5"
 result_ref: null
 depends_on: []
+dispatched: 2026-07-29
 files:
   - PMI/
   - OMS/

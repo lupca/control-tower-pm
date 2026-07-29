@@ -2,13 +2,13 @@
 id: CTV2-108
 title: "Anti-loop tool retry rules + pre-emptive duplicate detection"
 repo_root: /home/lupca/projects/control-tower-v2
-status: dispatched
+status: done
 priority: high
 risk: normal
 deadline: null
 executor: "@claude-opus-4.5"
-reviewer: null
-result_ref: null
+reviewer: "@manual-verification"
+result_ref: "control-tower-v2@main (commit dce075a)"
 depends_on: []
 files:
   - backend/app/prompts/global_context.md
@@ -17,7 +17,7 @@ flows: []
 tests:
   - backend/tests/test_coordinator.py
 dispatched: 2026-07-28
-in_review: null
+in_review: 2026-07-28
 predicted_success: high
 prediction_factors:
   score: 0.85
@@ -78,6 +78,6 @@ Agent bị stuck loop gọi `query_db` 3 lần với cùng arguments. Harness de
 
 ## Sub-tasks
 
-- [ ] Add "Tool retry rules" section to `global_context.md`
-- [ ] Implement pre-emptive duplicate detection in `coordinator.py`
-- [ ] Add test case for duplicate detection
+- [x] Add "Tool retry rules" section to `global_context.md`
+- [x] Implement pre-emptive duplicate detection in `coordinator.py`
+- [x] Add test case for duplicate detection

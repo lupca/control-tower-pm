@@ -1,7 +1,7 @@
 ---
 id: CTV2-058
 title: "Chat UI Phase 3: Integration + Global Chat"
-status: todo
+status: done
 priority: high
 risk: normal
 deadline: null
@@ -38,12 +38,12 @@ Architecture: `docs/chat-ui-architecture.md` (CTV2-055)
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] `ChatContext.tsx`: React context cho global chat state (current session, sessions list, context level)
-- [ ] `useChatContext.ts`: Hook để auto-detect context từ current route
-- [ ] `App.tsx`: Wrap với ChatProvider, add GlobalChatButton at root
-- [ ] `ProjectDetail.tsx`: Add ChatPanel cho project-level chat
-- [ ] Global chat accessible từ Dashboard, Projects list, bất kỳ page nào
-- [ ] Context auto-switch khi navigate: /tasks/:id → Task, /projects/:id → Project, other → Global
+- [x] `ChatContext.tsx`: React context cho global chat state (current session, sessions list, context level)
+- [x] `useChatContext.ts`: Hook để auto-detect context từ current route
+- [x] `App.tsx`: Wrap với ChatProvider, add GlobalChatButton at root
+- [x] `ProjectDetail.tsx`: Add ChatPanel cho project-level chat
+- [x] Global chat accessible từ Dashboard, Projects list, bất kỳ page nào
+- [x] Context auto-switch khi navigate: /tasks/:id → Task, /projects/:id → Project, other → Global
 
 ## Verification
 

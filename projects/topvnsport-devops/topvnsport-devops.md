@@ -4,7 +4,7 @@ full_name: "TopVNSport - DevOps (Infrastructure as Code)"
 repo_root: /home/lupca/projects/topvnsport-devops
 repo_url: git@github.com:lupca/topvnsport-devops.git
 task_prefix: DEVOPS
-next_task_id: 4
+next_task_id: 5
 created: 2026-07-25
 updated: 2026-07-25
 ---
@@ -24,6 +24,7 @@ Infrastructure as Code (IaC) repository chứa Terraform để deploy hệ thố
 - [[DEVOPS-001-phase1-iac-foundation]] — Phase 1: IaC Foundation - Terraform + RDS + S3 Migration (done)
 - [[DEVOPS-002-data-migration-script]] — Create data migration script: Prod containers → RDS + S3 (done)
 - [[DEVOPS-003-verify-prod-migration]] — Verify Phase 1 migration on production (done)
+- [[DEVOPS-004-domain-migration-voma-https]] — Domain migration voma.vn + HTTPS cho PIM/OMS/WMS (todo)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi Terraform (`*.tf`) phải có `terraform plan` output trong PR trước khi merge.

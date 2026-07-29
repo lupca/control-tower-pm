@@ -1,15 +1,15 @@
 ---
-project: control-tower-v2
-full_name: "Control Tower V2 - LangGraph Redesign"
-repo_root: /home/lupca/projects/control-tower-v2
+project: agenticmatix
+full_name: "Agenticmatix - LangGraph Agentic Platform"
+repo_root: /home/lupca/projects/agenticmatix
 repo_url: null
 task_prefix: CTV2
-next_task_id: 109
+next_task_id: 132
 created: 2026-07-26
 updated: 2026-07-27
 ---
 
-# Control Tower V2 - LangGraph Redesign
+# Agenticmatix - LangGraph Agentic Platform
 
 Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) để giảm token consumption ~80% trong khi giữ chất lượng output.
 
@@ -62,6 +62,7 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 - [[CTV2-057-chat-frontend-components]] — Chat UI Phase 2: Frontend Components (done)
 - [[CTV2-058-chat-integration]] — Chat UI Phase 3: Integration + Global Chat (todo, unblocked)
 - [[CTV2-059-chat-data-architecture-research]] — Research: Kiến trúc Data Manipulation cho User Chat (done)
+- [[CTV2-110-agent-selector-v1-lessons]] — AgentSelector nâng cấp với CT v1 lessons learned (todo)
 - [[CTV2-060-hybrid-context-snapshot]] — Implement Hybrid Context Snapshot for User Chat (done)
 - [[CTV2-061-agent-api-key-settings]] — Agent API Key Settings UI (done)
 - [[CTV2-062-chat-markdown-rendering]] — Fix Chat UI Markdown Rendering (done)
@@ -97,6 +98,10 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 - [[CTV2-093-autonomy-policy]] — Autonomy policy Settings + project override (todo, autonomy #5)
 - [[CTV2-094-task-dependencies-dag]] — task_dependencies + dependency check (todo, autonomy #5b)
 - [[CTV2-095-snapshot-last-tool-result-pruning]] — Snapshot cuối prefix + prune tool result (todo, autonomy #6)
+- [[CTV2-114-polling-events-db-service]] — Polling Events Phase 1: Database + Service (todo)
+- [[CTV2-115-polling-events-replace-publishers]] — Polling Events Phase 2: Replace Publishers (todo)
+- [[CTV2-116-polling-events-api-frontend]] — Polling Events Phase 3: API + Frontend (todo)
+- [[CTV2-117-polling-events-llm-context]] — Polling Events Phase 4: LLM Context Integration (todo)
 - [[CTV2-096-llm-compaction-token-threshold]] — Compaction LLM theo ngưỡng token (todo, autonomy #6)
 - [[CTV2-097-sub-session-per-task]] — Sub-session per task (todo, autonomy #6)
 - [[CTV2-098-gate-notification-global-inbox]] — Thông báo gate vào global chat (todo, autonomy #7)
@@ -109,6 +114,32 @@ Thiết kế lại hệ thống Control Tower sử dụng LangGraph (Python) đ�
 - [[CTV2-103-kill-switch-cost-budget]] — Kill switch + trần chi phí + trần run đồng thời (todo, an toàn cho 089)
 - [[CTV2-106-spec-plan-model-selection]] — Spec/Plan Generation Model Selection giống Dispatch Gate (done, superseded by CTV2-107)
 - [[CTV2-107-unified-llm-service]] — Unified LLMService - Consolidate LLMClient, ProviderRouter, OpenAIAdapter (done)
+- [[CTV2-111-soft-delete-archive-research]] — Research: Soft Delete (Archive) Architecture (done)
+- [[CTV2-112-soft-delete-implementation]] — Implement Soft Delete (Archive) cho tất cả entities (done)
+- [[CTV2-118-research-frontend-refactor-strategy]] — Research: Frontend Refactor Strategy - Splitting, Performance, Cleanup, Reusable Components (done)
+- [[CTV2-119-shadcn-ui-core-primitives]] — Install shadcn/ui and Extract Core Primitives (changes-requested)
+- [[CTV2-120-fix-high-severity-bugs-prescan]] — Fix High-Severity Bugs from Pre-scan (done)
+- [[CTV2-130-fix-frontend-build-zustand-resolve]] — Fix Frontend Build: Rollup Cannot Resolve zustand (todo, phát hiện khi review CTV2-120)
+- [[CTV2-121-usememo-filtered-lists]] — Add useMemo to Filtered Lists (todo, blocked by CTV2-120)
+- [[CTV2-122-parallelize-api-calls]] — Parallelize API Calls (Promise.all) (todo, blocked by CTV2-121)
+- [[CTV2-123-split-chatpanel]] — Split ChatPanel into Sub-components (todo, blocked by CTV2-122)
+- [[CTV2-124-split-agentdetail-page]] — Split AgentDetail Page (todo, blocked by CTV2-122)
+- [[CTV2-125-split-projectdetail-page]] — Split ProjectDetail Page (todo, blocked by CTV2-122)
+- [[CTV2-126-migrate-stat-cards-shared]] — Migrate Stat Cards to Shared Component (todo, blocked by CTV2-119/124/125)
+- [[CTV2-127-migrate-alert-banners-modals]] — Migrate Alert Banners and Modals (todo, blocked by CTV2-119/124/125)
+- [[CTV2-128-tests-dashboard-projects]] — Add Tests for Dashboard and Projects Pages (todo, blocked by CTV2-126/127)
+- [[CTV2-129-tests-agents-chatpanel]] — Add Tests for Agents and ChatPanel (todo, blocked by CTV2-126/127)
+- [[CTV2-131-fix-bypass-mode-gate-approval]] — Fix bypass mode not auto-approving gates (todo)
+- [[CTV2-201-add-taskround-table]] — Add TaskRound table for multi-round history (dispatched, v2.1 arch)
+- [[CTV2-202-dispatch-decision-tables]] — Add DispatchDecision + DispatchCandidate tables (todo, v2.1 arch, blocked by 201)
+- [[CTV2-203-agent-account-health]] — Add AgentAccount for subscription health (todo, v2.1 arch, blocked by 202)
+- [[CTV2-204-task-locking-idempotency]] — Task-level locking and idempotency (todo, v2.1 arch)
+- [[CTV2-205-transactional-outbox]] — Transactional outbox pattern (todo, v2.1 arch)
+- [[CTV2-206-state-projections]] — Consolidate state projections (todo, v2.1 arch)
+- [[CTV2-207-streaming-replay]] — Sequence-based output streaming with replay (todo, v2.1 arch)
+- [[CTV2-208-brake-decision-structured]] — Structured BrakeDecision (todo, v2.1 arch, blocked by 203)
+- [[CTV2-209-cli-event-normalization]] — Normalize CLI adapter events (todo, v2.1 arch)
+- [[CTV2-210-reviewer-isolation]] — Reviewer isolation and schema versioning (todo, v2.1 arch, blocked by 201)
 
 ## Tech Stack
 - **Backend:** FastAPI + SQLAlchemy + Alembic

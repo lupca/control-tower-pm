@@ -1,14 +1,17 @@
 ---
 id: PMI-020
 title: "Add React Error Boundaries cho all frontends"
-status: todo
+status: done
+completed: 2026-07-29
+result_ref: 88ba0221867aa8d6e22f70430cf6be3c65e060a3
 priority: medium
 risk: normal
 deadline: null
-executor: null
-reviewer: null
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-opus-4.5"
 result_ref: null
 depends_on: []
+dispatched: 2026-07-29
 files:
   - PMI/frontend/src/components/
   - OMS/frontend/src/components/

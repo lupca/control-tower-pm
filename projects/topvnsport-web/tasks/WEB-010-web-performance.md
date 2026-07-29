@@ -1,14 +1,17 @@
 ---
 id: WEB-010
 title: "Performance: remove simulated latency + code splitting"
-status: todo
+status: done
+completed: 2026-07-29
+result_ref: c7664ad82e916f2e98b8d9a941a7db9876e6c413
 priority: medium
 risk: normal
 deadline: null
-executor: null
-reviewer: null
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-opus-4.5"
 result_ref: null
 depends_on: []
+dispatched: 2026-07-29
 files:
   - web/src/services/sport-api/constants.ts
   - web/src/services/sport-api/index.ts

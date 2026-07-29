@@ -1,6 +1,6 @@
 ---
 id: PMI-014
-title: "Remove DB port exposure + Add HTTPS/TLS production"
+title: "Add HTTPS/TLS production"
 status: todo
 priority: urgent
 risk: high
@@ -25,7 +25,7 @@ prediction_factors:
   deductions:
     - "risk_high: -0.2 (infrastructure change)"
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-28
 ---
 
 # PMI-014: Remove DB port exposure + Add HTTPS/TLS production
@@ -34,8 +34,8 @@ updated: 2026-07-25
 
 ## Tiêu chí nghiệm thu (AC)
 
-- [ ] DB ports (15433, 15434, 15435) không còn expose ra host trong production compose
-- [ ] Gateway expose port 443 và có TLS server block
+- [x] DB ports: N/A — services dùng RDS, không còn local DB containers (done via DEVOPS-001)
+- [ ] Gateway expose port 443 và có TLS server block (hiện đang comment: `# - "443:443"`)
 - [ ] HTTP → HTTPS redirect hoạt động
 - [ ] SSL certificate được mount đúng cách
 - [ ] HSTS header được set
@@ -53,8 +53,8 @@ updated: 2026-07-25
 
 ## Sub-tasks
 
-- [ ] Remove `ports:` section từ db service trong PMI/OMS/WMS compose.prod.yml
-- [ ] Add port 443 expose trong gateway compose
+- [x] Remove DB ports: N/A — dùng RDS, không còn local DB
+- [ ] Uncomment port 443 trong gateway/docker-compose.prod.yml
 - [ ] Create TLS server block trong nginx config
 - [ ] Add certbot setup instructions
 - [ ] Test HTTP→HTTPS redirect

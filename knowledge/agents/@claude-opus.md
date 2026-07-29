@@ -3,13 +3,13 @@ agent_id: "@claude-opus"
 type: ai
 model: claude-opus-4-5-20251101
 total_tasks_executed: 7
-total_tasks_reviewed: 44
-success_rate: 0.86
+total_tasks_reviewed: 51
+success_rate: 0.83
 avg_review_rounds: 1.0
 strengths: [review, research, architecture, complex-analysis, coordination, skill-design]
-weaknesses: []
-recent_trend: improving
-last_active: 2026-07-27
+weaknesses: [cli-edge-cases]
+recent_trend: stable
+last_active: 2026-07-29
 ---
 
 # Agent Profile: @claude-opus
@@ -28,3 +28,4 @@ last_active: 2026-07-27
 - 2026-07-23 (CT-022): Reviewer Rotation — inline skill edit, passed 1st review. (merged from @claude-opus-4.5)
 - 2026-07-24 (CT-023): OCR review toolchain — edited 3 skill files + created convention guide, passed 1st review by @antigravity.
 - 2026-07-26 (CTV2-032): Remediation review — caught subprocess.run vs Popen issue (batch vs streaming), required 1 fix round.
+- 2026-07-28 (CTV2-110, CTV2-113): Reviewed effort override tasks — approved both but missed edge case: model names with effort suffix (e.g. `gemini-3.6-flash-low`) shouldn't get separate `--effort` flag. Bug discovered in prod, required hotfix.

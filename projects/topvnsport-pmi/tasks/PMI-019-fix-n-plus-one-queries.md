@@ -1,14 +1,17 @@
 ---
 id: PMI-019
 title: "Fix N+1 queries + transaction boundaries"
-status: todo
+status: done
+completed: 2026-07-29
+result_ref: 897602eb3434a96d53d26b53452ad9174bbedf7f
 priority: medium
 risk: normal
 deadline: null
-executor: null
-reviewer: null
+executor: "@gpt-5.6-luna-high"
+reviewer: "@claude-opus-4.5"
 result_ref: null
 depends_on: []
+dispatched: 2026-07-29
 files:
   - PMI/backend/routers/products.py
   - PMI/backend/services/product_service.py

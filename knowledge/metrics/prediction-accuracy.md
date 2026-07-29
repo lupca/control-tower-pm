@@ -38,13 +38,13 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 
 | Metric | Value |
 |:---|:---|
-| **Total Predicted Tasks** | 78 |
-| **Pass Count (Actual Success)** | 73 |
-| **Changes Count (Actual Rework/Fail)** | 5 |
-| **Overall Prediction Accuracy** | 81% (63/78) |
-| **High Prediction Precision** | 93% (42/45) |
-| **Medium Prediction Precision** | 95% (20/21) |
-| **Low Prediction Precision** | 50% (1/2) |
+| **Total Predicted Tasks** | 85 |
+| **Pass Count (Actual Success)** | 79 |
+| **Changes Count (Actual Rework/Fail)** | 6 |
+| **Overall Prediction Accuracy** | 80% (68/85) |
+| **High Prediction Precision** | 92% (45/49) |
+| **Medium Prediction Precision** | 96% (22/23) |
+| **Low Prediction Precision** | 33% (1/3) |
 
 ---
 
@@ -132,3 +132,10 @@ Hệ thống dự đoán khả năng hoàn thành thành công của task (`pred
 | 2026-07-27 | CTV2-087 | medium | 0.6 | hub node: run_agent (53), execute_tool (36), TaskOrchestrationService (43) (-0.2), phụ thuộc 3 task (086 schema, 099 base/head, 102 schema kết quả) (-0.2) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-105 | medium | 0.6 | hub node: run_agent (53), ProcessManager (47), run_with_streaming (69) (-0.2), đụng vòng đời git bên ngoài process — dọn dẹp và lỗi phần dở là điểm dễ vỡ (-0.2) | — | pass | ✅ | — |
 | 2026-07-27 | CTV2-098 | high | 0.75 | hub node: event_generator (51) (-0.2), không có test WS notification hiện có (-0.05) | — | pass | ✅ | — |
+| 2026-07-28 | CTV2-109 | low | 0.3 | hub node: TaskOrchestrationService (degree 90) (-0.2), hub node: CommandRouter (degree 121) (-0.2), blast_radius: 8 files (-0.3) | — | pass | ❌ | — |
+| 2026-07-28 | CTV2-119 | high | 1.0 | — | — | changes | ❌ | — |
+| 2026-07-28 | CTV2-120 | high | 0.8 | touches hub nodes AgentDetailPage/Dashboard/ProjectDetailPage (degree 67/66/61) (-0.2) | — | pass | ✅ | — |
+| 2026-07-29 | CTV2-131 | high | 0.9 | single file change, low blast radius (-0.0), existing tests cover gate logic (-0.0), clear fix path (-0.1 conservative) | — | pass | ✅ | — |
+| 2026-07-29 | WEB-013 | medium | 0.6 | blast_radius: 8+ files across 2 repos (-0.3), touches nginx gateway config - infra risk (-0.1) | — | pass | ✅ | — |
+| 2026-07-29 | WEB-014 | high | 0.9 | simple deletion task (-0.1) | — | pass | ✅ | — |
+| 2026-07-29 | DEVOPS-004 | medium | 0.6 | touches gateway + 3 services (-0.2), production config changes (-0.2) | — | pass | ✅ | — |

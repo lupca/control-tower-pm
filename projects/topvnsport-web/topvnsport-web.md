@@ -3,7 +3,7 @@ project: topvnsport-web
 full_name: "TopVNSport - Web (Frontend Application)"
 repo_root: /home/lupca/projects/topvnsport
 task_prefix: WEB
-next_task_id: 13
+next_task_id: 15
 created: 2026-07-22
 updated: 2026-07-24
 ---
@@ -34,6 +34,8 @@ Dự án quản lý frontend application (Vue/React) của hệ thống TopVNSpo
 - [[WEB-010-web-performance]] — Performance: remove simulated latency + code splitting (todo)
 - [[WEB-011-fix-duplicate-cors-headers-gateway]] — Storefront không lấy được data PMI: header CORS bị NHÂN ĐÔI (gateway + app cùng thêm) → browser chặn (done)
 - [[WEB-012-remove-dead-fallback-findorcreate]] — Xóa dead code fallback trong findOrCreateCustomer (todo)
+- [[WEB-013-split-web-repo-gateway-cleanup]] — Split web to separate repo + gateway cleanup + CI/CD for new repo (done)
+- [[WEB-014-remove-docker-files]] — Remove Docker files from standalone web repo (todo)
 
 ## Quy tắc phê duyệt riêng (Project Gates)
 - Mọi thay đổi liên quan đến routing, state management hoặc API integration cần có test coverage.
